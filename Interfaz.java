@@ -4,37 +4,37 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 	public Interfaz()
 	{
 		/* elementos a usar similar a variables */
-		JPanel panelLogIn,panelMain,panelFooter,panelDetails;
+			JPanel panelLogIn,panelLogInContent,panelMain,panelFooter,panelDetails;
 
-		JButton btnIngresar,btnAgregar,btnReportesGrales,btnBorrar,btnEditar,btnReporteInd;
+			JButton btnIngresar,btnAgregar,btnReportesGrales,btnBorrar,btnEditar,btnReporteInd;
 
-		JTextField txtUser,txtPass, txtNombre,txtApp,txtApm,txtCargo,txtSueldo,txtNomina,txtFechaIngreso,
-				txtDiasTrabajdos,txtAsignaciones, txtDeducciones;
+			JTextField txtUser,txtPass, txtNombre,txtApp,txtApm,txtCargo,txtSueldo,txtNominaNum,txtFechaIngreso,
+					txtDiasTrabajdos,txtAsignaciones, txtDeducciones;
 		/* ==================================== */
 
 		/* establecer propiedades de la ventana */
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // para que se termine la execución
-		setResizable(false); // desabilita la opción de cambiar tamaños
-		setSize(new java.awt.Dimension(1100, 600));// Establecer tamaño
-		setTitle("miSueldo");//titulo de la ventana
-		setLayout(new java.awt.GridBagLayout());//para ordenar los elementos
+			setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // para que se termine la execución cuando se cierra
+			setResizable(false); // desabilita la opción de cambiar tamaño
+			setSize(new java.awt.Dimension(1000, 550));// Establecer tamaño
+			setTitle("miSueldo");//titulo de la ventana
+			setLayout(new java.awt.GridBagLayout());//para ordenar los elementos con cordenadas
 		/* ==================================== */
-
 
 		/* Armando la interfaz */
 		// Panel de Log In
-			panelLogIn = new JPanel(); 
+			panelLogIn = new JPanel();
 			panelLogIn.setBackground(new java.awt.Color(187, 72, 72));
-			panelLogIn.add(new JLabel("Log in"));
-			panelLogIn.add(new JLabel("Usuario"));
-
-			txtUser = new JTextField(10);
-			panelLogIn.add(txtUser);
-			panelLogIn.add(new JLabel("Contraseña"));
-			txtPass = new JTextField(10);
-			panelLogIn.add(txtPass);
+			panelLogIn.setLayout(new java.awt.BorderLayout());//java.awt.GridLayout(3,1,0,200));
+				panelLogInContent = new JPanel();
+				panelLogIn.add(panelLogInContent,java.awt.BorderLayout.CENTER);
+				panelLogInContent.add(new JLabel("Usuario"));
+				txtUser = new JTextField(10);
+				panelLogInContent.add(txtUser);
+				panelLogInContent.add(new JLabel("Contraseña"));
+				txtPass = new JTextField(10);
+				panelLogInContent.add(txtPass);
 			btnIngresar = new JButton("Ingresar");
-			panelLogIn.add(btnIngresar);
+			panelLogIn.add(btnIngresar,java.awt.BorderLayout.SOUTH);
 
 		//panel Area Principal
 			panelMain = new JPanel();
@@ -51,17 +51,63 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 			panelMain.add(jList1);
 			jList1.setModel(new javax.swing.AbstractListModel<String>() {
 			String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-			*/		
+			}*/
+					
 
 			panelMain.setEnabled(false);////***** false para que se habilite cuando se loguee
 		//panel Details
 			panelDetails = new JPanel();
 			panelDetails.setBackground(new java.awt.Color(72, 72, 0));
+			btnEditar = new JButton("Editar");
+			panelDetails.add(btnEditar);
+			btnBorrar = new JButton("Borrar");
+			panelDetails.add(btnBorrar);
+
 			panelDetails.add(new JLabel("Nombre"));
+			txtNombre = new JTextField(8);
+			panelDetails.add(txtNombre);
+
 			panelDetails.add(new JLabel("Apellido Paterno"));
+			txtApp = new JTextField(8);
+			panelDetails.add(txtApp);
+
+			/*
+
 			panelDetails.add(new JLabel("Apellido Materno"));
+			txtApm = new JTextField(8);
+			panelDetails.add(txtApm);
+
 			panelDetails.add(new JLabel("Cargo"));
+			txtCargo = new JTextField(8);
+			panelDetails.add(txtCargo);
+
 			panelDetails.add(new JLabel("Suledo Base"));
+			txtSueldo = new JTextField(8);
+			panelDetails.add(txtSueldo);
+
+			panelDetails.add(new JLabel("Fecha de ingreso"));
+			txtFechaIngreso = new JTextField(8);
+			panelDetails.add(txtFechaIngreso);
+
+			panelDetails.add(new JLabel("Numero de cuemta de nomina"));
+			txtNominaNum = new JTextField(8);
+			panelDetails.add(txtNominaNum);
+
+			panelDetails.add(new JLabel("Dias Trabajados"));
+			txtDiasTrabajdos = new JTextField(8);
+			panelDetails.add(txtDiasTrabajdos);
+
+			panelDetails.add(new JLabel("Asignaciones"));
+			txtAsignaciones = new JTextField(8);
+			panelDetails.add(txtAsignaciones);
+
+			panelDetails.add(new JLabel("Deducciones"));
+			txtDeducciones = new JTextField(8);
+			panelDetails.add(txtDeducciones);
+
+
+			*/
+
 			panelDetails.setEnabled(false);////***** false para que se habilite cuando se loguee
 		//panel Footer
 			panelFooter = new JPanel();
