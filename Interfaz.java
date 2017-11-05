@@ -5,8 +5,11 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 	{
 		/* elementos a usar similar a variables */
 		JPanel panelLogIn,panelMain,panelFooter,panelDetails;
-		JLabel texto;
-		JButton boton;
+
+		JButton btnIngresar,btnAgregar,btnReportesGrales,btnBorrar,btnEditar,btnReporteInd;
+
+		JTextField txtUser,txtPass, txtNombre,txtApp,txtApm,txtCargo,txtSueldo,txtNomina,txtFechaIngreso,
+				txtDiasTrabajdos,txtAsignaciones, txtDeducciones;
 		/* ==================================== */
 
 		/* establecer propiedades de la ventana */
@@ -22,18 +25,48 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 		// Panel de Log In
 			panelLogIn = new JPanel(); 
 			panelLogIn.setBackground(new java.awt.Color(187, 72, 72));
-			//panelLogIn.setLayout();
-			//panelLogIn.add(new JLabel("Log in",10));
-			//panelLogIn.add(new JButton("Ingresar"));
+			panelLogIn.add(new JLabel("Log in"));
+			panelLogIn.add(new JLabel("Usuario"));
+
+			txtUser = new JTextField(10);
+			panelLogIn.add(txtUser);
+			panelLogIn.add(new JLabel("Contraseña"));
+			txtPass = new JTextField(10);
+			panelLogIn.add(txtPass);
+			btnIngresar = new JButton("Ingresar");
+			panelLogIn.add(btnIngresar);
+
 		//panel Area Principal
 			panelMain = new JPanel();
 			panelMain.setBackground(new java.awt.Color(0, 72, 72));
+			panelMain.add(new JLabel("miSueldo"));
+			btnAgregar = new JButton("Agregar");
+			panelMain.add(btnAgregar);
+			btnReportesGrales = new JButton("Generar Reportes");
+			panelMain.add(btnReportesGrales);
+			panelMain.add(new JLabel("Empleados"));
+
+			/*
+			JList jList1 = new JList();
+			panelMain.add(jList1);
+			jList1.setModel(new javax.swing.AbstractListModel<String>() {
+			String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+			*/		
+
+			panelMain.setEnabled(false);////***** false para que se habilite cuando se loguee
 		//panel Details
 			panelDetails = new JPanel();
 			panelDetails.setBackground(new java.awt.Color(72, 72, 0));
+			panelDetails.add(new JLabel("Nombre"));
+			panelDetails.add(new JLabel("Apellido Paterno"));
+			panelDetails.add(new JLabel("Apellido Materno"));
+			panelDetails.add(new JLabel("Cargo"));
+			panelDetails.add(new JLabel("Suledo Base"));
+			panelDetails.setEnabled(false);////***** false para que se habilite cuando se loguee
 		//panel Footer
 			panelFooter = new JPanel();
 			panelFooter.setBackground(new java.awt.Color(72, 0, 72));
+			panelFooter.setEnabled(false);////***** false para que se habilite cuando se loguee
 		/* ==================================== */
 
 		/* Agregar paneles en orden a la ventana */
