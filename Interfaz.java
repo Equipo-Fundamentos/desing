@@ -4,7 +4,10 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 	public Interfaz()
 	{
 		/* elementos a usar similar a variables */
-			JPanel panelLogIn,panelLogInContent,panelMain,panelFooter,panelDetails;
+			JPanel 	panelLogIn,panelLogInContent,panelLogInAux,panelLogInAux2,
+					panelMain,
+					panelFooter,
+					panelDetails;
 
 			JButton btnIngresar,btnAgregar,btnReportesGrales,btnBorrar,btnEditar,btnReporteInd;
 
@@ -22,19 +25,25 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 
 		/* Armando la interfaz */
 		// Panel de Log In
-			panelLogIn = new JPanel();
-			panelLogIn.setBackground(new java.awt.Color(187, 72, 72));
-			panelLogIn.setLayout(new java.awt.BorderLayout());//java.awt.GridLayout(3,1,0,200));
-				panelLogInContent = new JPanel();
-				panelLogIn.add(panelLogInContent,java.awt.BorderLayout.CENTER);
-				panelLogInContent.add(new JLabel("Usuario"));
-				txtUser = new JTextField(10);
-				panelLogInContent.add(txtUser);
-				panelLogInContent.add(new JLabel("Contraseña"));
-				txtPass = new JTextField(10);
-				panelLogInContent.add(txtPass);
-			btnIngresar = new JButton("Ingresar");
-			panelLogIn.add(btnIngresar,java.awt.BorderLayout.SOUTH);
+			panelLogIn = new JPanel(); // panel derecho area log in 
+			panelLogIn.setBackground(new java.awt.Color(187, 72, 72)); //dar color
+			panelLogIn.setLayout(new java.awt.GridLayout(3,3,0,5));// ordenar elementos (3 paneles)
+				panelLogInAux = new JPanel();// panel aux contendrá al label Log in
+					panelLogInAux.setLayout(new java.awt.BorderLayout());// posicionar la etiqueta
+					panelLogInAux.add(new JLabel("                Log in"),java.awt.BorderLayout.SOUTH);
+				panelLogInContent = new JPanel();// tendra textfields
+					panelLogInContent.add(new JLabel("Usuario"));
+					txtUser = new JTextField(10);
+					panelLogInContent.add(txtUser);
+					panelLogInContent.add(new JLabel("Contraseña"));
+					txtPass = new JTextField(10);
+					panelLogInContent.add(txtPass);
+				panelLogInAux2 = new JPanel();// tendra el boton de ingresar
+					btnIngresar = new JButton("Ingresar");
+					panelLogInAux2.add(btnIngresar);
+			panelLogIn.add(panelLogInAux);// primer panel agregado
+			panelLogIn.add(panelLogInContent);// segundo panel agregado
+			panelLogIn.add(panelLogInAux2);// tercer panel agregado
 
 		//panel Area Principal
 			panelMain = new JPanel();
@@ -170,7 +179,7 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 			// El campo de texto debe estirarse sólo en horizontal.
 			constraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
 			this.getContentPane().add(panelFooter, constraints);
-			constraints.weightx = 0.0; // Restauramos al valor por defecto, para no afectar 
+			constraints.weightx = 0.0; // Restaura el valor por defecto, para no afectar 
 
 		setLocationRelativeTo(null); // debe estar al final,es para que quede centrado en la pantalla
 		/* ==================================== */
