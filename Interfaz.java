@@ -5,7 +5,7 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 	{
 		/* elementos a usar similar a variables */
 			JPanel 	panelLogIn,panelLogInContent,panelLogInAux,panelLogInAux2,
-					panelMain,
+					panelMain,panelMainTitle,panelMainButtons,panelMainList,
 					panelFooter,
 					panelDetails;
 
@@ -13,6 +13,7 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 
 			JTextField txtUser,txtPass, txtNombre,txtApp,txtApm,txtCargo,txtSueldo,txtNominaNum,txtFechaIngreso,
 					txtDiasTrabajdos,txtAsignaciones, txtDeducciones;
+			JList list;
 		/* ==================================== */
 
 		/* establecer propiedades de la ventana */
@@ -26,7 +27,7 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 		/* Armando la interfaz */
 		// Panel de Log In
 			panelLogIn = new JPanel(); // panel derecho area log in 
-			panelLogIn.setBackground(new java.awt.Color(187, 72, 72)); //dar color
+			//panelLogIn.setBackground(new java.awt.Color(187, 72, 72)); //dar color
 			panelLogIn.setLayout(new java.awt.GridLayout(3,3,0,5));// ordenar elementos (3 paneles)
 				panelLogInAux = new JPanel();// panel aux contendrá al label Log in
 					panelLogInAux.setLayout(new java.awt.BorderLayout());// posicionar la etiqueta
@@ -47,30 +48,32 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 
 		//panel Area Principal
 			panelMain = new JPanel();
-			panelMain.setBackground(new java.awt.Color(0, 72, 72));
-			panelMain.add(new JLabel("miSueldo"));
-			btnAgregar = new JButton("Agregar");
-			panelMain.add(btnAgregar);
-			btnReportesGrales = new JButton("Generar Reportes");
-			panelMain.add(btnReportesGrales);
-			panelMain.add(new JLabel("Empleados"));
+			panelMain.setBackground(new java.awt.Color(189, 195, 199));
+				panelMainTitle = new JPanel();
+					panelMainTitle.add(new JLabel("miSueldo"));
+				panelMainButtons = new JPanel();
+					btnAgregar = new JButton("Agregar");
+					panelMainButtons.add(btnAgregar);
+					btnReportesGrales = new JButton("Generar Reportes");
+					panelMainButtons.add(btnReportesGrales);
+				panelMainList = new JPanel();
+					panelMainList.add(new JLabel("Empleados"));
 
-			/*
-			JList jList1 = new JList();
-			panelMain.add(jList1);
-			jList1.setModel(new javax.swing.AbstractListModel<String>() {
-			String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-			}*/
-					
 
-			panelMain.setEnabled(false);////***** false para que se habilite cuando se loguee
+			panelMain.add(panelMainTitle);
+			panelMain.add(panelMainButtons);
+			panelMain.add(panelMainList);
+
+			//panelMain.setEnabled(false);////***** false para que se habilite cuando se loguee
 		//panel Details
 			panelDetails = new JPanel();
-			panelDetails.setBackground(new java.awt.Color(72, 72, 0));
+			panelDetails.setBackground(new java.awt.Color(218,223,225));
 			btnEditar = new JButton("Editar");
 			panelDetails.add(btnEditar);
 			btnBorrar = new JButton("Borrar");
 			panelDetails.add(btnBorrar);
+			btnReporteInd = new JButton("Reporte");
+			panelDetails.add(btnReporteInd);
 
 			panelDetails.add(new JLabel("Nombre"));
 			txtNombre = new JTextField(8);
@@ -120,8 +123,8 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 			panelDetails.setEnabled(false);////***** false para que se habilite cuando se loguee
 		//panel Footer
 			panelFooter = new JPanel();
-			panelFooter.setBackground(new java.awt.Color(72, 0, 72));
-			panelFooter.setEnabled(false);////***** false para que se habilite cuando se loguee
+			panelFooter.setBackground(new java.awt.Color(238, 238, 238));
+			//panelFooter.setEnabled(false);////***** false para que se habilite cuando se loguee
 		/* ==================================== */
 
 		/* Agregar paneles en orden a la ventana */
@@ -173,7 +176,7 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 			//panelFooter
 			constraints.gridx = 0; // El panelFooter empieza en la columna 0
 			constraints.gridy = 3; // El panelFooter empieza en la fila 3
-			constraints.gridwidth = 3; // El panelFooter ocupa 3 columnas.
+			constraints.gridwidth =4 ; // El panelFooter ocupa 3 columnas.
 			constraints.gridheight = 1; // El panelFooter ocupa 1 filas.
 			constraints.weightx = 1.0; // La columna 1 debe estirarse, ponemos el 1.0 en weigthx
 			// El campo de texto debe estirarse sólo en horizontal.
