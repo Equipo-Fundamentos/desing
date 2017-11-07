@@ -5,14 +5,15 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 	{
 		/* elementos a usar similar a variables */
 			JPanel 	panelLogIn,panelLogInContent,panelLogInAux,panelLogInAux2,
-					panelMain,panelMainTitle,panelMainButtons,panelMainList,
-					panelFooter,
-					panelDetails;
+					panelMain,panelMainTitle,panelMainButtons,panelMainList,panelBtnBorrar,
+					panelDetails,panelDetailsButtons,panelDetailsControles,panelDetailsSave,
+					panelFooter,panelFooterHora;
 
-			JButton btnIngresar,btnAgregar,btnReportesGrales,btnBorrar,btnEditar,btnReporteInd;
+			JButton btnIngresar,btnAgregar,btnReportesGrales,btnBorrar,btnEditar, btnGuardar ,btnReporteInd;
 
-			JTextField txtUser,txtPass, txtNombre,txtApp,txtApm,txtCargo,txtSueldo,txtNominaNum,txtFechaIngreso,
-					txtDiasTrabajdos,txtAsignaciones, txtDeducciones;
+			JTextField 	txtUser,txtPass, txtNombre,txtApp,txtApm,txtCargo,txtSueldo,txtNominaNum,txtFechaIngreso,
+						txtDiasTrabajdos,txtAsignaciones, txtDeducciones;
+			JLabel lblTitulo,lblHora;
 			JList list;
 		/* ==================================== */
 
@@ -28,7 +29,7 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 		// Panel de Log In
 			panelLogIn = new JPanel(); // panel derecho area log in 
 			//panelLogIn.setBackground(new java.awt.Color(187, 72, 72)); //dar color
-			panelLogIn.setLayout(new java.awt.GridLayout(3,3,0,5));// ordenar elementos (3 paneles)
+			panelLogIn.setLayout(new java.awt.GridLayout(3,1,0,5));// ordenar elementos (3 paneles)
 				panelLogInAux = new JPanel();// panel aux contendrá al label Log in
 					panelLogInAux.setLayout(new java.awt.BorderLayout());// posicionar la etiqueta
 					panelLogInAux.add(new JLabel("                Log in"),java.awt.BorderLayout.SOUTH);
@@ -42,88 +43,109 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 				panelLogInAux2 = new JPanel();// tendra el boton de ingresar
 					btnIngresar = new JButton("Ingresar");
 					panelLogInAux2.add(btnIngresar);
+
 			panelLogIn.add(panelLogInAux);// primer panel agregado
 			panelLogIn.add(panelLogInContent);// segundo panel agregado
 			panelLogIn.add(panelLogInAux2);// tercer panel agregado
 
 		//panel Area Principal
-			panelMain = new JPanel();
-			panelMain.setBackground(new java.awt.Color(189, 195, 199));
-				panelMainTitle = new JPanel();
-					panelMainTitle.add(new JLabel("miSueldo"));
-				panelMainButtons = new JPanel();
-					btnAgregar = new JButton("Agregar");
-					panelMainButtons.add(btnAgregar);
-					btnReportesGrales = new JButton("Generar Reportes");
-					panelMainButtons.add(btnReportesGrales);
-				panelMainList = new JPanel();
+			panelMain = new JPanel(); // panel de en medio
+			panelMain.setBackground(new java.awt.Color(189, 195, 199));//darle color
+			panelMain.setLayout(new java.awt.BorderLayout());// para ordenar
+				panelMainTitle = new JPanel();// panel donde esta lbl y botones
+				panelMainTitle.setBackground(new java.awt.Color(189, 195, 199));
+						panelMainButtons = new JPanel();//panel para los botones
+						panelMainButtons.setBackground(new java.awt.Color(189, 195, 199));
+						btnAgregar = new JButton("Agregar");
+						panelMainButtons.add(btnAgregar);
+						btnReportesGrales = new JButton("Generar Reportes");
+						panelMainButtons.add(btnReportesGrales);
+					panelMainTitle.setLayout(new java.awt.BorderLayout());// para ordenar
+						lblTitulo = new JLabel("miSueldo");
+						lblTitulo.setFont(new java.awt.Font("", 1, 30));
+					panelMainTitle.add(lblTitulo,java.awt.BorderLayout.NORTH);//para que el label quede hasta arriba
+					panelMainTitle.add(panelMainButtons);// para que se posicionen abajo del label
+				panelMainList = new JPanel(); //panel que contiene el Jlist
+				panelMainList.setBackground(new java.awt.Color(189, 195, 199));
 					panelMainList.add(new JLabel("Empleados"));
+				panelBtnBorrar = new JPanel();// panel que tendra el boton de borrar
+				btnBorrar = new JButton("Borrar");
+				panelBtnBorrar.setBackground(new java.awt.Color(189, 195, 199));
+				panelBtnBorrar.add(btnBorrar);//quede centrado
 
+			panelMain.add(panelMainTitle,java.awt.BorderLayout.NORTH); //quede hasta arriba
+			panelMain.add(panelMainList); //cubra lo que sobra
+			panelMain.add(panelBtnBorrar,java.awt.BorderLayout.SOUTH);//quede hasta abajo
+			//panelMain.setEnabled(false);////** false para que se habilite cuando se loguee
 
-			panelMain.add(panelMainTitle);
-			panelMain.add(panelMainButtons);
-			panelMain.add(panelMainList);
-
-			//panelMain.setEnabled(false);////***** false para que se habilite cuando se loguee
 		//panel Details
-			panelDetails = new JPanel();
+			panelDetails = new JPanel();// panel de lado derecho
 			panelDetails.setBackground(new java.awt.Color(218,223,225));
-			btnEditar = new JButton("Editar");
-			panelDetails.add(btnEditar);
-			btnBorrar = new JButton("Borrar");
-			panelDetails.add(btnBorrar);
-			btnReporteInd = new JButton("Reporte");
-			panelDetails.add(btnReporteInd);
+			panelDetails.setLayout(new java.awt.BorderLayout());//para ordenar Norte Centro Sur
+				panelDetailsButtons = new JPanel();// panel con los botones editar y generar reporte
+					btnEditar = new JButton("Editar");
+					panelDetailsButtons.add(btnEditar);
+					btnReporteInd = new JButton("Generar Reporte");
+					panelDetailsButtons.add(btnReporteInd);
 
-			panelDetails.add(new JLabel("Nombre"));
-			txtNombre = new JTextField(8);
-			panelDetails.add(txtNombre);
+				panelDetailsControles = new JPanel(); // panel con todos las datos
+				panelDetailsControles.setLayout(new java.awt.GridLayout(10,2,110,5)); // para ordenar 10 filas x 2 columnas
+					panelDetailsControles.add(new JLabel("Nombre:"));
+					txtNombre = new JTextField(8);
+					panelDetailsControles.add(txtNombre);
 
-			panelDetails.add(new JLabel("Apellido Paterno"));
-			txtApp = new JTextField(8);
-			panelDetails.add(txtApp);
+					panelDetailsControles.add(new JLabel("Apellido Paterno:"));
+					txtApp = new JTextField(8);
+					panelDetailsControles.add(txtApp);
 
-			/*
+					panelDetailsControles.add(new JLabel("Apellido Materno:"));
+					txtApm = new JTextField(8);
+					panelDetailsControles.add(txtApm);
 
-			panelDetails.add(new JLabel("Apellido Materno"));
-			txtApm = new JTextField(8);
-			panelDetails.add(txtApm);
+					panelDetailsControles.add(new JLabel("Cargo:"));
+					txtCargo = new JTextField(8);
+					panelDetailsControles.add(txtCargo);
 
-			panelDetails.add(new JLabel("Cargo"));
-			txtCargo = new JTextField(8);
-			panelDetails.add(txtCargo);
+					panelDetailsControles.add(new JLabel("Suledo Base:"));
+					txtSueldo = new JTextField(8);
+					panelDetailsControles.add(txtSueldo);
 
-			panelDetails.add(new JLabel("Suledo Base"));
-			txtSueldo = new JTextField(8);
-			panelDetails.add(txtSueldo);
+					panelDetailsControles.add(new JLabel("Fecha de ingreso:"));
+					txtFechaIngreso = new JTextField(8);
+					panelDetailsControles.add(txtFechaIngreso);
 
-			panelDetails.add(new JLabel("Fecha de ingreso"));
-			txtFechaIngreso = new JTextField(8);
-			panelDetails.add(txtFechaIngreso);
+					panelDetailsControles.add(new JLabel("Numero de cuemta de nomina:"));
+					txtNominaNum = new JTextField(8);
+					panelDetailsControles.add(txtNominaNum);
 
-			panelDetails.add(new JLabel("Numero de cuemta de nomina"));
-			txtNominaNum = new JTextField(8);
-			panelDetails.add(txtNominaNum);
+					panelDetailsControles.add(new JLabel("Dias Trabajados:"));
+					txtDiasTrabajdos = new JTextField(8);
+					panelDetailsControles.add(txtDiasTrabajdos);
 
-			panelDetails.add(new JLabel("Dias Trabajados"));
-			txtDiasTrabajdos = new JTextField(8);
-			panelDetails.add(txtDiasTrabajdos);
+					panelDetailsControles.add(new JLabel("Asignaciones:"));
+					txtAsignaciones = new JTextField(8);
+					panelDetailsControles.add(txtAsignaciones);
 
-			panelDetails.add(new JLabel("Asignaciones"));
-			txtAsignaciones = new JTextField(8);
-			panelDetails.add(txtAsignaciones);
+					panelDetailsControles.add(new JLabel("Deducciones:"));
+					txtDeducciones = new JTextField(8);
+					panelDetailsControles.add(txtDeducciones);
 
-			panelDetails.add(new JLabel("Deducciones"));
-			txtDeducciones = new JTextField(8);
-			panelDetails.add(txtDeducciones);
+				panelDetailsSave = new JPanel(); // panel que tendra boton de guardar
+					btnGuardar = new JButton("Guardar");
+					panelDetailsSave.add(btnGuardar);
 
-
-			*/
-
-			panelDetails.setEnabled(false);////***** false para que se habilite cuando se loguee
+			panelDetails.add(panelDetailsButtons,java.awt.BorderLayout.NORTH);//quede hasta arriba
+			panelDetails.add(panelDetailsControles);//cubra lo que sobre
+			panelDetails.add(panelDetailsSave,java.awt.BorderLayout.SOUTH);//que hasta abajo
+			//panelDetails.setEnabled(false);////***** false para que se habilite cuando se loguee
 		//panel Footer
 			panelFooter = new JPanel();
 			panelFooter.setBackground(new java.awt.Color(238, 238, 238));
+			panelFooter.setLayout(new java.awt.BorderLayout());//para ordenar oeste centro este
+				panelFooterHora = new JPanel();
+				lblHora = new JLabel("Insertar hora aqui");
+				panelFooterHora.add(lblHora);
+			panelFooter.add(panelFooterHora,java.awt.BorderLayout.EAST);
 			//panelFooter.setEnabled(false);////***** false para que se habilite cuando se loguee
 		/* ==================================== */
 
