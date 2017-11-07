@@ -1,3 +1,7 @@
+/*
+Interfaz.java contiene todo lo que pertenece a la interfaz gráfica, es decir el armado de el diseño y la interfaz.
+Su objeto esta instanciado en Principal.java
+*/
 import javax.swing.*; //libreria que tiene las clases para funciones graficas
 public class Interfaz extends JFrame// extends por que es una clase que hereda de Jframe
 {
@@ -11,8 +15,9 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 
 			JButton btnIngresar,btnAgregar,btnReportesGrales,btnBorrar,btnEditar, btnGuardar ,btnReporteInd, btnSalir;
 
-			JTextField 	txtUser,txtPass, txtNombre,txtApp,txtApm,txtCargo,txtSueldo,txtNominaNum,txtFechaIngreso,
+			JTextField 	txtUser, txtNombre,txtApp,txtApm,txtCargo,txtSueldo,txtNominaNum,txtFechaIngreso,
 						txtDiasTrabajdos,txtAsignaciones, txtDeducciones;
+			JPasswordField txtPass;
 			JLabel lblTitulo,lblHora;
 			JList list;
 		/* ==================================== */
@@ -36,9 +41,11 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 				panelLogInContent = new JPanel();// tendra textfields
 					panelLogInContent.add(new JLabel("Usuario"));
 					txtUser = new JTextField(10);
+					txtUser.setToolTipText("Ingrese su Usuario");
 					panelLogInContent.add(txtUser);
 					panelLogInContent.add(new JLabel("Contraseña"));
-					txtPass = new JTextField(10);
+					txtPass = new JPasswordField(10);
+					txtPass.setToolTipText("Ingrese Contraseña");
 					panelLogInContent.add(txtPass);
 				panelLogInAux2 = new JPanel();// tendra el boton de ingresar
 					btnIngresar = new JButton("Ingresar");
@@ -57,8 +64,10 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 						panelMainButtons = new JPanel();//panel para los botones
 						panelMainButtons.setBackground(new java.awt.Color(189, 195, 199));
 						btnAgregar = new JButton("Agregar");
+						btnAgregar.setToolTipText("Crear nuevo empleado");
 						panelMainButtons.add(btnAgregar);
 						btnReportesGrales = new JButton("Generar Reportes");
+						btnReportesGrales.setToolTipText("Genera el reporte para todos los empleados");
 						panelMainButtons.add(btnReportesGrales);
 					panelMainTitle.setLayout(new java.awt.BorderLayout());// para ordenar
 						lblTitulo = new JLabel("miSueldo");
@@ -70,6 +79,7 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 					panelMainList.add(new JLabel("Empleados"));
 				panelBtnBorrar = new JPanel();// panel que tendra el boton de borrar
 				btnBorrar = new JButton("Borrar");
+				btnBorrar.setToolTipText("Eliminar el empleado seleccionado");
 				panelBtnBorrar.setBackground(new java.awt.Color(189, 195, 199));
 				panelBtnBorrar.add(btnBorrar);//quede centrado
 
@@ -84,42 +94,52 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 			panelDetails.setLayout(new java.awt.BorderLayout());//para ordenar Norte Centro Sur
 				panelDetailsButtons = new JPanel();// panel con los botones editar y generar reporte
 					btnEditar = new JButton("Editar");
+					btnEditar.setToolTipText("Modificar datos del empleado seleccionado");
 					panelDetailsButtons.add(btnEditar);
 					btnReporteInd = new JButton("Generar Reporte");
+					btnReporteInd.setToolTipText("Generar el reporte para el emepleado seleccionado");
 					panelDetailsButtons.add(btnReporteInd);
 
 				panelDetailsControles = new JPanel(); // panel con todos las datos
 				panelDetailsControles.setLayout(new java.awt.GridLayout(10,2,-50,20)); // para ordenar 10 filas x 2 columnas
 					panelDetailsControles.add(new JLabel("Nombre:"));
 					txtNombre = new JTextField(8);
+					txtNombre.setToolTipText("ej. Fernando");
 					panelDetailsControles.add(txtNombre);
 
 					panelDetailsControles.add(new JLabel("Apellido Paterno:"));
 					txtApp = new JTextField(8);
+					txtApp.setToolTipText("ej. Pérez");
 					panelDetailsControles.add(txtApp);
 
 					panelDetailsControles.add(new JLabel("Apellido Materno:"));
 					txtApm = new JTextField(8);
+					txtApm.setToolTipText("ej. Pérez");
 					panelDetailsControles.add(txtApm);
 
 					panelDetailsControles.add(new JLabel("Cargo:"));
 					txtCargo = new JTextField(8);
+					txtCargo.setToolTipText("puesto o ocupación en la empresa");
 					panelDetailsControles.add(txtCargo);
 
 					panelDetailsControles.add(new JLabel("Suledo Base:"));
 					txtSueldo = new JTextField(8);
+					txtSueldo.setToolTipText("$$$");
 					panelDetailsControles.add(txtSueldo);
 
 					panelDetailsControles.add(new JLabel("Fecha de ingreso:"));
 					txtFechaIngreso = new JTextField(8);
+					txtFechaIngreso.setToolTipText("dd/mm/yyyy");
 					panelDetailsControles.add(txtFechaIngreso);
 
 					panelDetailsControles.add(new JLabel("Numero de cuemta de nomina:"));
 					txtNominaNum = new JTextField(8);
+					txtNominaNum.setToolTipText("ej. 000000");
 					panelDetailsControles.add(txtNominaNum);
 
 					panelDetailsControles.add(new JLabel("Dias Trabajados:"));
 					txtDiasTrabajdos = new JTextField(8);
+					txtDiasTrabajdos.setToolTipText("ej. 14");
 					panelDetailsControles.add(txtDiasTrabajdos);
 
 					panelDetailsControles.add(new JLabel("Asignaciones:"));
@@ -132,6 +152,7 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 
 				panelDetailsSave = new JPanel(); // panel que tendra boton de guardar
 					btnGuardar = new JButton("Guardar");
+					btnGuardar.setToolTipText("Guardar los cambios");
 					panelDetailsSave.add(btnGuardar);
 
 			panelDetails.add(panelDetailsButtons,java.awt.BorderLayout.NORTH);//quede hasta arriba
@@ -146,6 +167,7 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 				lblHora = new JLabel("Insertar hora aqui");
 				panelFooterHora.add(lblHora);
 			btnSalir = new JButton("Salir");
+			btnSalir.setToolTipText("Salir de miSueldo");
 			panelFooter.add(panelFooterHora,java.awt.BorderLayout.WEST);
 			panelFooter.add(btnSalir,java.awt.BorderLayout.EAST);
 			//panelFooter.setEnabled(false);////***** false para que se habilite cuando se loguee
