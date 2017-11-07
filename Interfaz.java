@@ -9,7 +9,7 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 					panelDetails,panelDetailsButtons,panelDetailsControles,panelDetailsSave,
 					panelFooter,panelFooterHora;
 
-			JButton btnIngresar,btnAgregar,btnReportesGrales,btnBorrar,btnEditar, btnGuardar ,btnReporteInd;
+			JButton btnIngresar,btnAgregar,btnReportesGrales,btnBorrar,btnEditar, btnGuardar ,btnReporteInd, btnSalir;
 
 			JTextField 	txtUser,txtPass, txtNombre,txtApp,txtApm,txtCargo,txtSueldo,txtNominaNum,txtFechaIngreso,
 						txtDiasTrabajdos,txtAsignaciones, txtDeducciones;
@@ -89,7 +89,7 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 					panelDetailsButtons.add(btnReporteInd);
 
 				panelDetailsControles = new JPanel(); // panel con todos las datos
-				panelDetailsControles.setLayout(new java.awt.GridLayout(10,2,110,5)); // para ordenar 10 filas x 2 columnas
+				panelDetailsControles.setLayout(new java.awt.GridLayout(10,2,-50,20)); // para ordenar 10 filas x 2 columnas
 					panelDetailsControles.add(new JLabel("Nombre:"));
 					txtNombre = new JTextField(8);
 					panelDetailsControles.add(txtNombre);
@@ -145,7 +145,9 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 				panelFooterHora = new JPanel();
 				lblHora = new JLabel("Insertar hora aqui");
 				panelFooterHora.add(lblHora);
-			panelFooter.add(panelFooterHora,java.awt.BorderLayout.EAST);
+			btnSalir = new JButton("Salir");
+			panelFooter.add(panelFooterHora,java.awt.BorderLayout.WEST);
+			panelFooter.add(btnSalir,java.awt.BorderLayout.EAST);
 			//panelFooter.setEnabled(false);////***** false para que se habilite cuando se loguee
 		/* ==================================== */
 
