@@ -5,6 +5,11 @@ Su objeto esta instanciado en Principal.java
 import javax.swing.*; //libreria que tiene las clases para funciones graficas
 public class Interfaz extends JFrame// extends por que es una clase que hereda de Jframe
 {
+	public static void main(String[] args)
+	{
+		Interfaz ventanaGrafica = new Interfaz();
+		ventanaGrafica.setVisible(true);
+	}
 	public Interfaz()
 	{
 		/* elementos a usar similar a variables */
