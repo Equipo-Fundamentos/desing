@@ -1,6 +1,10 @@
 /*
-Interfaz.java contiene todo lo que pertenece a la interfaz gráfica, es decir el armado de el diseño y la interfaz.
-Su objeto esta instanciado en Principal.java
+*https://www.tutorialspoint.com/swing/swing_tutorial.pdf
+*http://dalila.sip.ucm.es/~manuel/JSW1/Slides/Swing.pdf
+*
+*
+*
+*
 */
 import javax.swing.*; //libreria que tiene las clases para funciones graficas
 public class Interfaz extends JFrame// extends por que es una clase que hereda de Jframe
@@ -8,34 +12,43 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 	public static void main(String[] args)
 	{
 		Interfaz ventanaGrafica = new Interfaz();
-		ventanaGrafica.setVisible(true);
+		ventanaGrafica.setVisible(true); // se abra la ventana en la ejecución
 	}
+
+	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	~~~~~~~~~~~~~~~CREANDO LA INTEFAZ GRAFICA~~~~~~~~~~~~~~~~
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	public Interfaz()
 	{
-		/* elementos a usar similar a variables */
-			JPanel 	panelLogIn,panelLogInContent,panelLogInAux,panelLogInAux2,
-					panelMain,panelMainTitle,panelMainButtons,panelMainList,panelBtnBorrar,
-					panelDetails,panelDetailsButtons,panelDetailsControles,panelDetailsSave,
-					panelFooter,panelFooterHora;
+		/* ====== elementos a usar similar a variables ==== */
+			JPanel 	panelLogIn,panelLogInContent,panelLogInAux,panelLogInAux2, //panel login
+					panelMain,panelMainTitle,panelMainButtons,panelMainList,panelBtnBorrar, //panel main
+					panelDetails,panelDetailsButtons,panelDetailsControles,panelDetailsSave, //panel details
+					panelFooter,panelFooterHora; //panel footer
 
-			JButton btnIngresar,btnAgregar,btnReportesGrales,btnBorrar,btnEditar, btnGuardar ,btnReporteInd, btnSalir;
+			JButton btnIngresar,// panel login
+					btnAgregar,btnReportesGrales,btnBorrar, //panel main
+					btnEditar, btnGuardar ,btnReporteInd, //panel details
+					btnSalir; // panel footer
 
-			JTextField 	txtUser, txtNombre,txtApp,txtApm,txtCargo,txtSueldo,txtNominaNum,txtFechaIngreso,
-						txtDiasTrabajdos,txtAsignaciones, txtDeducciones;
+			JTextField 	txtUser, // panel login
+						txtNombre,txtApp,txtApm,txtCargo,txtSueldo,txtNominaNum,txtFechaIngreso,
+						txtDiasTrabajdos,txtAsignaciones, txtDeducciones; // panel details
+
 			JPasswordField txtPass;
 			JLabel lblTitulo,lblHora;
 			JList list;
-		/* ==================================== */
+		/* =============================================== */
 
-		/* establecer propiedades de la ventana */
+		/* ===establecer propiedades de la ventana== */
 			setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // para que se termine la execución cuando se cierra
 			setResizable(false); // desabilita la opción de cambiar tamaño
 			setSize(new java.awt.Dimension(1000, 550));// Establecer tamaño
 			setTitle("miSueldo");//titulo de la ventana
 			setLayout(new java.awt.GridBagLayout());//para ordenar los elementos con cordenadas
-		/* ==================================== */
+		/* ========================================== */
 
-		/* Armando la interfaz */
+		/* ===Armando la interfaz=== */
 		// Panel de Log In
 			panelLogIn = new JPanel(); // panel derecho area log in 
 			//panelLogIn.setBackground(new java.awt.Color(187, 72, 72)); //dar color
@@ -66,27 +79,27 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 			panelMain.setLayout(new java.awt.BorderLayout());// para ordenar
 				panelMainTitle = new JPanel();// panel donde esta lbl y botones
 				panelMainTitle.setBackground(new java.awt.Color(189, 195, 199));
-						panelMainButtons = new JPanel();//panel para los botones
+						panelMainButtons = new JPanel();//panel para los botones dentro del maintitle
 						panelMainButtons.setBackground(new java.awt.Color(189, 195, 199));
-						btnAgregar = new JButton("Agregar");
-						btnAgregar.setToolTipText("Crear nuevo empleado");
-						panelMainButtons.add(btnAgregar);
-						btnReportesGrales = new JButton("Generar Reportes");
-						btnReportesGrales.setToolTipText("Genera el reporte para todos los empleados");
-						panelMainButtons.add(btnReportesGrales);
+							btnAgregar = new JButton("Agregar");
+							btnAgregar.setToolTipText("Crear nuevo empleado");
+							panelMainButtons.add(btnAgregar);
+							btnReportesGrales = new JButton("Generar Reportes");
+							btnReportesGrales.setToolTipText("Genera el reporte para todos los empleados");
+							panelMainButtons.add(btnReportesGrales);
 					panelMainTitle.setLayout(new java.awt.BorderLayout());// para ordenar
 						lblTitulo = new JLabel("miSueldo");
 						lblTitulo.setFont(new java.awt.Font("", 1, 30));
-					panelMainTitle.add(lblTitulo,java.awt.BorderLayout.NORTH);//para que el label quede hasta arriba
-					panelMainTitle.add(panelMainButtons);// para que se posicionen abajo del label
+				panelMainTitle.add(lblTitulo,java.awt.BorderLayout.NORTH);//para que el label quede hasta arriba
+				panelMainTitle.add(panelMainButtons);// para que se posicionen abajo del label
 				panelMainList = new JPanel(); //panel que contiene el Jlist
 				panelMainList.setBackground(new java.awt.Color(189, 195, 199));
 					panelMainList.add(new JLabel("Empleados"));
 				panelBtnBorrar = new JPanel();// panel que tendra el boton de borrar
-				btnBorrar = new JButton("Borrar");
-				btnBorrar.setToolTipText("Eliminar el empleado seleccionado");
-				panelBtnBorrar.setBackground(new java.awt.Color(189, 195, 199));
-				panelBtnBorrar.add(btnBorrar);//quede centrado
+					btnBorrar = new JButton("Borrar");
+					btnBorrar.setToolTipText("Eliminar el empleado seleccionado");
+					panelBtnBorrar.setBackground(new java.awt.Color(189, 195, 199));
+					panelBtnBorrar.add(btnBorrar);//quede centrado
 
 			panelMain.add(panelMainTitle,java.awt.BorderLayout.NORTH); //quede hasta arriba
 			panelMain.add(panelMainList); //cubra lo que sobra
@@ -178,22 +191,22 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 			//panelFooter.setEnabled(false);////***** false para que se habilite cuando se loguee
 		/* ==================================== */
 
-		/* Agregar paneles en orden a la ventana */
-		// se usara getContentPane() porque la ventana no es el contenedor, 
-		//sino un componente que tiene la ventana y se obtiene asi
-		/*
-		¨¨0¨¨¨¨¨¨1¨¨¨¨¨¨2¨¨¨¨:
-		-Log---Main----Detai :
-		|....|........|....| 0 
-		|....|........|....| :
-		|....|........|....| 1
-		|....|........|....| :
-		|....|........|....| 2
-		|....|........|....| :
-		|~~~~~~~~~~~~~~~~~~| 3
-		-------Footer------- 
-		*/
-		java.awt.GridBagConstraints constraints = new java.awt.GridBagConstraints();
+		/* =====Agregar paneles en orden a la ventana==== */
+			// se usara getContentPane() porque la ventana no es el contenedor, 
+			//sino un componente que tiene la ventana y se obtiene asi
+			/*
+			¨¨0¨¨¨¨¨¨1¨¨¨¨¨¨2¨¨¨¨:
+			-Log---Main----Detai :
+			|....|........|....| 0 
+			|....|........|....| :
+			|....|........|....| 1
+			|....|........|....| :
+			|....|........|....| 2
+			|....|........|....| :
+			|~~~~~~~~~~~~~~~~~~| 3
+			-------Footer------- 
+			*/
+			java.awt.GridBagConstraints constraints = new java.awt.GridBagConstraints();
 			//panel Log in
 			constraints.gridx = 0; // El panelLogIn empieza en la columna cero
 			constraints.gridy = 0; // El panelLogIn empieza en la fila cero
@@ -235,7 +248,18 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 			this.getContentPane().add(panelFooter, constraints);
 			constraints.weightx = 0.0; // Restaura el valor por defecto, para no afectar 
 
-		setLocationRelativeTo(null); // debe estar al final,es para que quede centrado en la pantalla
-		/* ==================================== */
+			setLocationRelativeTo(null); // debe estar al final,es para que quede centrado en la pantalla
+		/* ============================================ */
 	}
+	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	~~~~~~~~~~FIN CREACION DE LA INTERFAZ GRAFICA~~~~~~~~~~~~
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	~~~~~~~~~CREACIÓN DE MÉTODOS PARA LOS CONTROLES~~~~~~~~~~
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+	//# agregar a los controles instanciados los los eventos
+	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	~~~~~~~~FIN CREACIÓN DE MÉTODOS PARA LOS CONTROLES~~~~~~~
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 }
