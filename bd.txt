@@ -1,3 +1,0 @@
-Emilio,Canton,Bermudez,0,Director,250,240,1234,432
-Yann,Le Lorier,M,1,Plebeyo,300,235,34,123
-Roberto,Gervacio,N,2,Diseño,400,243,234,78
