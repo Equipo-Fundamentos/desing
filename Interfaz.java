@@ -8,9 +8,11 @@
 */
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.awt.event.*; //eventos a los controles
 import javax.swing.*; //libreria que tiene las clases para funciones graficas
+import java.util.Arrays;
 
 public class Interfaz extends JFrame // extends por que es una clase que hereda de Jframe
 {
@@ -42,6 +44,22 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			JPasswordField txtPass;
 			JLabel lblTitulo,lblStatus;
 			JList list;
+        /* ====== Base de datos (Arreglo bidimensional) ==== */
+        String[][] bd = new String [100][10];
+            /*
+            -Cada renglón es una nómina (índice)
+            -Cada columna es un valor:
+                0) Nombre
+                1) Apellido Paterno
+                2) Apellido Materno
+                3) Nómina
+                4) Cargo
+                5) Sueldo
+                6) Días Trabajados
+                7) Asignaciones
+                8) Deducciones
+                9) Fecha de Ingreso
+            */
 		/* =============================================== */
 	public Interfaz()
 	{
@@ -55,7 +73,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 
 		/* ===Armando la interfaz=== */
 		// Panel de Log In
-			panelLogIn = new JPanel(); // panel derecho area log in 
+			panelLogIn = new JPanel(); // panel derecho area log in
 			//panelLogIn.setBackground(new java.awt.Color(187, 72, 72)); //dar color
 			panelLogIn.setLayout(new java.awt.GridLayout(3,1,0,5));// ordenar elementos (3 paneles)
 				panelLogInAux = new JPanel();// panel aux contendrá al label Log in
@@ -195,19 +213,19 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		/* ==================================== */
 
 		/* =====Agregar paneles en orden a la ventana==== */
-			// se usara getContentPane() porque la ventana no es el contenedor, 
+			// se usara getContentPane() porque la ventana no es el contenedor,
 			//sino un componente que tiene la ventana y se obtiene asi
 			/*
 			¨¨0¨¨¨¨¨¨1¨¨¨¨¨¨2¨¨¨¨:
 			-Log---Main----Detai :
-			|....|........|....| 0 
+			|....|........|....| 0
 			|....|........|....| :
 			|....|........|....| 1
 			|....|........|....| :
 			|....|........|....| 2
 			|....|........|....| :
 			|~~~~~~~~~~~~~~~~~~| 3
-			-------Footer------- 
+			-------Footer-------
 			*/
 			java.awt.GridBagConstraints constraints = new java.awt.GridBagConstraints();
 			//panel Log in
@@ -218,7 +236,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			constraints.weighty = 1.0; // La fila 0 debe estirarse, le ponemos un 1.0
 			// El panel debe estirarse en ambos sentidos. Ponemos el campo fill
 			constraints.fill = java.awt.GridBagConstraints.BOTH;
-			this.getContentPane().add(panelLogIn, constraints); 
+			this.getContentPane().add(panelLogIn, constraints);
 
 			//panel Main
 			constraints.gridx = 1; // El panelMain empieza en la columna 1
@@ -236,9 +254,9 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			constraints.gridwidth = 1; // El panelDetails ocupa 1 columnas.
 			constraints.gridheight = 3; // El panelDetails ocupa 3 filas.
 			//constraints.weighty La fila 0 debe estirarse, ya tampoco es necesario
-			//constraints.fill 
+			//constraints.fill
 			this.getContentPane().add(panelDetails, constraints);
-			constraints.weighty = 0.0; // Restauramos al valor por defecto, para no afectar 
+			constraints.weighty = 0.0; // Restauramos al valor por defecto, para no afectar
 
 			//panelFooter
 			constraints.gridx = 0; // El panelFooter empieza en la columna 0
@@ -249,18 +267,21 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			// El campo de texto debe estirarse sólo en horizontal.
 			constraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
 			this.getContentPane().add(panelFooter, constraints);
-			constraints.weightx = 0.0; // Restaura el valor por defecto, para no afectar 
+			constraints.weightx = 0.0; // Restaura el valor por defecto, para no afectar
 
 			setLocationRelativeTo(null); // debe estar al final,es para que quede centrado en la pantalla
 		/* ============================================ */
 
-		/* ====Desabilitar todo hasta que se loggue==== */
-			desabilitarTodo();
+		/* ====Deshabilitar todo hasta que se loggue==== */
+			deshabilitarTodo();
 		/* ============================================ */
 
 		/* ==== Agregar eventos a los controles ==== */
 			btnIngresar.addActionListener(new IngresarAlSistema());
+            btnIngresar.addActionListener(new LectorCSV());
 			btnCerrar.addActionListener(new CerrarElSistema());
+            btnAgregar.addActionListener(new AgregaraBD());
+
 		/* ========================================== */
 	}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -270,7 +291,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~CREACIÓN DE MÉTODOS PARA LOS CONTROLES~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-	/* ######agregar a los controles instanciados los los eventos#####*/
+	/* ######agregar a los controles instanciados los eventos#####*/
 		boolean session = false;
 	// Iniciar Sesión
 		public class IngresarAlSistema implements ActionListener
@@ -280,7 +301,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				if(!session) // si no he iniciado
 				{
 					//intenta iniciar
-					if(	txtUser.getText().equals("rob") && 
+					if(	txtUser.getText().equals("rob") &&
 						String.valueOf(txtPass.getPassword()).equals("123")) //entra
 					{
 						habiltarTodo();
@@ -289,6 +310,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 						txtPass.setEnabled(false);
 						btnIngresar.setText("Salir");
 						lblStatus.setText("CONECTADO");
+
 					}
 					else // no entra
 					{
@@ -298,9 +320,9 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 						txtPass.setText("");
 					}
 				}
-				else // ya inicio la session, entonces va a cerrar session
+				else // ya inicio la sesion, entonces va a cerrar session
 				{
-					desabilitarTodo();
+					deshabilitarTodo();
 					session = !session;
 					txtPass.setText("");
 					txtUser.setText("");
@@ -323,7 +345,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				}
 				dispose();
 			}
-		}	
+		}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~FIN CREACIÓN DE MÉTODOS PARA LOS CONTROLES~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -351,7 +373,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			txtDeducciones.setEnabled(true);
 			//list.setEnabled(true);
 		}
-		public void desabilitarTodo()
+		public void deshabilitarTodo()
 		{
 			btnAgregar.setEnabled(false);
 			btnReportesGrales.setEnabled(false);
@@ -374,4 +396,109 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~FIN MÉTODOS AUXILIARES~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~MÉTODOS PARA BASE DE DATOS~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+    public class AgregaraBD implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            String command = e.getActionCommand();
+            if (session&&command.equals("Agregar")) {
+                    for (int i = 0; i < bd.length; i++) {
+                        if (bd[i][0] == null) { // Si la nómina no esta asignada
+                            // Asignar todos los valores colocados a esa nómina
+                            try {
+                                bd[i][0] = txtNombre.getText();
+                                txtNombre.setText("");
+                                bd[i][1] = txtApp.getText();
+                                txtApp.setText("");
+                                bd[i][2] = txtApm.getText();
+                                txtApm.setText("");
+                                bd[i][3] = txtNominaNum.getText();
+                                txtNominaNum.setText("");
+                                bd[i][4] = txtCargo.getText();
+                                txtCargo.setText("");
+                                bd[i][5] = txtSueldo.getText();
+                                txtSueldo.setText("");
+                                bd[i][6] = txtDiasTrabajdos.getText();
+                                txtDiasTrabajdos.setText("");
+                                bd[i][7] = txtAsignaciones.getText();
+                                txtAsignaciones.setText("");
+                                bd[i][8] = txtDeducciones.getText();
+                                txtDeducciones.setText("");
+                                bd[i][9] = txtFechaIngreso.getText();
+                                txtFechaIngreso.setText("");
+                                JOptionPane.showMessageDialog(null,bd[i][0] + " " + bd[i][1] + " " + bd[i][2] + "\nRegistrado con nómina: " + bd[i][3]);
+                                break;
+                            }
+                            catch(Exception e1) {
+                                JOptionPane.showMessageDialog(null,"Datos incorrectos");
+                            }
+                        }
+                    }
+
+            }
+        }
+    }
+    public class LectorCSV implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            String csvFile = System.getProperty("user.dir")+"/bd.csv";
+            BufferedReader br = null;
+            String linea = "";
+            String separador = ",";
+            int contador = 0;
+            String c;
+            String command = event.getActionCommand();
+            if (command.equals("Ingresar")) {
+                if (session || !session) {
+                    try {
+                        br = new BufferedReader(new FileReader(csvFile));
+                        while ((linea = br.readLine()) != null) { // Mientras el archivo tenga valores
+                            String[] perfil = linea.split(separador); // Crear un arreglo con los valores de la línea
+                            System.out.println(Arrays.toString(perfil));
+                                for (int i = 0;i < bd.length; i++) { // Corrobora que espacio de la base de datos esta vacío
+                                    if (bd[i][0] == null) { // Si el espacio esta vacío asigna los valores de la línea a la base de datos
+                                        bd[i][0] = perfil[0];
+                                        bd[i][1] = perfil[1];
+                                        bd[i][2] = perfil[2];
+                                        bd[i][3] = perfil[3];
+                                        bd[i][4] = perfil[4];
+                                        bd[i][5] = perfil[5];
+                                        bd[i][6] = perfil[6];
+                                        bd[i][7] = perfil[7];
+                                        bd[i][8] = perfil[8];
+                                        bd[i][9] = perfil[9];
+                                        contador++;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    //     catch(Exception e1) {
+                    //    JOptionPane.showMessageDialog(null,"Error al intentar leer el archivo csv");
+                    //}
+                    catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (br != null) {
+                            try {
+                                br.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                }
+            }
+            c = Integer.toString(contador);
+            JOptionPane.showMessageDialog(null,c + " perfiles agregados a la base de datos del archivo csv");
+        }
+    }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~FIN MÉTODOS BD~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 }
