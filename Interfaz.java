@@ -7,7 +7,10 @@
 *
 */
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.awt.event.*; //eventos a los controles
@@ -281,6 +284,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             btnIngresar.addActionListener(new LectorCSV());
 			btnCerrar.addActionListener(new CerrarElSistema());
             btnAgregar.addActionListener(new AgregaraBD());
+            btnReportesGrales.addActionListener(new EscritorCSV());
 
 		/* ========================================== */
 	}
@@ -440,12 +444,14 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             }
         }
     }
-    public class LectorCSV implements ActionListener {
+    public class LectorCSV implements ActionListener { // Para que se active cuando haya una acción
         public void actionPerformed(ActionEvent event) {
-            String csvFile = System.getProperty("user.dir")+"/bd.csv";
+            String csvFile = System.getProperty("user.dir")+"/bd.csv"; // El archivo que se quiera utilizar como base de datos siempre se debe imprimir
             BufferedReader br = null;
+            // Analiza cualquier valor ("") separado por ","
             String linea = "";
             String separador = ",";
+
             int contador = 0;
             String c;
             String command = event.getActionCommand();
@@ -473,11 +479,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                                     }
                                 }
                             }
-                        }
-                    //     catch(Exception e1) {
-                    //    JOptionPane.showMessageDialog(null,"Error al intentar leer el archivo csv");
-                    //}
-                    catch (FileNotFoundException e) {
+                        }catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -497,7 +499,51 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             JOptionPane.showMessageDialog(null,c + " perfiles agregados a la base de datos del archivo csv");
         }
     }
+    public class EscritorCSV implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            String command = event.getActionCommand();
+            BufferedWriter bf = null;
+            String perfiles = "";
+            try {
+                if (command.equals("Generar Reportes")) {
+                    File archivo = new File(System.getProperty("user.dir")+"/bd.csv"); //Especifica el arhivo al que se va a escribir
+                    if (!archivo.exists()) archivo.createNewFile();
+                        FileWriter  ec = new FileWriter(new File(System.getProperty("user.dir")+"/bd.csv"));
+                        bf = new BufferedWriter(ec);
 
+                    for (int i = 0; i < bd.length; i++) {
+                        if (bd[i][0] == null) continue;
+                        bf.append(bd[i][0]+",");
+                        bf.append(bd[i][1]+",");
+                        bf.append(bd[i][2]+",");
+                        bf.append(bd[i][3]+",");
+                        bf.append(bd[i][4]+",");
+                        bf.append(bd[i][5]+",");
+                        bf.append(bd[i][6]+",");
+                        bf.append(bd[i][7]+",");
+                        bf.append(bd[i][8]+",");
+                        bf.append(bd[i][9]+"\n");
+                    }
+                }
+                /*Process process = Runtime.getRuntime().exec("find"+System.getProperty("user.dir")+"-name bd.csv");
+                InputStream is = process.getInputStream();
+                byte[] buf = new byte[1000];
+                is.read(buf);
+                String parameter = new String(buf);
+                System.out.println(parameter);
+                Runtime.getRuntime().exec("open "+ parameter);*/
+            }  catch (IOException ioe) {
+                ioe.printStackTrace();
+                }
+                finally {
+                    try {
+                        if (bf != null) bf.close();
+                    } catch (Exception ex) {
+                        System.out.println("Error in closing the BufferedWriter"+ex);
+                    }
+                }
+            }
+        }
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ~~~~~~~~~~~~~~~~~~FIN MÉTODOS BD~~~~~~~~~~~~~~~~~
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
