@@ -456,7 +456,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             String c;
             String command = event.getActionCommand();
             if (command.equals("Ingresar")) {
-                if (session || !session) {
+                if (txtUser.getText().equals("rob") && String.valueOf(txtPass.getPassword()).equals("123")) {
                     try {
                         br = new BufferedReader(new FileReader(csvFile));
                         while ((linea = br.readLine()) != null) { // Mientras el archivo tenga valores
@@ -496,14 +496,17 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                 }
             }
             c = Integer.toString(contador);
-            JOptionPane.showMessageDialog(null,c + " perfiles agregados a la base de datos del archivo csv");
+            if (txtUser.getText().equals("rob") && String.valueOf(txtPass.getPassword()).equals("123")) {
+                JOptionPane.showMessageDialog(null,c + " perfiles agregados a la base de datos del archivo csv");
+            }
         }
     }
     public class EscritorCSV implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-            String command = event.getActionCommand();
+            String command = event.getActionCommand(), c = "", d = "";
             BufferedWriter bf = null;
             String perfiles = "";
+            int sueldo, dias, asignaciones, deducciones, nomina;
             try {
                 if (command.equals("Generar Reportes")) {
                     File archivo = new File(System.getProperty("user.dir")+"/bd.csv"); //Especifica el arhivo al que se va a escribir
@@ -513,25 +516,27 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 
                     for (int i = 0; i < bd.length; i++) {
                         if (bd[i][0] == null) continue;
-                        bf.append(bd[i][0]+",");
-                        bf.append(bd[i][1]+",");
-                        bf.append(bd[i][2]+",");
-                        bf.append(bd[i][3]+",");
-                        bf.append(bd[i][4]+",");
-                        bf.append(bd[i][5]+",");
-                        bf.append(bd[i][6]+",");
-                        bf.append(bd[i][7]+",");
-                        bf.append(bd[i][8]+",");
-                        bf.append(bd[i][9]+"\n");
+                        bf.append(bd[i][0]+",");// Nombre
+                        bf.append(bd[i][1]+",");// APP
+                        bf.append(bd[i][2]+",");// APM
+                        bf.append(bd[i][3]+",");// No. Nómina
+                        bf.append(bd[i][4]+",");// Cargo
+                        bf.append(bd[i][5]+",");// Sueldo
+                        bf.append(bd[i][6]+",");// Días Trabajados
+                        bf.append(bd[i][7]+",");// Asignaciones
+                        bf.append(bd[i][8]+",");// Deducciones
+                        bf.append(bd[i][9]+"\n");// Fecha de Ingreso
+                        /*//Cálculo de nómina
+                        sueldo = Integer.parseInt(bd[i][5]);
+                        dias = Integer.parseInt(bd[i][6]);
+                        asignaciones = Integer.parseInt(bd[i][7]);
+                        deducciones = Integer.parseInt(bd[i][8]);
+                        nomina = sueldo*dias+asignaciones-deducciones;
+                        bf.append(Integer.toString(nomina)+"\n");// Nómina*/
                     }
+                    c = System.getProperty("user.dir") + "/bd.csv";
+                    Runtime.getRuntime().exec(new String[]{"open",c});
                 }
-                /*Process process = Runtime.getRuntime().exec("find"+System.getProperty("user.dir")+"-name bd.csv");
-                InputStream is = process.getInputStream();
-                byte[] buf = new byte[1000];
-                is.read(buf);
-                String parameter = new String(buf);
-                System.out.println(parameter);
-                Runtime.getRuntime().exec("open "+ parameter);*/
             }  catch (IOException ioe) {
                 ioe.printStackTrace();
                 }
