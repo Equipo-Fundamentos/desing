@@ -6,14 +6,19 @@
 *
 *
 */
-import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.awt.event.*; //eventos a los controles
 import javax.swing.*; //libreria que tiene las clases para funciones graficas
+
 public class Interfaz extends JFrame // extends por que es una clase que hereda de Jframe
 {
 	public static void main(String[] args)
 	{
 		Interfaz ventanaGrafica = new Interfaz();
 		ventanaGrafica.setVisible(true); // se abra la ventana en la ejecución
+		 System.out.println("Working Directory = " +  System.getProperty("user.dir"));
 	}
 
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -35,7 +40,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 						txtDiasTrabajdos,txtAsignaciones, txtDeducciones; // panel details
 
 			JPasswordField txtPass;
-			JLabel lblTitulo,lblHora;
+			JLabel lblTitulo,lblStatus;
 			JList list;
 		/* =============================================== */
 	public Interfaz()
@@ -181,8 +186,8 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			panelFooter.setBackground(new java.awt.Color(238, 238, 238));
 			panelFooter.setLayout(new java.awt.BorderLayout());//para ordenar oeste centro este
 				panelFooterHora = new JPanel();
-				lblHora = new JLabel("Insertar hora aqui");
-				panelFooterHora.add(lblHora);
+				lblStatus = new JLabel("Esperando inciar sesión");
+				panelFooterHora.add(lblStatus);
 			btnCerrar = new JButton("Cerrar");
 			btnCerrar.setToolTipText("Salir de miSueldo");
 			panelFooter.add(panelFooterHora,java.awt.BorderLayout.WEST);
@@ -283,6 +288,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 						txtUser.setEnabled(false);
 						txtPass.setEnabled(false);
 						btnIngresar.setText("Salir");
+						lblStatus.setText("CONECTADO");
 					}
 					else // no entra
 					{
@@ -301,6 +307,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					txtUser.setEnabled(true);
 					txtPass.setEnabled(true);
 					btnIngresar.setText("Ingresar");
+					lblStatus = new JLabel("Esperando inciar sesión");
 				}
 			}
 		}
@@ -311,12 +318,12 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			{
 				if(session)
 				{
-					JOptionPane.showMessageDialog(null,"Se cerrara la sesión", "miSueldo",
+					JOptionPane.showMessageDialog(null,"Se cerrará la sesión", "miSueldo",
 					JOptionPane.WARNING_MESSAGE);
 				}
 				dispose();
 			}
-		}
+		}	
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~FIN CREACIÓN DE MÉTODOS PARA LOS CONTROLES~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
