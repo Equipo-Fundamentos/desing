@@ -6,8 +6,9 @@
 *
 *
 */
+import java.awt.event.*;
 import javax.swing.*; //libreria que tiene las clases para funciones graficas
-public class Interfaz extends JFrame// extends por que es una clase que hereda de Jframe
+public class Interfaz extends JFrame // extends por que es una clase que hereda de Jframe
 {
 	public static void main(String[] args)
 	{
@@ -18,8 +19,6 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~CREANDO LA INTEFAZ GRAFICA~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-	public Interfaz()
-	{
 		/* ====== elementos a usar similar a variables ==== */
 			JPanel 	panelLogIn,panelLogInContent,panelLogInAux,panelLogInAux2, //panel login
 					panelMain,panelMainTitle,panelMainButtons,panelMainList,panelBtnBorrar, //panel main
@@ -29,7 +28,7 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 			JButton btnIngresar,// panel login
 					btnAgregar,btnReportesGrales,btnBorrar, //panel main
 					btnEditar, btnGuardar ,btnReporteInd, //panel details
-					btnSalir; // panel footer
+					btnCerrar; // panel footer
 
 			JTextField 	txtUser, // panel login
 						txtNombre,txtApp,txtApm,txtCargo,txtSueldo,txtNominaNum,txtFechaIngreso,
@@ -39,7 +38,8 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 			JLabel lblTitulo,lblHora;
 			JList list;
 		/* =============================================== */
-
+	public Interfaz()
+	{
 		/* ===establecer propiedades de la ventana== */
 			setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // para que se termine la execución cuando se cierra
 			setResizable(false); // desabilita la opción de cambiar tamaño
@@ -104,7 +104,6 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 			panelMain.add(panelMainTitle,java.awt.BorderLayout.NORTH); //quede hasta arriba
 			panelMain.add(panelMainList); //cubra lo que sobra
 			panelMain.add(panelBtnBorrar,java.awt.BorderLayout.SOUTH);//quede hasta abajo
-			//panelMain.setEnabled(false);////** false para que se habilite cuando se loguee
 
 		//panel Details
 			panelDetails = new JPanel();// panel de lado derecho
@@ -184,11 +183,10 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 				panelFooterHora = new JPanel();
 				lblHora = new JLabel("Insertar hora aqui");
 				panelFooterHora.add(lblHora);
-			btnSalir = new JButton("Salir");
-			btnSalir.setToolTipText("Salir de miSueldo");
+			btnCerrar = new JButton("Cerrar");
+			btnCerrar.setToolTipText("Salir de miSueldo");
 			panelFooter.add(panelFooterHora,java.awt.BorderLayout.WEST);
-			panelFooter.add(btnSalir,java.awt.BorderLayout.EAST);
-			//panelFooter.setEnabled(false);////***** false para que se habilite cuando se loguee
+			panelFooter.add(btnCerrar,java.awt.BorderLayout.EAST);
 		/* ==================================== */
 
 		/* =====Agregar paneles en orden a la ventana==== */
@@ -250,6 +248,15 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 
 			setLocationRelativeTo(null); // debe estar al final,es para que quede centrado en la pantalla
 		/* ============================================ */
+
+		/* ====Desabilitar todo hasta que se loggue==== */
+			desabilitarTodo();
+		/* ============================================ */
+
+		/* ==== Agregar eventos a los controles ==== */
+			btnIngresar.addActionListener(new IngresarAlSistema());
+			btnCerrar.addActionListener(new CerrarElSistema());
+		/* ========================================== */
 	}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~FIN CREACION DE LA INTERFAZ GRAFICA~~~~~~~~~~~~
@@ -258,8 +265,106 @@ public class Interfaz extends JFrame// extends por que es una clase que hereda d
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~CREACIÓN DE MÉTODOS PARA LOS CONTROLES~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-	//# agregar a los controles instanciados los los eventos
+	/* ######agregar a los controles instanciados los los eventos#####*/
+		boolean session = false;
+	// Iniciar Sesión
+		public class IngresarAlSistema implements ActionListener
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if(!session) // si no he iniciado
+				{
+					//intenta iniciar
+					if(	txtUser.getText().equals("rob") && 
+						String.valueOf(txtPass.getPassword()).equals("123")) //entra
+					{
+						habiltarTodo();
+						session = !session;
+						txtUser.setEnabled(false);
+						txtPass.setEnabled(false);
+						btnIngresar.setText("Salir");
+					}
+					else // no entra
+					{
+						JOptionPane.showMessageDialog(null,"Datos incorrectos", "Error",
+						JOptionPane.ERROR_MESSAGE);
+						txtUser.setText("");
+						txtPass.setText("");
+					}
+				}
+				else // ya inicio la session, entonces va a cerrar session
+				{
+					desabilitarTodo();
+					session = !session;
+					txtPass.setText("");
+					txtUser.setText("");
+					txtUser.setEnabled(true);
+					txtPass.setEnabled(true);
+					btnIngresar.setText("Ingresar");
+				}
+			}
+		}
+	// Cerrar el sistema
+		public class CerrarElSistema implements ActionListener
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if(session)
+				{
+					JOptionPane.showMessageDialog(null,"Se cerrara la sesión", "miSueldo",
+					JOptionPane.WARNING_MESSAGE);
+				}
+				dispose();
+			}
+		}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~FIN CREACIÓN DE MÉTODOS PARA LOS CONTROLES~~~~~~~
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	~~~~~~~~~~~~~~~~~~~~MÉTODOS AUXILIARES~~~~~~~~~~~~~~~~~~~
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+		public void habiltarTodo()
+		{
+			btnAgregar.setEnabled(true);
+			btnReportesGrales.setEnabled(true);
+			btnBorrar.setEnabled(true);
+			btnEditar.setEnabled(true);
+			btnGuardar.setEnabled(true);
+			btnReporteInd.setEnabled(true);
+			txtNombre.setEnabled(true);
+			txtApp.setEnabled(true);
+			txtApm.setEnabled(true);
+			txtCargo.setEnabled(true);
+			txtSueldo.setEnabled(true);
+			txtNominaNum.setEnabled(true);
+			txtFechaIngreso.setEnabled(true);
+			txtDiasTrabajdos.setEnabled(true);
+			txtAsignaciones.setEnabled(true);
+			txtDeducciones.setEnabled(true);
+			//list.setEnabled(true);
+		}
+		public void desabilitarTodo()
+		{
+			btnAgregar.setEnabled(false);
+			btnReportesGrales.setEnabled(false);
+			btnBorrar.setEnabled(false);
+			btnEditar.setEnabled(false);
+			btnGuardar.setEnabled(false);
+			btnReporteInd.setEnabled(false);
+			txtNombre.setEnabled(false);
+			txtApp.setEnabled(false);
+			txtApm.setEnabled(false);
+			txtCargo.setEnabled(false);
+			txtSueldo.setEnabled(false);
+			txtNominaNum.setEnabled(false);
+			txtFechaIngreso.setEnabled(false);
+			txtDiasTrabajdos.setEnabled(false);
+			txtAsignaciones.setEnabled(false);
+			txtDeducciones.setEnabled(false);
+			//list.setEnabled(false);
+		}
+	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	~~~~~~~~~~~~~~~~~~FIN MÉTODOS AUXILIARES~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 }
