@@ -397,6 +397,9 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			txtDeducciones.setEnabled(false);
 			//list.setEnabled(false);
 		}
+		public void validacionAp(String ap){
+			
+		}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~FIN MÉTODOS AUXILIARES~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
