@@ -286,6 +286,10 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             btnAgregar.addActionListener(new AgregaraBD());
             btnReportesGrales.addActionListener(new EscritorCSV());
 
+            //quitar en production
+            txtUser.setText("rob");
+            txtPass.setText("123");
+
 		/* ========================================== */
 	}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -461,7 +465,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                         br = new BufferedReader(new FileReader(csvFile));
                         while ((linea = br.readLine()) != null) { // Mientras el archivo tenga valores
                             String[] perfil = linea.split(separador); // Crear un arreglo con los valores de la línea
-                            System.out.println(Arrays.toString(perfil));
+                            System.out.println(Arrays.toString(perfil));// Debug
                                 for (int i = 0;i < bd.length; i++) { // Corrobora que espacio de la base de datos esta vacío
                                     if (bd[i][0] == null) { // Si el espacio esta vacío asigna los valores de la línea a la base de datos
                                         bd[i][0] = perfil[0];
@@ -503,19 +507,44 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
     }
     public class EscritorCSV implements ActionListener {
         public void actionPerformed(ActionEvent event) {
+            
             String command = event.getActionCommand(), c = "", d = "";
             BufferedWriter bf = null;
+            BufferedWriter be = null;
             String perfiles = "";
-            int sueldo, dias, asignaciones, deducciones, nomina;
+            double sueldo, dias, asignaciones, deducciones, nomina;
             try {
                 if (command.equals("Generar Reportes")) {
-                    File archivo = new File(System.getProperty("user.dir")+"/bd.csv"); //Especifica el arhivo al que se va a escribir
-                    if (!archivo.exists()) archivo.createNewFile();
-                        FileWriter  ec = new FileWriter(new File(System.getProperty("user.dir")+"/bd.csv"));
+                    File archivo = new File(System.getProperty("user.dir")+"/bd.csv"); // Especifica el archivo de la base de datos
+                    File reporte = new File(System.getProperty("user.dir")+"/reporte.csv"); // Especifica el nombre del archivo para el reporte
+                    c = System.getProperty("user.dir") + "/bd.csv";
+                    d = System.getProperty("user.dir") + "/reporte.csv";
+                    Runtime.getRuntime().exec(new String[]{"rm",d});// Borra el reporte pasado
+                    if (!reporte.exists()) reporte.createNewFile(); //Crea el archivo del reporte
+                    if (!archivo.exists()) archivo.createNewFile(); // Si no existe un archivo de base de datos lo crea
+                        FileWriter  ec = new FileWriter(archivo);
+                        FileWriter  ex = new FileWriter(reporte);
                         bf = new BufferedWriter(ec);
+                        be = new BufferedWriter(ex);
 
-                    for (int i = 0; i < bd.length; i++) {
-                        if (bd[i][0] == null) continue;
+                    for (int i = -1; i < bd.length; i++) {
+                        if (i == -1) { // Escribe los títulos de columna para el reporte
+                            be.append("Nombre,");
+                            be.append("Apellido Paterno,");
+                            be.append("Apellido Materno,");
+                            be.append("No. Nómina,");
+                            be.append("Cargo,");
+                            be.append("Sueldo,");
+                            be.append("Días Trabajados,");
+                            be.append("Asignaciones,");
+                            be.append("Deducciones,");
+                            be.append("Fecha de Ingreso,");
+                            be.append("Nómina Calculada\n");
+                            continue;
+                        }
+                        if (bd[i][0] == null) continue;// Si la nómina no esta asignada no la guardes
+
+                        // Escribe a la base de datos
                         bf.append(bd[i][0]+",");// Nombre
                         bf.append(bd[i][1]+",");// APP
                         bf.append(bd[i][2]+",");// APM
@@ -526,16 +555,27 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                         bf.append(bd[i][7]+",");// Asignaciones
                         bf.append(bd[i][8]+",");// Deducciones
                         bf.append(bd[i][9]+"\n");// Fecha de Ingreso
-                        /*//Cálculo de nómina
-                        sueldo = Integer.parseInt(bd[i][5]);
-                        dias = Integer.parseInt(bd[i][6]);
-                        asignaciones = Integer.parseInt(bd[i][7]);
-                        deducciones = Integer.parseInt(bd[i][8]);
+
+                        // Escribe al reporte
+                        be.append(bd[i][0]+",");// Nombre
+                        be.append(bd[i][1]+",");// APP
+                        be.append(bd[i][2]+",");// APM
+                        be.append(bd[i][3]+",");// No. Nómina
+                        be.append(bd[i][4]+",");// Cargo
+                        be.append(bd[i][5]+",");// Sueldo
+                        be.append(bd[i][6]+",");// Días Trabajados
+                        be.append(bd[i][7]+",");// Asignaciones
+                        be.append(bd[i][8]+",");// Deducciones
+                        be.append(bd[i][9]+",");// Fecha de Ingreso
+                        //Cálculo de nómina
+                        sueldo = Double.parseDouble(bd[i][5]);
+                        dias = Double.parseDouble(bd[i][6]);
+                        asignaciones = Double.parseDouble(bd[i][7]);
+                        deducciones = Double.parseDouble(bd[i][8]);
                         nomina = sueldo*dias+asignaciones-deducciones;
-                        bf.append(Integer.toString(nomina)+"\n");// Nómina*/
+                        be.append(Double.toString(nomina)+"\n");// Nómina
                     }
-                    c = System.getProperty("user.dir") + "/bd.csv";
-                    Runtime.getRuntime().exec(new String[]{"open",c});
+                    Runtime.getRuntime().exec(new String[]{"open",d});
                 }
             }  catch (IOException ioe) {
                 ioe.printStackTrace();
@@ -543,6 +583,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                 finally {
                     try {
                         if (bf != null) bf.close();
+                        if (be != null) be.close();
                     } catch (Exception ex) {
                         System.out.println("Error in closing the BufferedWriter"+ex);
                     }
