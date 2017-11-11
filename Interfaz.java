@@ -401,8 +401,47 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			txtDeducciones.setEnabled(false);
 			//list.setEnabled(false);
 		}
-		public void validacionNombres(String nomb){
-			
+		public void validacionNombres(){
+			String nomb = txtNombre.getText();
+			String app = txtApp.getText();
+			String apm = txtApm.getText();
+			for (int i=0; i<nomb.length(); i++) {
+				if (Character.isLetter(nomb.charAt(i))==true)
+					i++; 
+				else {
+					JOptionPane.showMessageDialog(null,"Error, un dato ingresado tiene caracteres invalidos, intente de nuevo.");
+				}
+			}
+			for (int i=0; i<app.length(); i++) {
+				if (Character.isLetter(app.charAt(i))==true)
+					i++; 
+				else {
+					JOptionPane.showMessageDialog(null,"Error, un dato ingresado tiene caracteres invalidos, intente de nuevo.");
+				}
+			}
+			for (int i=0; i<apm.length(); i++) {
+				if (Character.isLetter(apm.charAt(i))==true)
+					i++; 
+				else {
+					JOptionPane.showMessageDialog(null,"Error, un dato ingresado tiene caracteres invalidos, intente de nuevo.");
+				}
+			}
+		}
+		public void validacionNumeros(){
+			int dia = 0;
+			int mes = 0;
+			int anio = 0;
+			try{
+				Double.parseDouble(txtCargo.getText());
+				Double.parseDouble(txtSueldo.getText());
+				Double.parseDouble(txtNominaNum.getText());
+				Integer.parseInt(txtDiasTrabajdos.getText());
+				Double.parseDouble(txtAsignaciones.getText());
+				Double.parseDouble(txtDeducciones.getText());
+				Integer.parseInt(txtFechaIngreso.getText());
+			} catch(Exception e){
+				JOptionPane.showMessageDialog(null,"Error, un dato ingresado tiene caracteres invalidos, intente de nuevo.");
+			}
 		}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~FIN MÉTODOS AUXILIARES~~~~~~~~~~~~~~~~~
