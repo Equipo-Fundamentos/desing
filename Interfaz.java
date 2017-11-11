@@ -6,15 +6,15 @@
 *
 *
 */
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.FileNotFoundException;
+import java.io.BufferedReader;// Lector de flujo
+import java.io.BufferedWriter;// Escritor en flujo
+import java.io.File;// Administrador de archivos
+import java.io.FileReader;// Lector de archivo
+import java.io.FileWriter;// Escritor de archivo
+import java.io.FileNotFoundException;// Excepcion de archivo no encontrado
 import java.io.IOException;
-import java.awt.event.*; //eventos a los controles
-import javax.swing.*; //libreria que tiene las clases para funciones graficas
+import java.awt.event.*; // Eventos a los controles
+import javax.swing.*; // Librería que tiene las clases para funciones graficas
 import java.util.Arrays;
 
 public class Interfaz extends JFrame // extends por que es una clase que hereda de Jframe
@@ -284,6 +284,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             btnIngresar.addActionListener(new LectorCSV());
 			btnCerrar.addActionListener(new CerrarElSistema());
             btnAgregar.addActionListener(new AgregaraBD());
+            btnGuardar.addActionListener(new Validacion());
             btnReportesGrales.addActionListener(new EscritorCSV());
 
             //quitar en production
@@ -401,36 +402,48 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			txtDeducciones.setEnabled(false);
 			//list.setEnabled(false);
 		}
-		public void validacionNombres(){
-			String nomb = txtNombre.getText();
-			String app = txtApp.getText();
-			String apm = txtApm.getText();
-			for (int i=0; i<nomb.length(); i++) {
-				if (Character.isLetter(nomb.charAt(i))==true)
-					i++; 
-				else {
-					JOptionPane.showMessageDialog(null,"Error, un dato ingresado tiene caracteres invalidos, intente de nuevo.");
-				}
+        public class Validacion implements ActionListener {
+            public void actionPerformed(ActionEvent e) {
+			String nomb = txtNombre.getText(),
+			       app = txtApp.getText(),
+			       apm = txtApm.getText(),
+                   fecha = txtFechaIngreso.getText(),
+                   cargo = txtCargo.getText(),
+                   sueldo = txtSueldo.getText(),
+                   numNomina =txtNominaNum.getText(),
+                   dias = txtDiasTrabajdos.getText(),
+                   asignaciones = txtAsignaciones.getText(),
+                   deducciones = txtDeducciones.getText();
+
+            // Texto
+            if (!nomb.matches("\\[a-z]gi")) JOptionPane.showMessageDialog(null,"Error en dato: Nombre.");
+            if (!app.matches("\\[a-z]gi")) JOptionPane.showMessageDialog(null,"Error en dato: Apellido paterno.");
+            if (!apm.matches("\\[a-z]gi")) JOptionPane.showMessageDialog(null,"Error en dato: Apellido materno.");
+            if (!cargo.matches("\\[a-z]gi")) JOptionPane.showMessageDialog(null,"Error en dato: Cargo");
+            // Número
+            if (!fecha.matches("\\d{1,2}\\/\\d{1,2}\\/\\d{2}")) JOptionPane.showMessageDialog(null,"Error en dato: Fecha de ingreso");
+            if (!sueldo.matches("\\d+.\\d|\\d")) JOptionPane.showMessageDialog(null,"Error en dato: Sueldo");
+            if (!numNomina.matches("\\d")) JOptionPane.showMessageDialog(null,"Error en dato: No. de Nómina");
+            if (!dias.matches("\\d{1,365}")) JOptionPane.showMessageDialog(null,"Error en dato: Días trabajados");
+            if (!asignaciones.matches("\\{\\d+.\\d}|\\d")) JOptionPane.showMessageDialog(null,"Error en dato: Asignaciones");
+            if (!deducciones.matches("\\{\\d+.\\d}|\\d")) JOptionPane.showMessageDialog(null,"Error en dato: Deducciones");
+
+            /*for (int i=0; i<nomb.length(); i++) {
+				if (Character.isLetter(nomb.charAt(i))==true) continue;
+					JOptionPane.showMessageDialog(null,"Error, un dato ingresado tiene caracteres invalidos, intente de nuevo.(Nombre)");
 			}
 			for (int i=0; i<app.length(); i++) {
-				if (Character.isLetter(app.charAt(i))==true)
-					i++; 
-				else {
-					JOptionPane.showMessageDialog(null,"Error, un dato ingresado tiene caracteres invalidos, intente de nuevo.");
-				}
+				if (Character.isLetter(app.charAt(i))==true) continue;
+					JOptionPane.showMessageDialog(null,"Error, un dato ingresado tiene caracteres invalidos, intente de nuevo.(Apellido paterno)");
 			}
 			for (int i=0; i<apm.length(); i++) {
-				if (Character.isLetter(apm.charAt(i))==true)
-					i++; 
-				else {
-					JOptionPane.showMessageDialog(null,"Error, un dato ingresado tiene caracteres invalidos, intente de nuevo.");
-				}
-			}
+				if (Character.isLetter(apm.charAt(i))==true) continue;
+				JOptionPane.showMessageDialog(null,"Error, un dato ingresado tiene caracteres invalidos, intente de nuevo. (Apellido materno)");
+			}*/
+
+            }
 		}
-		public void validacionNumeros(){
-			int dia = 0;
-			int mes = 0;
-			int anio = 0;
+		/*public void validacionNumeros() {
 			try{
 				Double.parseDouble(txtCargo.getText());
 				Double.parseDouble(txtSueldo.getText());
@@ -438,11 +451,11 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				Integer.parseInt(txtDiasTrabajdos.getText());
 				Double.parseDouble(txtAsignaciones.getText());
 				Double.parseDouble(txtDeducciones.getText());
-				Integer.parseInt(txtFechaIngreso.getText());
+				//Integer.parseInt(txtFechaIngreso.getText());
 			} catch(Exception e){
 				JOptionPane.showMessageDialog(null,"Error, un dato ingresado tiene caracteres invalidos, intente de nuevo.");
 			}
-		}
+		}*/
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~FIN MÉTODOS AUXILIARES~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -549,7 +562,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
     }
     public class EscritorCSV implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-            
+
             String command = event.getActionCommand(), c = "", d = "";
             BufferedWriter bf = null;
             BufferedWriter be = null;
