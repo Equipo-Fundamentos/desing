@@ -19,11 +19,22 @@ import java.util.Arrays;
 
 public class Interfaz extends JFrame // extends por que es una clase que hereda de Jframe
 {
-	public static void main(String[] args)
+	private static final long serialVersionUID = 1L; // ver para que sirve pero quita una advertencia
+	public static void main(String[] args) throws IOException
 	{
 		Interfaz ventanaGrafica = new Interfaz();
 		ventanaGrafica.setVisible(true); // se abra la ventana en la ejecución
-		 System.out.println("Working Directory = " +  System.getProperty("user.dir"));
+		System.out.println("Working Directory = " +  System.getProperty("user.dir"));
+		/* BORRARR ESTE CODIGO
+		System.out.println(actualizaList());
+		String[] wow = new String[100];
+		wow = actualizaList();
+		for(int i=0;i<wow.length;i++)
+		{	
+			if(wow[i]!=null)
+				System.out.println(wow[i]);
+		}
+		*/
 	}
 
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -340,7 +351,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					txtUser.setEnabled(true);
 					txtPass.setEnabled(true);
 					btnIngresar.setText("Ingresar");
-					lblStatus = new JLabel("Esperando inciar sesión");
+					lblStatus.setText("Esperando inciar sesión");
 				}
 			}
 		}
@@ -440,6 +451,30 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 
                 return noError;
         }
+        public static String[] actualizaList() throws IOException
+		{
+			String nombreArchivo = "bd.csv", datosLeidos;
+			int filas=100,filacont=0;
+			String[] listaLeida = new String[filas];
+			String[] listaRecuperada = new String[filas];
+			try
+			{
+				FileReader lectorBD = new FileReader(nombreArchivo);
+				BufferedReader brBD = new BufferedReader(lectorBD);
+				while((datosLeidos = brBD.readLine())!=null)
+				{
+					listaLeida = datosLeidos.split(",");
+					listaRecuperada[filacont] = listaLeida[0];
+					filacont++;
+				}
+				lectorBD.close();
+			}
+			catch(IOException e)
+			{
+				System.out.println("no hay archivo");
+			}
+			return listaRecuperada;
+		}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~FIN MÉTODOS AUXILIARES~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
