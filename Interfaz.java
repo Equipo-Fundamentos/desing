@@ -514,7 +514,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                     }
                 }
             }
-            else e.finalize();
         }
     }
 
