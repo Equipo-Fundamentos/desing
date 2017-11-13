@@ -57,7 +57,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 
 			JPasswordField txtPass;
 			JLabel lblTitulo,lblStatus;
-			JList list;
+			JList<String> list;
         /* ====== Base de datos (Arreglo bidimensional) ==== */
         String[][] bd = new String [100][10];
             /*
@@ -118,7 +118,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				panelMainTitle.setBackground(new java.awt.Color(189, 195, 199));
 						panelMainButtons = new JPanel();//panel para los botones dentro del maintitle
 						panelMainButtons.setBackground(new java.awt.Color(189, 195, 199));
-							btnAgregar = new JButton("Agregar");
+							btnAgregar = new JButton("Nuevo");
 							btnAgregar.setToolTipText("Crear nuevo empleado");
 							panelMainButtons.add(btnAgregar);
 							btnReportesGrales = new JButton("Generar Reportes");
@@ -130,8 +130,36 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				panelMainTitle.add(lblTitulo,java.awt.BorderLayout.NORTH);//para que el label quede hasta arriba
 				panelMainTitle.add(panelMainButtons);// para que se posicionen abajo del label
 				panelMainList = new JPanel(); //panel que contiene el Jlist
+				panelMainList.setLayout(new java.awt.BorderLayout());
 				panelMainList.setBackground(new java.awt.Color(189, 195, 199));
-					panelMainList.add(new JLabel("Empleados"));
+					//generar  la lista!
+					DefaultListModel<String> listModel = new DefaultListModel<>();
+					String nombreArchivo = "bd.csv", datosLeidos;
+						int filas=100;
+						String[] listaLeida = new String[filas];
+						String[] listaRecuperada = new String[filas];
+						try
+						{
+							FileReader lectorBD = new FileReader(nombreArchivo);
+							BufferedReader brBD = new BufferedReader(lectorBD);
+							while((datosLeidos = brBD.readLine())!=null)
+							{
+								listaLeida = datosLeidos.split(",");
+								listModel.addElement(listaLeida[3]);
+								
+							}
+							lectorBD.close();
+						}
+						catch(IOException e)
+						{
+							System.out.println("no hay archivo");
+						}
+						JScrollPane scrollPane = new JScrollPane();
+						list = new JList<>(listModel);
+						scrollPane.setViewportView(list);
+					// fin generacion lista
+				panelMainList.add(new JLabel("Empleados(nóminas)"),java.awt.BorderLayout.NORTH);
+				panelMainList.add(list);
 				panelBtnBorrar = new JPanel();// panel que tendra el boton de borrar
 					btnBorrar = new JButton("Borrar");
 					btnBorrar.setToolTipText("Eliminar el empleado seleccionado");
@@ -393,7 +421,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			txtDiasTrabajdos.setEnabled(true);
 			txtAsignaciones.setEnabled(true);
 			txtDeducciones.setEnabled(true);
-			//list.setEnabled(true);
+			list.setEnabled(true);
 		}
 		public void deshabilitarTodo()
 		{
@@ -413,7 +441,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			txtDiasTrabajdos.setEnabled(false);
 			txtAsignaciones.setEnabled(false);
 			txtDeducciones.setEnabled(false);
-			//list.setEnabled(false);
+			list.setEnabled(false);
 		}
         public boolean validacion() {
 
@@ -451,30 +479,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 
                 return noError;
         }
-        public static String[] actualizaList() throws IOException
-		{
-			String nombreArchivo = "bd.csv", datosLeidos;
-			int filas=100,filacont=0;
-			String[] listaLeida = new String[filas];
-			String[] listaRecuperada = new String[filas];
-			try
-			{
-				FileReader lectorBD = new FileReader(nombreArchivo);
-				BufferedReader brBD = new BufferedReader(lectorBD);
-				while((datosLeidos = brBD.readLine())!=null)
-				{
-					listaLeida = datosLeidos.split(",");
-					listaRecuperada[filacont] = listaLeida[0];
-					filacont++;
-				}
-				lectorBD.close();
-			}
-			catch(IOException e)
-			{
-				System.out.println("no hay archivo");
-			}
-			return listaRecuperada;
-		}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~FIN MÉTODOS AUXILIARES~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
