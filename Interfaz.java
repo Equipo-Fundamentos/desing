@@ -421,25 +421,25 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             boolean noError = true;
 
                     // Texto
-                    if (!nomb.matches("\\p{Alpha}+")) {JOptionPane.showMessageDialog(null,"Error en dato: Nombre."); noError = false;}
-                    if (!app.matches("\\p{Alpha}+")) {JOptionPane.showMessageDialog(null,"Error en dato: Apellido paterno."); noError = false;}
-                    if (!apm.matches("\\p{Alpha}+")) {JOptionPane.showMessageDialog(null,"Error en dato: Apellido materno."); noError = false;}
-                    if (!cargo.matches("\\p{Alpha}+")) {JOptionPane.showMessageDialog(null,"Error en dato: Cargo"); noError = false;}
+                    if (!nomb.matches("\\p{Alpha}+")) noError = false;
+                    if (!app.matches("\\p{Alpha}+\\s\\p{Alpha}+")) noError = false;
+                    if (!apm.matches("\\p{Alpha}+"))  noError = false;
+                    if (!cargo.matches("\\p{Alpha}+"))  noError = false;
                     // Número
-                    if (!fecha.matches("[1-30]+/[1-12]+/\\d+")) {JOptionPane.showMessageDialog(null,"Error en dato: Fecha de ingreso"); noError = false;}
-                    if (!sldo.matches("(\\d++.\\d+|\\d+)")) {JOptionPane.showMessageDialog(null,"Error en dato: Sueldo"); noError = false;}
-                    if (!numNomina.matches("\\d+")) {JOptionPane.showMessageDialog(null,"Error en dato: No. de Nómina"); noError = false;}
+                    if (!fecha.matches("[1-30]+/[1-12]+/\\d{4}")) noError = false;
+                    if (!sldo.matches("(\\d++.\\d+|\\d+)")) noError = false;
+                    if (!numNomina.matches("\\d+")) noError = false;
                         else {// Verifica que la nómina no exista ya
                             for (int i = 0; i < bd[3].length;) {
                                 if (numNomina.equals(bd[3][i])) {JOptionPane.showMessageDialog(null,"No. de Nómina ocupado."); noError = false;}
                             }
                         }
-                        if (!dias.matches("\\[1-365]")) {JOptionPane.showMessageDialog(null,"Error en dato: Días trabajados"); noError = false;}
-                        if (!asignaciones.matches("(\\d++.\\d+|\\d+)")) {JOptionPane.showMessageDialog(null,"Error en dato: Asignaciones"); noError = false;}
-                        if (!deducciones.matches("(\\d++.\\d+|\\d+)")) {JOptionPane.showMessageDialog(null,"Error en dato: Deducciones"); noError = false;}
+                        if (!dias.matches("\\[1-365]")) noError = false;
+                        if (!asignaciones.matches("(\\d++.\\d+|\\d+)")) noError = false;
+                        if (!deducciones.matches("(\\d++.\\d+|\\d+)")) noError = false;
 
                 return noError;
-            }
+        }
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~FIN MÉTODOS AUXILIARES~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -453,9 +453,9 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             BufferedWriter bw = null;
             int indice = 0;
 
+            if (!validacion()) JOptionPane.showMessageDialog(null,"Error en dato");
 
-
-            if (session && command.equals("Agregar") && validacion()) {
+            else if (session) {
 /* ******************** Agregar datos a arreglo BD******************** */
                 for (int i = 0; i < bd.length; i++) {
                     if (bd[i][0] == null) { // Si el espacio no esta asignado
