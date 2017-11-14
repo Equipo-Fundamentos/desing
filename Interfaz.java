@@ -24,7 +24,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	{
 		Interfaz ventanaGrafica = new Interfaz();
 		ventanaGrafica.setVisible(true); // se abra la ventana en la ejecución
-		System.out.println("Working Directory = " +  System.getProperty("user.dir"));
+		System.out.println("Ubicación actual en: " +  System.getProperty("user.dir"));
 	}
 
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -381,10 +381,18 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				btnReporteInd.setEnabled(true);
-				btnEditar.setEnabled(true);
-				btnCancelar.setEnabled(true);
-				lblStatus.setText("Desplegando detalles de empleado seleccionado");
+				if(list.getSelectedIndex()!=-1)// o sea si selecciono alguien
+				{
+					btnReporteInd.setEnabled(true);
+					btnEditar.setEnabled(true);
+					btnCancelar.setEnabled(true);
+					lblStatus.setText("Desplegando detalles de empleado seleccionado");
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null,"Por favor seleccione a alguien", "miSueldo",
+					JOptionPane.WARNING_MESSAGE);
+				}
 				System.out.print("index selccionado: "+list.getSelectedIndex());
 				System.out.println(", valor en el index: "+list.getSelectedValue());
 			}
