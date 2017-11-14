@@ -180,19 +180,19 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					txtCargo.setToolTipText("puesto o ocupación en la empresa");
 					panelDetailsControles.add(txtCargo);
 
-					panelDetailsControles.add(new JLabel("Sueldo Base:"));
+					panelDetailsControles.add(new JLabel("Sueldo Base ($):"));
 					txtSueldo = new JTextField(8);
 					txtSueldo.setToolTipText("$$$");
 					panelDetailsControles.add(txtSueldo);
 
 					panelDetailsControles.add(new JLabel("Fecha de ingreso:"));
 					txtFechaIngreso = new JTextField(8);
-					txtFechaIngreso.setToolTipText("dd/mm/yyyy");
+					txtFechaIngreso.setToolTipText("dd/m/yyyy");
 					panelDetailsControles.add(txtFechaIngreso);
 
-					panelDetailsControles.add(new JLabel("Número de cuemta de nomina:"));
+					panelDetailsControles.add(new JLabel("Número de cuenta de nómina:"));
 					txtNominaNum = new JTextField(8);
-					txtNominaNum.setToolTipText("ej. 000000");
+					txtNominaNum.setToolTipText("ej. 000");
 					panelDetailsControles.add(txtNominaNum);
 
 					panelDetailsControles.add(new JLabel("Dias Trabajados:"));
@@ -308,6 +308,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			btnCancelar.addActionListener(new DeshabilitaTextFields());
 			btnVer.addActionListener(new VerDetallesEmpleado());
 			btnEditar.addActionListener(new EditarEmpleado());
+			btnBorrar.addActionListener(new PruebaList());
 			// Adición a BD
 			btnGuardar.addActionListener(new AgregaraBD());
 			btnReportesGrales.addActionListener(new EscritorExcel());
@@ -326,6 +327,13 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	/* ######agregar a los controles instanciados los eventos#####*/
 		boolean session = false;
+	public class PruebaList implements ActionListener
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				actualizaList();
+			}
+		}
 	// Iniciar Sesión
 		public class IngresarAlSistema implements ActionListener
 		{
@@ -375,6 +383,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			{
 				btnReporteInd.setEnabled(true);
 				btnEditar.setEnabled(true);
+				btnCancelar.setEnabled(true);
 				lblStatus.setText("Desplegando detalles de empleado seleccionado");
 				System.out.print("index selccionado: "+list.getSelectedIndex());
 				System.out.println(", valor en el index: "+list.getSelectedValue());
@@ -580,25 +589,29 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					indice = i;
 					// Asignar todos los valores colocados a esa nómina
 					bd[i][0] = txtNombre.getText();
-					txtNombre.setText("");
+					//txtNombre.setText("");
 					bd[i][1] = txtApp.getText();
-					txtApp.setText("");
+					//txtApp.setText("");
 					bd[i][2] = txtApm.getText();
-					txtApm.setText("");
+					//txtApm.setText("");
 					bd[i][3] = txtNominaNum.getText();
-					txtNominaNum.setText("");
+					//txtNominaNum.setText("");
 					bd[i][4] = txtCargo.getText();
-					txtCargo.setText("");
+					//txtCargo.setText("");
 					bd[i][5] = txtSueldo.getText();
-					txtSueldo.setText("");
+					//txtSueldo.setText("");
 					bd[i][6] = txtDiasTrabajdos.getText();
-					txtDiasTrabajdos.setText("");
+					//txtDiasTrabajdos.setText("");
 					bd[i][7] = txtAsignaciones.getText();
-					txtAsignaciones.setText("");
+					//txtAsignaciones.setText("");
 					bd[i][8] = txtDeducciones.getText();
-					txtDeducciones.setText("");
+					//txtDeducciones.setText("");
 					bd[i][9] = txtFechaIngreso.getText();
-					txtFechaIngreso.setText("");
+					//txtFechaIngreso.setText("");
+					deshabilitaPanelDetails();
+					habiltaMainPanel();
+					actualizaList();
+					limpiaTextFields();
 					JOptionPane.showMessageDialog(null,bd[i][0] + " " + bd[i][1] + " " + bd[i][2] + "\nRegistrado con nómina: " + bd[i][3]);
 						break;
 					}
@@ -740,7 +753,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			try {
 				File archivoCSV = new File(System.getProperty("user.dir")  + "/bd.csv");
 				if (!archivoCSV.exists()) archivoCSV.createNewFile();
-				bw = new BufferedWriter(new FileWriter(archivoCSV));
+				bw = new BufferedWriter(new FileWriter(archivoCSV,true));
 					bw.append(bd[indice][0] + ",");
 					bw.append(bd[indice][1] + ",");
 					bw.append(bd[indice][2] + ",");
