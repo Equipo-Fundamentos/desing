@@ -25,16 +25,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		Interfaz ventanaGrafica = new Interfaz();
 		ventanaGrafica.setVisible(true); // se abra la ventana en la ejecución
 		System.out.println("Working Directory = " +  System.getProperty("user.dir"));
-		/* BORRARR ESTE CODIGO
-		System.out.println(actualizaList());
-		String[] wow = new String[100];
-		wow = actualizaList();
-		for(int i=0;i<wow.length;i++)
-		{	
-			if(wow[i]!=null)
-				System.out.println(wow[i]);
-		}
-		*/
 	}
 
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -146,7 +136,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 							{
 								listaLeida = datosLeidos.split(",");
 								listModel.addElement(listaLeida[3]);
-								
+
 							}
 							lectorBD.close();
 						}
@@ -324,13 +314,13 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             btnIngresar.addActionListener(new LectorCSV());
 			btnCerrar.addActionListener(new CerrarElSistema());
             // Adición a BD
-            btnAgregar.addActionListener(new AgregaraBD());
             btnGuardar.addActionListener(new AgregaraBD());
-            btnReportesGrales.addActionListener(new EscritorCSV());
+            btnReportesGrales.addActionListener(new EscritorExcel());
 
             //quitar en production
             txtUser.setText("rob");
             txtPass.setText("123");
+
 
 		/* ========================================== */
 	}
@@ -460,23 +450,23 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             boolean noError = true;
 
                     // Texto
-                    if (!nomb.matches("\\p{Alpha}+")) noError = false;
-                    if (!app.matches("\\p{Alpha}+\\s\\p{Alpha}+")) noError = false;
-                    if (!apm.matches("\\p{Alpha}+"))  noError = false;
-                    if (!cargo.matches("\\p{Alpha}+"))  noError = false;
+                    if (!nomb.matches("\\w+")) {JOptionPane.showMessageDialog(null,"Error en dato: Nombre"); noError = false;}
+                    if (!app.matches("^\\w+(\\s\\w+)?$")) {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Paterno"); noError = false;}
+                    if (!apm.matches("^\\w+(\\s\\w+)?$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Materno"); noError = false;}
+                    if (!cargo.matches("^\\w+((\\s|-)\\w+)?$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Cargo"); noError = false;}
                     // Número
-                    if (!fecha.matches("[1-30]+/[1-12]+/\\d{4}")) noError = false;
-                    if (!sldo.matches("(\\d++.\\d+|\\d+)")) noError = false;
-                    if (!numNomina.matches("\\d+")) noError = false;
+                    System.out.println(!fecha.matches("^([1-3]?[0-9])\\/(1?[0-9]|1[1-2])\\/\\d{4}$"));
+                    if (!fecha.matches("^(\\d|[1-2][0-9]|30)\\/(\\d|[1][1-2])\\/\\d{4}$")) {JOptionPane.showMessageDialog(null,"Error en dato: Fecha"); noError = false;}
+                    if (!sldo.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Sueldo"); noError = false;}
+                    if (!numNomina.matches("\\d{3}")) {JOptionPane.showMessageDialog(null,"Error en dato: No. de Nómina"); noError = false;}
                         else {// Verifica que la nómina no exista ya
-                            for (int i = 0; i < bd[3].length;) {
+                            for (int i = 0; i < bd[3].length; i++) {
                                 if (numNomina.equals(bd[3][i])) {JOptionPane.showMessageDialog(null,"No. de Nómina ocupado."); noError = false;}
                             }
                         }
-                        if (!dias.matches("\\[1-365]")) noError = false;
-                        if (!asignaciones.matches("(\\d++.\\d+|\\d+)")) noError = false;
-                        if (!deducciones.matches("(\\d++.\\d+|\\d+)")) noError = false;
-
+                    if (!dias.matches("^([0-9]?[0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-5])$")) {JOptionPane.showMessageDialog(null,"Error en dato: Días trabajados"); noError = false;}
+                    if (!asignaciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Asignaciones"); noError = false;}
+                    if (!deducciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Deducciones"); noError = false;}
                 return noError;
         }
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -488,73 +478,45 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
     public class AgregaraBD implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            String command = e.getActionCommand(), origen;
-            BufferedWriter bw = null;
+            String command = e.getActionCommand();
             int indice = 0;
+            boolean error = validacion();
 
-            if (!validacion()) JOptionPane.showMessageDialog(null,"Error en dato");
-
-            else if (session) {
-/* ******************** Agregar datos a arreglo BD******************** */
-                for (int i = 0; i < bd.length; i++) {
-                    if (bd[i][0] == null) { // Si el espacio no esta asignado
-                        indice = i;
-                        // Asignar todos los valores colocados a esa nómina
-                        bd[i][0] = txtNombre.getText();
-                        txtNombre.setText("");
-                        bd[i][1] = txtApp.getText();
-                        txtApp.setText("");
-                        bd[i][2] = txtApm.getText();
-                        txtApm.setText("");
-                        bd[i][3] = txtNominaNum.getText();
-                        txtNominaNum.setText("");
-                        bd[i][4] = txtCargo.getText();
-                        txtCargo.setText("");
-                        bd[i][5] = txtSueldo.getText();
-                        txtSueldo.setText("");
-                        bd[i][6] = txtDiasTrabajdos.getText();
-                        txtDiasTrabajdos.setText("");
-                        bd[i][7] = txtAsignaciones.getText();
-                        txtAsignaciones.setText("");
-                        bd[i][8] = txtDeducciones.getText();
-                        txtDeducciones.setText("");
-                        bd[i][9] = txtFechaIngreso.getText();
-                        txtFechaIngreso.setText("");
-                        JOptionPane.showMessageDialog(null,bd[i][0] + " " + bd[i][1] + " " + bd[i][2] + "\nRegistrado con nómina: " + bd[i][3]);
+        if (error) {
+            for (int i = 0; i < bd.length; i++) {
+                if (bd[i][0] == null) { // Si el espacio no esta asignado
+                    System.out.println("Si entro");
+                    indice = i;
+                    // Asignar todos los valores colocados a esa nómina
+                    bd[i][0] = txtNombre.getText();
+                    txtNombre.setText("");
+                    bd[i][1] = txtApp.getText();
+                    txtApp.setText("");
+                    bd[i][2] = txtApm.getText();
+                    txtApm.setText("");
+                    bd[i][3] = txtNominaNum.getText();
+                    txtNominaNum.setText("");
+                    bd[i][4] = txtCargo.getText();
+                    txtCargo.setText("");
+                    bd[i][5] = txtSueldo.getText();
+                    txtSueldo.setText("");
+                    bd[i][6] = txtDiasTrabajdos.getText();
+                    txtDiasTrabajdos.setText("");
+                    bd[i][7] = txtAsignaciones.getText();
+                    txtAsignaciones.setText("");
+                    bd[i][8] = txtDeducciones.getText();
+                    txtDeducciones.setText("");
+                    bd[i][9] = txtFechaIngreso.getText();
+                    txtFechaIngreso.setText("");
+                    JOptionPane.showMessageDialog(null,bd[i][0] + " " + bd[i][1] + " " + bd[i][2] + "\nRegistrado con nómina: " + bd[i][3]);
                         break;
                     }
                 }
-/* ******************** Agregar datos a archivo BD******************** */
-                try {
-                    File archivoCSV = new File(System.getProperty("user.dir")  + "/bd.csv");
-                    if (!archivoCSV.exists()) archivoCSV.createNewFile();
-                    bw = new BufferedWriter(new FileWriter(archivoCSV));
-                        bw.append(bd[indice][0] + ",");
-                        bw.append(bd[indice][1] + ",");
-                        bw.append(bd[indice][2] + ",");
-                        bw.append(bd[indice][3] + ",");
-                        bw.append(bd[indice][4] + ",");
-                        bw.append(bd[indice][5] + ",");
-                        bw.append(bd[indice][6] + ",");
-                        bw.append(bd[indice][7] + ",");
-                        bw.append(bd[indice][8] + ",");
-                        bw.append(bd[indice][0] + "\n");
-                } catch (FileNotFoundException e1) {
-                        e1.printStackTrace();
-                } catch (IOException e1) {
-                        e1.printStackTrace();
-                } finally {
-                    if (bw != null) {
-                        try {
-                            bw.close();
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-                }
+                escritorCSV(indice);
             }
         }
     }
+
 
     public class LectorCSV implements ActionListener { // Para que se active cuando haya una acción
         public void actionPerformed(ActionEvent event) {
@@ -566,7 +528,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             command = event.getActionCommand(),
             csv = System.getProperty("user.dir")+"/bd.csv"; // El archivo que se quiera utilizar como base de datos siempre se debe imprimir
             File archivo = new File(csv);
-
 
                 if (command.equals("Ingresar")) {
                     if (txtUser.getText().equals("rob") && String.valueOf(txtPass.getPassword()).equals("123")) {
@@ -615,7 +576,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             }
         }
     }
-    public class EscritorCSV implements ActionListener {
+    public class EscritorExcel implements ActionListener {
         public void actionPerformed(ActionEvent event) {
 
             String command = event.getActionCommand(), d = "";
@@ -648,6 +609,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                         }
 
                         // Escribe al reporte
+                        escritorCSV(i);
                         if (bd[i][0] == null) continue;
                         be.append(bd[i][0]+",");// Nombre
                         be.append(bd[i][1]+",");// APP
@@ -680,6 +642,38 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                     }
                 }
             }
+        }
+        public void escritorCSV(int indice) {
+            BufferedWriter bw = null;
+
+            try {
+                File archivoCSV = new File(System.getProperty("user.dir")  + "/bd.csv");
+                if (!archivoCSV.exists()) archivoCSV.createNewFile();
+                bw = new BufferedWriter(new FileWriter(archivoCSV));
+                    bw.append(bd[indice][0] + ",");
+                    bw.append(bd[indice][1] + ",");
+                    bw.append(bd[indice][2] + ",");
+                    bw.append(bd[indice][3] + ",");
+                    bw.append(bd[indice][4] + ",");
+                    bw.append(bd[indice][5] + ",");
+                    bw.append(bd[indice][6] + ",");
+                    bw.append(bd[indice][7] + ",");
+                    bw.append(bd[indice][8] + ",");
+                    bw.append(bd[indice][9] + "\n");
+            } catch (FileNotFoundException e1) {
+                    e1.printStackTrace();
+            } catch (IOException e1) {
+                    e1.printStackTrace();
+            } finally {
+                if (bw != null) {
+                    try {
+                        bw.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+
         }
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ~~~~~~~~~~~~~~~~~~FIN MÉTODOS BD~~~~~~~~~~~~~~~~~
