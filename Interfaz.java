@@ -32,13 +32,13 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 		/* ====== elementos a usar similar a variables ==== */
 			JPanel 	panelLogIn,panelLogInContent,panelLogInAux,panelLogInAux2, //panel login
-					panelMain,panelMainTitle,panelMainButtons,panelMainList,panelBtnBorrar, //panel main
-					panelDetails,panelDetailsButtons,panelDetailsControles,panelDetailsSave, //panel details
+					panelMain,panelMainTitle,panelMainButtons,panelMainList,panelBtnVerBorrar, //panel main
+					panelDetails,panelDetailsButtons,panelDetailsControles,panelDetailsSaveCancel, //panel details
 					panelFooter,panelFooterHora; //panel footer
 
 			JButton btnIngresar,// panel login
-					btnAgregar,btnReportesGrales,btnBorrar, //panel main
-					btnEditar, btnGuardar ,btnReporteInd, //panel details
+					btnAgregar,btnReportesGrales,btnVer,btnBorrar, //panel main
+					btnEditar, btnGuardar ,btnReporteInd, btnCancelar, //panel details
 					btnCerrar; // panel footer
 
 			JTextField 	txtUser, // panel login
@@ -49,22 +49,22 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			JLabel lblTitulo,lblStatus;
 			JList<String> list;
 			DefaultListModel<String> listModel;
-        /* ====== Base de datos (Arreglo bidimensional) ==== */
-        String[][] bd = new String [100][10];
-            /*
-            -Cada renglón es una nómina
-            -Cada columna es un valor:
-                0) Nombre
-                1) Apellido Paterno
-                2) Apellido Materno
-                3) Nómina
-                4) Cargo
-                5) Sueldo (80-...)
-                6) Días Trabajados (1-365)
-                7) Asignaciones
-                8) Deducciones
-                9) Fecha de Ingreso (dd/mm/aa)
-            */
+		/* ====== Base de datos (Arreglo bidimensional) ==== */
+		String[][] bd = new String [100][10];
+			/*
+			-Cada renglón es una nómina
+			-Cada columna es un valor:
+				0) Nombre
+				1) Apellido Paterno
+				2) Apellido Materno
+				3) Nómina
+				4) Cargo
+				5) Sueldo (80-...)
+				6) Días Trabajados (1-365)
+				7) Asignaciones
+				8) Deducciones
+				9) Fecha de Ingreso (dd/mm/aa)
+			*/
 		/* =============================================== */
 	public Interfaz()
 	{
@@ -129,19 +129,22 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					list = new JList<>(listModel);
 					scrollPane.setViewportView(list);
 
-					actualizaList();
+					actualizaList();// llena con lo que hay en la bd
 					// fin generacion lista
 				panelMainList.add(new JLabel("Empleados(nóminas)"),java.awt.BorderLayout.NORTH);
 				panelMainList.add(list);
-				panelBtnBorrar = new JPanel();// panel que tendra el boton de borrar
+				panelBtnVerBorrar = new JPanel();// panel que tendra el boton de borrar
 					btnBorrar = new JButton("Borrar");
 					btnBorrar.setToolTipText("Eliminar el empleado seleccionado");
-					panelBtnBorrar.setBackground(new java.awt.Color(189, 195, 199));
-					panelBtnBorrar.add(btnBorrar);//quede centrado
+					btnVer = new JButton("Ver");
+					btnVer.setToolTipText("Mostrará los detalles de esta nómina->");
+					panelBtnVerBorrar.setBackground(new java.awt.Color(189, 195, 199));
+					panelBtnVerBorrar.add(btnVer);
+					panelBtnVerBorrar.add(btnBorrar);
 
 			panelMain.add(panelMainTitle,java.awt.BorderLayout.NORTH); //quede hasta arriba
 			panelMain.add(panelMainList); //cubra lo que sobra
-			panelMain.add(panelBtnBorrar,java.awt.BorderLayout.SOUTH);//quede hasta abajo
+			panelMain.add(panelBtnVerBorrar,java.awt.BorderLayout.SOUTH);//quede hasta abajo
 
 		//panel Details
 			panelDetails = new JPanel();// panel de lado derecho
@@ -177,7 +180,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					txtCargo.setToolTipText("puesto o ocupación en la empresa");
 					panelDetailsControles.add(txtCargo);
 
-					panelDetailsControles.add(new JLabel("Suledo Base:"));
+					panelDetailsControles.add(new JLabel("Sueldo Base:"));
 					txtSueldo = new JTextField(8);
 					txtSueldo.setToolTipText("$$$");
 					panelDetailsControles.add(txtSueldo);
@@ -187,7 +190,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					txtFechaIngreso.setToolTipText("dd/mm/yyyy");
 					panelDetailsControles.add(txtFechaIngreso);
 
-					panelDetailsControles.add(new JLabel("Numero de cuemta de nomina:"));
+					panelDetailsControles.add(new JLabel("Número de cuemta de nomina:"));
 					txtNominaNum = new JTextField(8);
 					txtNominaNum.setToolTipText("ej. 000000");
 					panelDetailsControles.add(txtNominaNum);
@@ -205,14 +208,17 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					txtDeducciones = new JTextField(8);
 					panelDetailsControles.add(txtDeducciones);
 
-				panelDetailsSave = new JPanel(); // panel que tendra boton de guardar
+				panelDetailsSaveCancel = new JPanel(); // panel que tendra boton de guardar
 					btnGuardar = new JButton("Guardar");
 					btnGuardar.setToolTipText("Guardar los cambios");
-					panelDetailsSave.add(btnGuardar);
+					btnCancelar = new JButton("Cancelar");
+					btnCancelar.setToolTipText("Ignorar Cambios");
+					panelDetailsSaveCancel.add(btnGuardar);
+					panelDetailsSaveCancel.add(btnCancelar);
 
 			panelDetails.add(panelDetailsButtons,java.awt.BorderLayout.NORTH);//quede hasta arriba
 			panelDetails.add(panelDetailsControles);//cubra lo que sobre
-			panelDetails.add(panelDetailsSave,java.awt.BorderLayout.SOUTH);//que hasta abajo
+			panelDetails.add(panelDetailsSaveCancel,java.awt.BorderLayout.SOUTH);//que hasta abajo
 			//panelDetails.setEnabled(false);////***** false para que se habilite cuando se loguee
 		//panel Footer
 			panelFooter = new JPanel();
@@ -288,25 +294,27 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		/* ============================================ */
 
 		/* ====Deshabilitar todo hasta que se loggue==== */
-			deshabilitarTodo();
+			deshabilitaMainPanel();
+			deshabilitaPanelDetails();
 		/* ============================================ */
 
 		/* ==== Agregar eventos a los controles ==== */
-            // Inicio y cierre de sesión
+			// Inicio y cierre de sesión
 			btnIngresar.addActionListener(new IngresarAlSistema());
-            btnIngresar.addActionListener(new LectorCSV());
+			btnIngresar.addActionListener(new LectorCSV());
 			btnCerrar.addActionListener(new CerrarElSistema());
-            // Adición a BD
-            btnGuardar.addActionListener(new AgregaraBD());
-            btnReportesGrales.addActionListener(new EscritorExcel());
+			//Habilitar controles para agregar
+			btnAgregar.addActionListener(new HabilitarTexFileds());
+			btnCancelar.addActionListener(new DeshabilitaTextFields());
+			btnVer.addActionListener(new VerDetallesEmpleado());
+			btnEditar.addActionListener(new EditarEmpleado());
+			// Adición a BD
+			btnGuardar.addActionListener(new AgregaraBD());
+			btnReportesGrales.addActionListener(new EscritorExcel());
 
-            //quitar en production
-            txtUser.setText("rob");
-            txtPass.setText("123");
-            //borrar solo es usado como ejemplo
-            btnBorrar.addActionListener(new UpdateList());
-
-
+			//quitar en production
+			txtUser.setText("rob");
+			txtPass.setText("123");
 		/* ========================================== */
 	}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -329,9 +337,10 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					if(txtUser.getText().equals("rob") &&
 						String.valueOf(txtPass.getPassword()).equals("123")) //entra
 					{
-						habiltarTodo();
+						habiltaMainPanel();
 						session = !session;
 						txtUser.setEnabled(false);
+						txtPass.setText("");
 						txtPass.setEnabled(false);
 						btnIngresar.setText("Salir");
 						lblStatus.setText("CONECTADO");
@@ -347,7 +356,8 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				}
 				else // ya inicio la sesion, entonces va a cerrar session
 				{
-					deshabilitarTodo();
+					deshabilitaMainPanel();
+					deshabilitaPanelDetails();
 					session = !session;
 					txtPass.setText("");
 					txtUser.setText("");
@@ -356,6 +366,50 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					btnIngresar.setText("Ingresar");
 					lblStatus.setText("Esperando inciar sesión");
 				}
+			}
+		}
+	//clic en ver
+		public class VerDetallesEmpleado implements ActionListener
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				btnReporteInd.setEnabled(true);
+				btnEditar.setEnabled(true);
+				lblStatus.setText("Desplegando detalles de empleado seleccionado");
+			}
+		}
+	//clic en editar
+		public class EditarEmpleado implements ActionListener
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				habiltaPanelDetails();
+				deshabilitaMainPanel();
+				btnReporteInd.setEnabled(false);
+				lblStatus.setText("Modificando datos");
+			}
+		}
+	//clic en nuevo
+		public class HabilitarTexFileds implements ActionListener
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				habiltaPanelDetails();
+				limpiaTextFields();
+				deshabilitaMainPanel();
+				btnReporteInd.setEnabled(false);
+				btnEditar.setEnabled(false);
+				lblStatus.setText("Creando nuevo empleado");
+			}
+		}
+	//clic en cancelar
+		public class DeshabilitaTextFields implements ActionListener
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				deshabilitaPanelDetails();
+				habiltaMainPanel();
+				lblStatus.setText("CONECTADO");
 			}
 		}
 	// Cerrar el sistema
@@ -371,14 +425,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				dispose();
 			}
 		}
-	//Actualizar list prueba
-		public class UpdateList implements ActionListener
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				actualizaList();
-			}
-		}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~FIN CREACIÓN DE MÉTODOS PARA LOS CONTROLES~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -392,7 +438,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			String nombreArchivo = "bd.csv", datosLeidos;
 			int filas=100;
 			String[] listaLeida = new String[filas];
-			String[] listaRecuperada = new String[filas];
 			try
 			{
 				FileReader lectorBD = new FileReader(nombreArchivo);
@@ -410,14 +455,8 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				System.out.println("no hay archivo");
 			}
 		}
-		public void habiltarTodo()
+		public void habiltaPanelDetails()//cuando presiona editar
 		{
-			btnAgregar.setEnabled(true);
-			btnReportesGrales.setEnabled(true);
-			btnBorrar.setEnabled(true);
-			btnEditar.setEnabled(true);
-			btnGuardar.setEnabled(true);
-			btnReporteInd.setEnabled(true);
 			txtNombre.setEnabled(true);
 			txtApp.setEnabled(true);
 			txtApm.setEnabled(true);
@@ -428,16 +467,14 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			txtDiasTrabajdos.setEnabled(true);
 			txtAsignaciones.setEnabled(true);
 			txtDeducciones.setEnabled(true);
-			list.setEnabled(true);
+			btnCancelar.setEnabled(true);
+			btnGuardar.setEnabled(true);
+			//btnReporteInd.setEnabled(true);
+			btnEditar.setEnabled(true);
 		}
-		public void deshabilitarTodo()
+		public void deshabilitaPanelDetails()
 		{
-			btnAgregar.setEnabled(false);
-			btnReportesGrales.setEnabled(false);
-			btnBorrar.setEnabled(false);
-			btnEditar.setEnabled(false);
-			btnGuardar.setEnabled(false);
-			btnReporteInd.setEnabled(false);
+			limpiaTextFields();
 			txtNombre.setEnabled(false);
 			txtApp.setEnabled(false);
 			txtApm.setEnabled(false);
@@ -447,252 +484,287 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			txtFechaIngreso.setEnabled(false);
 			txtDiasTrabajdos.setEnabled(false);
 			txtAsignaciones.setEnabled(false);
-			txtDeducciones.setEnabled(false);
-			list.setEnabled(false);
+			txtDeducciones.setEnabled(false);	
+			btnCancelar.setEnabled(false);
+			btnGuardar.setEnabled(false);
+			btnReporteInd.setEnabled(false);
+			btnEditar.setEnabled(false);
 		}
-        public boolean validacion() {
+		public void limpiaTextFields()
+		{
+			//limpiar por si hay algo
+			txtNombre.setText("");
+			txtApp.setText("");
+			txtApm.setText("");
+			txtCargo.setText("");
+			txtSueldo.setText("");
+			txtNominaNum.setText("");
+			txtFechaIngreso.setText("");
+			txtDiasTrabajdos.setText("");
+			txtAsignaciones.setText("");
+			txtDeducciones.setText("");
+			list.clearSelection();
+		}
+		public void habiltaMainPanel()
+		{
+			btnAgregar.setEnabled(true);
+			btnReportesGrales.setEnabled(true);
+			btnBorrar.setEnabled(true);
+			list.setEnabled(true);
+			btnVer.setEnabled(true);
+		}
+		public void deshabilitaMainPanel()
+		{
+			btnAgregar.setEnabled(false);
+			btnReportesGrales.setEnabled(false);
+			btnBorrar.setEnabled(false);
+			list.setEnabled(false);
+			list.clearSelection();
+			btnVer.setEnabled(false);
+		}
+		public boolean validacion() {
 
 			String nomb = txtNombre.getText(),
-			       app = txtApp.getText(),
-			       apm = txtApm.getText(),
-                   fecha = txtFechaIngreso.getText(),
-                   cargo = txtCargo.getText(),
-                   sldo = txtSueldo.getText(),
-                   numNomina =txtNominaNum.getText(),
-                   dias = txtDiasTrabajdos.getText(),
-                   asignaciones = txtAsignaciones.getText(),
-                   deducciones = txtDeducciones.getText();
+				   app = txtApp.getText(),
+				   apm = txtApm.getText(),
+				   fecha = txtFechaIngreso.getText(),
+				   cargo = txtCargo.getText(),
+				   sldo = txtSueldo.getText(),
+				   numNomina =txtNominaNum.getText(),
+				   dias = txtDiasTrabajdos.getText(),
+				   asignaciones = txtAsignaciones.getText(),
+				   deducciones = txtDeducciones.getText();
 
 
-            boolean noError = true;
+			boolean noError = true;
 
-                    // Texto
-                    if (!nomb.matches("\\w+")) {JOptionPane.showMessageDialog(null,"Error en dato: Nombre"); noError = false;}
-                    if (!app.matches("^\\w+(\\s\\w+)?$")) {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Paterno"); noError = false;}
-                    if (!apm.matches("^\\w+(\\s\\w+)?$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Materno"); noError = false;}
-                    if (!cargo.matches("^\\w+((\\s|-)\\w+)?$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Cargo"); noError = false;}
-                    // Número
-                    System.out.println(!fecha.matches("^([1-3]?[0-9])\\/(1?[0-9]|1[1-2])\\/\\d{4}$"));
-                    if (!fecha.matches("^(\\d|[1-2][0-9]|30)\\/(\\d|[1][1-2])\\/\\d{4}$")) {JOptionPane.showMessageDialog(null,"Error en dato: Fecha"); noError = false;}
-                    if (!sldo.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Sueldo"); noError = false;}
-                    if (!numNomina.matches("\\d{3}")) {JOptionPane.showMessageDialog(null,"Error en dato: No. de Nómina"); noError = false;}
-                        else {// Verifica que la nómina no exista ya
-                            for (int i = 0; i < bd[3].length; i++) {
-                                if (numNomina.equals(bd[3][i])) {JOptionPane.showMessageDialog(null,"No. de Nómina ocupado."); noError = false;}
-                            }
-                        }
-                    if (!dias.matches("^([0-9]?[0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-5])$")) {JOptionPane.showMessageDialog(null,"Error en dato: Días trabajados"); noError = false;}
-                    if (!asignaciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Asignaciones"); noError = false;}
-                    if (!deducciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Deducciones"); noError = false;}
-                return noError;
-        }
+					// Texto
+					if (!nomb.matches("\\w+")) {JOptionPane.showMessageDialog(null,"Error en dato: Nombre"); noError = false;}
+					if (!app.matches("^\\w+(\\s\\w+)?$")) {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Paterno"); noError = false;}
+					if (!apm.matches("^\\w+(\\s\\w+)?$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Materno"); noError = false;}
+					if (!cargo.matches("^\\w+((\\s|-)\\w+)?$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Cargo"); noError = false;}
+					// Número
+					System.out.println(!fecha.matches("^([1-3]?[0-9])\\/(1?[0-9]|1[1-2])\\/\\d{4}$"));
+					if (!fecha.matches("^(\\d|[1-2][0-9]|30)\\/(\\d|[1][1-2])\\/\\d{4}$")) {JOptionPane.showMessageDialog(null,"Error en dato: Fecha"); noError = false;}
+					if (!sldo.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Sueldo"); noError = false;}
+					if (!numNomina.matches("\\d{3}")) {JOptionPane.showMessageDialog(null,"Error en dato: No. de Nómina"); noError = false;}
+						else {// Verifica que la nómina no exista ya
+							for (int i = 0; i < bd[3].length; i++) {
+								if (numNomina.equals(bd[3][i])) {JOptionPane.showMessageDialog(null,"No. de Nómina ocupado."); noError = false;}
+							}
+						}
+					if (!dias.matches("^([0-9]?[0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-5])$")) {JOptionPane.showMessageDialog(null,"Error en dato: Días trabajados"); noError = false;}
+					if (!asignaciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Asignaciones"); noError = false;}
+					if (!deducciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Deducciones"); noError = false;}
+				return noError;
+		}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~FIN MÉTODOS AUXILIARES~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ~~~~~~~~~~~~~~~~~~MÉTODOS PARA BASE DE DATOS~~~~~~~~~~~~~~~~~
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-    public class AgregaraBD implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            String command = e.getActionCommand();
-            int indice = 0;
-            boolean error = validacion();
+	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	~~~~~~~~~~~~~~~~~~MÉTODOS PARA BASE DE DATOS~~~~~~~~~~~~~~~~~
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+	public class AgregaraBD implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			String command = e.getActionCommand();
+			int indice = 0;
+			boolean error = validacion();
 
-        if (error) {
-            for (int i = 0; i < bd.length; i++) {
-                if (bd[i][0] == null) { // Si el espacio no esta asignado
-                    System.out.println("Si entro");
-                    indice = i;
-                    // Asignar todos los valores colocados a esa nómina
-                    bd[i][0] = txtNombre.getText();
-                    txtNombre.setText("");
-                    bd[i][1] = txtApp.getText();
-                    txtApp.setText("");
-                    bd[i][2] = txtApm.getText();
-                    txtApm.setText("");
-                    bd[i][3] = txtNominaNum.getText();
-                    txtNominaNum.setText("");
-                    bd[i][4] = txtCargo.getText();
-                    txtCargo.setText("");
-                    bd[i][5] = txtSueldo.getText();
-                    txtSueldo.setText("");
-                    bd[i][6] = txtDiasTrabajdos.getText();
-                    txtDiasTrabajdos.setText("");
-                    bd[i][7] = txtAsignaciones.getText();
-                    txtAsignaciones.setText("");
-                    bd[i][8] = txtDeducciones.getText();
-                    txtDeducciones.setText("");
-                    bd[i][9] = txtFechaIngreso.getText();
-                    txtFechaIngreso.setText("");
-                    JOptionPane.showMessageDialog(null,bd[i][0] + " " + bd[i][1] + " " + bd[i][2] + "\nRegistrado con nómina: " + bd[i][3]);
-                        break;
-                    }
-                }
-                escritorCSV(indice);
-            }
-        }
-    }
+		if (error) {
+			for (int i = 0; i < bd.length; i++) {
+				if (bd[i][0] == null) { // Si el espacio no esta asignado
+					System.out.println("Si entro");
+					indice = i;
+					// Asignar todos los valores colocados a esa nómina
+					bd[i][0] = txtNombre.getText();
+					txtNombre.setText("");
+					bd[i][1] = txtApp.getText();
+					txtApp.setText("");
+					bd[i][2] = txtApm.getText();
+					txtApm.setText("");
+					bd[i][3] = txtNominaNum.getText();
+					txtNominaNum.setText("");
+					bd[i][4] = txtCargo.getText();
+					txtCargo.setText("");
+					bd[i][5] = txtSueldo.getText();
+					txtSueldo.setText("");
+					bd[i][6] = txtDiasTrabajdos.getText();
+					txtDiasTrabajdos.setText("");
+					bd[i][7] = txtAsignaciones.getText();
+					txtAsignaciones.setText("");
+					bd[i][8] = txtDeducciones.getText();
+					txtDeducciones.setText("");
+					bd[i][9] = txtFechaIngreso.getText();
+					txtFechaIngreso.setText("");
+					JOptionPane.showMessageDialog(null,bd[i][0] + " " + bd[i][1] + " " + bd[i][2] + "\nRegistrado con nómina: " + bd[i][3]);
+						break;
+					}
+				}
+				escritorCSV(indice);
+			}
+		}
+	}
 
 
-    public class LectorCSV implements ActionListener { // Para que se active cuando haya una acción
-        public void actionPerformed(ActionEvent event) {
-            int contador = 0;
-            BufferedReader br = null;
-            String c = "",
-            linea = "",
-            separador = ",",
-            command = event.getActionCommand(),
-            csv = System.getProperty("user.dir")+"/bd.csv"; // El archivo que se quiera utilizar como base de datos siempre se debe imprimir
-            File archivo = new File(csv);
+	public class LectorCSV implements ActionListener { // Para que se active cuando haya una acción
+		public void actionPerformed(ActionEvent event) {
+			int contador = 0;
+			BufferedReader br = null;
+			String c = "",
+			linea = "",
+			separador = ",",
+			command = event.getActionCommand(),
+			csv = System.getProperty("user.dir")+"/bd.csv"; // El archivo que se quiera utilizar como base de datos siempre se debe imprimir
+			File archivo = new File(csv);
 
-                if (command.equals("Ingresar")) {
-                    if (txtUser.getText().equals("rob") && String.valueOf(txtPass.getPassword()).equals("123")) {
-                        try {
-                        if (!archivo.exists()) archivo.createNewFile();
-                        br = new BufferedReader(new FileReader(archivo));
-                        while ((linea = br.readLine()) != null) { // Mientras el archivo tenga valores
-                            String[] perfil = linea.split(separador); // Crear un arreglo con los valores de la línea
-                            System.out.println(Arrays.toString(perfil));// Debug
-                            for (int i = 0;i < bd.length; i++) { // Corrobora que espacio de la base de datos esta vacío
-                                if (bd[i][0] == null) { // Si el espacio esta vacío asigna los valores de la línea a la base de datos
-                                    bd[i][0] = perfil[0];
-                                    bd[i][1] = perfil[1];
-                                    bd[i][2] = perfil[2];
-                                    bd[i][3] = perfil[3];
-                                    bd[i][4] = perfil[4];
-                                    bd[i][5] = perfil[5];
-                                    bd[i][6] = perfil[6];
-                                    bd[i][7] = perfil[7];
-                                    bd[i][8] = perfil[8];
-                                    bd[i][9] = perfil[9];
-                                    contador++;
-                                    break;
-                                    }
-                                }
-                            }
-                        }catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } finally {
-                        if (br != null) {
-                            try {
-                                br.close();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
+				if (command.equals("Ingresar")) {
+					if (txtUser.getText().equals("rob") && String.valueOf(txtPass.getPassword()).equals("123")) {
+						try {
+						if (!archivo.exists()) archivo.createNewFile();
+						br = new BufferedReader(new FileReader(archivo));
+						while ((linea = br.readLine()) != null) { // Mientras el archivo tenga valores
+							String[] perfil = linea.split(separador); // Crear un arreglo con los valores de la línea
+							System.out.println(Arrays.toString(perfil));// Debug
+							for (int i = 0;i < bd.length; i++) { // Corrobora que espacio de la base de datos esta vacío
+								if (bd[i][0] == null) { // Si el espacio esta vacío asigna los valores de la línea a la base de datos
+									bd[i][0] = perfil[0];
+									bd[i][1] = perfil[1];
+									bd[i][2] = perfil[2];
+									bd[i][3] = perfil[3];
+									bd[i][4] = perfil[4];
+									bd[i][5] = perfil[5];
+									bd[i][6] = perfil[6];
+									bd[i][7] = perfil[7];
+									bd[i][8] = perfil[8];
+									bd[i][9] = perfil[9];
+									contador++;
+									break;
+									}
+								}
+							}
+						}catch (FileNotFoundException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					} finally {
+						if (br != null) {
+							try {
+								br.close();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+					}
 
-                }
-            }
-            c = Integer.toString(contador);
-            if (txtUser.getText().equals("rob") && String.valueOf(txtPass.getPassword()).equals("123")) {
-                JOptionPane.showMessageDialog(null,c + " perfiles agregados a la base de datos del archivo csv");
-            }
-        }
-    }
-    public class EscritorExcel implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
+				}
+			}
+			c = Integer.toString(contador);
+			if (txtUser.getText().equals("rob") && String.valueOf(txtPass.getPassword()).equals("123")) {
+				JOptionPane.showMessageDialog(null,c + " perfiles agregados a la base de datos del archivo csv");
+			}
+		}
+	}
+	public class EscritorExcel implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
 
-            String command = event.getActionCommand(), d = "";
-            BufferedWriter be = null;
-            String perfiles = "";
-            double sueldo, dias, asignaciones, deducciones, nomina;
+			String command = event.getActionCommand(), d = "";
+			BufferedWriter be = null;
+			String perfiles = "";
+			double sueldo, dias, asignaciones, deducciones, nomina;
 
-            d = System.getProperty("user.dir") + "/reporte.csv";
+			d = System.getProperty("user.dir") + "/reporte.csv";
 
-            try {
-                if (command.equals("Generar Reportes")) {
-                    File reporte = new File(d); // Especifica el nombre del archivo para el reporte
-                    Runtime.getRuntime().exec(new String[]{"rm",d});// Borra el reporte pasado
-                    reporte.createNewFile(); //Crea el archivo del reporte
-                    be = new BufferedWriter(new FileWriter(reporte));
-                    for (int i = -1; i < bd.length; i++) {
-                        if (i == -1) { // Escribe los títulos de columna para el reporte
-                            be.append("Nombre,");
-                            be.append("Apellido Paterno,");
-                            be.append("Apellido Materno,");
-                            be.append("No. Nómina,");
-                            be.append("Cargo,");
-                            be.append("Sueldo,");
-                            be.append("Días Trabajados,");
-                            be.append("Asignaciones,");
-                            be.append("Deducciones,");
-                            be.append("Fecha de Ingreso,");
-                            be.append("Nómina Calculada\n");
-                            continue;
-                        }
+			try {
+				if (command.equals("Generar Reportes")) {
+					File reporte = new File(d); // Especifica el nombre del archivo para el reporte
+					Runtime.getRuntime().exec(new String[]{"rm",d});// Borra el reporte pasado
+					reporte.createNewFile(); //Crea el archivo del reporte
+					be = new BufferedWriter(new FileWriter(reporte));
+					for (int i = -1; i < bd.length; i++) {
+						if (i == -1) { // Escribe los títulos de columna para el reporte
+							be.append("Nombre,");
+							be.append("Apellido Paterno,");
+							be.append("Apellido Materno,");
+							be.append("No. Nómina,");
+							be.append("Cargo,");
+							be.append("Sueldo,");
+							be.append("Días Trabajados,");
+							be.append("Asignaciones,");
+							be.append("Deducciones,");
+							be.append("Fecha de Ingreso,");
+							be.append("Nómina Calculada\n");
+							continue;
+						}
 
-                        // Escribe al reporte
-                        escritorCSV(i);
-                        if (bd[i][0] == null) continue;
-                        be.append(bd[i][0]+",");// Nombre
-                        be.append(bd[i][1]+",");// APP
-                        be.append(bd[i][2]+",");// APM
-                        be.append(bd[i][3]+",");// No. Nómina
-                        be.append(bd[i][4]+",");// Cargo
-                        be.append(bd[i][5]+",");// Sueldo
-                        be.append(bd[i][6]+",");// Días Trabajados
-                        be.append(bd[i][7]+",");// Asignaciones
-                        be.append(bd[i][8]+",");// Deducciones
-                        be.append(bd[i][9]+",");// Fecha de Ingreso
-                        //Cálculo de nómina
-                        sueldo = Double.parseDouble(bd[i][5]);
-                        dias = Double.parseDouble(bd[i][6]);
-                        asignaciones = Double.parseDouble(bd[i][7]);
-                        deducciones = Double.parseDouble(bd[i][8]);
-                        nomina = sueldo*dias+asignaciones-deducciones;
-                        be.append(Double.toString(nomina)+"\n");// Nómina
-                    }
-                    Runtime.getRuntime().exec(new String[]{"open",d});
-                }
-            }  catch (IOException ioe) {
-                ioe.printStackTrace();
-                }
-                finally {
-                    try {
-                        if (be != null) be.close();
-                    } catch (Exception ex) {
-                        System.out.println("Error in closing the BufferedWriter"+ex);
-                    }
-                }
-            }
-        }
-        public void escritorCSV(int indice) {
-            BufferedWriter bw = null;
+						// Escribe al reporte
+						escritorCSV(i);
+						if (bd[i][0] == null) continue;
+						be.append(bd[i][0]+",");// Nombre
+						be.append(bd[i][1]+",");// APP
+						be.append(bd[i][2]+",");// APM
+						be.append(bd[i][3]+",");// No. Nómina
+						be.append(bd[i][4]+",");// Cargo
+						be.append(bd[i][5]+",");// Sueldo
+						be.append(bd[i][6]+",");// Días Trabajados
+						be.append(bd[i][7]+",");// Asignaciones
+						be.append(bd[i][8]+",");// Deducciones
+						be.append(bd[i][9]+",");// Fecha de Ingreso
+						//Cálculo de nómina
+						sueldo = Double.parseDouble(bd[i][5]);
+						dias = Double.parseDouble(bd[i][6]);
+						asignaciones = Double.parseDouble(bd[i][7]);
+						deducciones = Double.parseDouble(bd[i][8]);
+						nomina = sueldo*dias+asignaciones-deducciones;
+						be.append(Double.toString(nomina)+"\n");// Nómina
+					}
+					Runtime.getRuntime().exec(new String[]{"open",d});
+				}
+			}  catch (IOException ioe) {
+				ioe.printStackTrace();
+				}
+				finally {
+					try {
+						if (be != null) be.close();
+					} catch (Exception ex) {
+						System.out.println("Error in closing the BufferedWriter"+ex);
+					}
+				}
+			}
+		}
+		public void escritorCSV(int indice) {
+			BufferedWriter bw = null;
 
-            try {
-                File archivoCSV = new File(System.getProperty("user.dir")  + "/bd.csv");
-                if (!archivoCSV.exists()) archivoCSV.createNewFile();
-                bw = new BufferedWriter(new FileWriter(archivoCSV));
-                    bw.append(bd[indice][0] + ",");
-                    bw.append(bd[indice][1] + ",");
-                    bw.append(bd[indice][2] + ",");
-                    bw.append(bd[indice][3] + ",");
-                    bw.append(bd[indice][4] + ",");
-                    bw.append(bd[indice][5] + ",");
-                    bw.append(bd[indice][6] + ",");
-                    bw.append(bd[indice][7] + ",");
-                    bw.append(bd[indice][8] + ",");
-                    bw.append(bd[indice][9] + "\n");
-            } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
-            } catch (IOException e1) {
-                    e1.printStackTrace();
-            } finally {
-                if (bw != null) {
-                    try {
-                        bw.close();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
+			try {
+				File archivoCSV = new File(System.getProperty("user.dir")  + "/bd.csv");
+				if (!archivoCSV.exists()) archivoCSV.createNewFile();
+				bw = new BufferedWriter(new FileWriter(archivoCSV));
+					bw.append(bd[indice][0] + ",");
+					bw.append(bd[indice][1] + ",");
+					bw.append(bd[indice][2] + ",");
+					bw.append(bd[indice][3] + ",");
+					bw.append(bd[indice][4] + ",");
+					bw.append(bd[indice][5] + ",");
+					bw.append(bd[indice][6] + ",");
+					bw.append(bd[indice][7] + ",");
+					bw.append(bd[indice][8] + ",");
+					bw.append(bd[indice][9] + "\n");
+			} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+			} catch (IOException e1) {
+					e1.printStackTrace();
+			} finally {
+				if (bw != null) {
+					try {
+						bw.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
 
-        }
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ~~~~~~~~~~~~~~~~~~FIN MÉTODOS BD~~~~~~~~~~~~~~~~~
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+		}
+	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	~~~~~~~~~~~~~~~~~~FIN MÉTODOS BD~~~~~~~~~~~~~~~~~
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 }
