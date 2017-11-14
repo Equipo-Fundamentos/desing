@@ -1,6 +1,6 @@
 ToDo
-*Validar dos nombres
-*Validar acentos
-*Hacer mayuscula la primera
+*Validar dos nombres (Listo)
+*Validar acentos (Listo)
+*Hacer mayuscula la primera (Falta que se guarde en la bd[] con mayúsculas)
 *Validar años (no fechas en futuro)
 *Eliminar debugs feos en la terminal
