@@ -376,6 +376,8 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				btnReporteInd.setEnabled(true);
 				btnEditar.setEnabled(true);
 				lblStatus.setText("Desplegando detalles de empleado seleccionado");
+				System.out.print("index selccionado: "+list.getSelectedIndex());
+				System.out.println(", valor en el index: "+list.getSelectedValue());
 			}
 		}
 	//clic en editar
