@@ -48,6 +48,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			JPasswordField txtPass;
 			JLabel lblTitulo,lblStatus;
 			JList<String> list;
+			DefaultListModel<String> listModel;
         /* ====== Base de datos (Arreglo bidimensional) ==== */
         String[][] bd = new String [100][10];
             /*
@@ -123,30 +124,12 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				panelMainList.setLayout(new java.awt.BorderLayout());
 				panelMainList.setBackground(new java.awt.Color(189, 195, 199));
 					//generar  la lista!
-					DefaultListModel<String> listModel = new DefaultListModel<>();
-					String nombreArchivo = "bd.csv", datosLeidos;
-						int filas=100;
-						String[] listaLeida = new String[filas];
-						String[] listaRecuperada = new String[filas];
-						try
-						{
-							FileReader lectorBD = new FileReader(nombreArchivo);
-							BufferedReader brBD = new BufferedReader(lectorBD);
-							while((datosLeidos = brBD.readLine())!=null)
-							{
-								listaLeida = datosLeidos.split(",");
-								listModel.addElement(listaLeida[3]);
+					listModel = new DefaultListModel<>();
+					JScrollPane scrollPane = new JScrollPane();
+					list = new JList<>(listModel);
+					scrollPane.setViewportView(list);
 
-							}
-							lectorBD.close();
-						}
-						catch(IOException e)
-						{
-							System.out.println("no hay archivo");
-						}
-						JScrollPane scrollPane = new JScrollPane();
-						list = new JList<>(listModel);
-						scrollPane.setViewportView(list);
+					actualizaList();
 					// fin generacion lista
 				panelMainList.add(new JLabel("Empleados(nóminas)"),java.awt.BorderLayout.NORTH);
 				panelMainList.add(list);
@@ -320,6 +303,8 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             //quitar en production
             txtUser.setText("rob");
             txtPass.setText("123");
+            //borrar solo es usado como ejemplo
+            btnBorrar.addActionListener(new UpdateList());
 
 
 		/* ========================================== */
@@ -386,6 +371,14 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				dispose();
 			}
 		}
+	//Actualizar list prueba
+		public class UpdateList implements ActionListener
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				actualizaList();
+			}
+		}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~FIN CREACIÓN DE MÉTODOS PARA LOS CONTROLES~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -393,6 +386,30 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~MÉTODOS AUXILIARES~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+		public void actualizaList()
+		{
+			listModel.removeAllElements();
+			String nombreArchivo = "bd.csv", datosLeidos;
+			int filas=100;
+			String[] listaLeida = new String[filas];
+			String[] listaRecuperada = new String[filas];
+			try
+			{
+				FileReader lectorBD = new FileReader(nombreArchivo);
+				BufferedReader brBD = new BufferedReader(lectorBD);
+				while((datosLeidos = brBD.readLine())!=null)
+				{
+					listaLeida = datosLeidos.split(",");
+					listModel.addElement(listaLeida[3]);
+
+				}
+				lectorBD.close();
+			}
+			catch(IOException e)
+			{
+				System.out.println("no hay archivo");
+			}
+		}
 		public void habiltarTodo()
 		{
 			btnAgregar.setEnabled(true);
