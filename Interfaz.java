@@ -750,8 +750,8 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 						nomina = sueldo*dias+asignaciones-deducciones;
 						be.append(Double.toString(nomina)+"\n");// Nómina
 					}
-                    if (os.equals("Mac OS X")) Runtime.getRuntime().exec(new String[]{"open",d};
-                    if (os.equals("Linux")) Runtime.getRuntime();exec(new String[] {"xdg-open",d});
+                    if (os.equals("Mac OS X")) Runtime.getRuntime().exec(new String[]{"open",d});
+                    if (os.equals("Linux")) Runtime.getRuntime().exec(new String[] {"xdg-open",d});
                     //if (os.equals("")) Runtime.getRuntime();exec(new String[] {"",d});
 				}
 			}  catch (IOException ioe) {
