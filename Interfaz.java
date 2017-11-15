@@ -698,17 +698,21 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
         }
     public class BorrardeBD implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+            File bd = null;
+            BufferedWriter bw = null;
+            String d;
+
+            d = System.getProperty("user.dir") + "/bd.csv";
+            bd = new File(d);
+
+
+
 
         }
     }
 	public class EscritorExcel implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-
-<<<<<<< HEAD
-			String command = event.getActionCommand(), d = "", os;
-=======
-			String command = event.getActionCommand(), d = "", os = "";
->>>>>>> 7388399e5215ea01368acc1ef2a146fadd831d92
+            String command = event.getActionCommand(), d = "", os = "";
 			BufferedWriter be = null;
 			String perfiles = "";
 			double sueldo, dias, asignaciones, deducciones, nomina;
@@ -761,17 +765,13 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                     if (os.equals("Mac OS X")) Runtime.getRuntime().exec(new String[]{"open",d});
                     if (os.equals("Linux")) Runtime.getRuntime().exec(new String[] {"xdg-open",d});
                     //if (os.equals("")) Runtime.getRuntime();exec(new String[] {"",d});
-<<<<<<< HEAD
-=======
-				}
->>>>>>> 7388399e5215ea01368acc1ef2a146fadd831d92
-			}  catch (IOException ioe) {
-				ioe.printStackTrace();
-				}
+                }  catch (IOException ioe) {
+				                ioe.printStackTrace();
+                    }
 				finally {
-					try {
+                    try {
 						if (be != null) be.close();
-					} catch (Exception ex) {
+                    } catch (Exception ex) {
 						System.out.println("Error in closing the BufferedWriter"+ex);
 					}
 				}
