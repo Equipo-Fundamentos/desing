@@ -32,12 +32,12 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 		/* ====== elementos a usar similar a variables ==== */
 			JPanel 	panelLogIn,panelLogInContent,panelLogInAux,panelLogInAux2, //panel login
-					panelMain,panelMainTitle,panelMainButtons,panelMainList,panelBtnVerBorrar, //panel main
+					panelMain,panelMainTitle,panelMainButtons,panelMainList,panelBtnActVerBorrar, //panel main
 					panelDetails,panelDetailsButtons,panelDetailsControles,panelDetailsSaveCancel, //panel details
 					panelFooter,panelFooterHora; //panel footer
 
 			JButton btnIngresar,// panel login
-					btnAgregar,btnReportesGrales,btnVer,btnBorrar, //panel main
+					btnAgregar,btnReportesGrales,btnVer,btnBorrar, btnActualizar, //panel main
 					btnEditar, btnGuardar ,btnReporteInd, btnCancelar, //panel details
 					btnCerrar; // panel footer
 
@@ -125,26 +125,29 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				panelMainList.setBackground(new java.awt.Color(189, 195, 199));
 					//generar  la lista!
 					listModel = new DefaultListModel<>();
-					JScrollPane scrollPane = new JScrollPane();
-					list = new JList<>(listModel);
-					scrollPane.setViewportView(list);
-
+					list = new JList<>();
+					list.setPreferredSize(new java.awt.Dimension(140,400));
+					list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+					JScrollPane scrollPane = new JScrollPane(list); 
 					actualizaList();// llena con lo que hay en la bd
 					// fin generacion lista
 				panelMainList.add(new JLabel("Empleados(nóminas)"),java.awt.BorderLayout.NORTH);
 				panelMainList.add(list);
-				panelBtnVerBorrar = new JPanel();// panel que tendra el boton de borrar
+				panelBtnActVerBorrar = new JPanel();// panel que tendra el boton de borrar
 					btnBorrar = new JButton("Borrar");
 					btnBorrar.setToolTipText("Eliminar el empleado seleccionado");
 					btnVer = new JButton("Ver");
 					btnVer.setToolTipText("Mostrará los detalles de esta nómina->");
-					panelBtnVerBorrar.setBackground(new java.awt.Color(189, 195, 199));
-					panelBtnVerBorrar.add(btnVer);
-					panelBtnVerBorrar.add(btnBorrar);
+					btnActualizar = new JButton("Actualizar");
+					btnActualizar.setToolTipText("Vuelve a leer la BD");
+					panelBtnActVerBorrar.setBackground(new java.awt.Color(189, 195, 199));
+					panelBtnActVerBorrar.add(btnActualizar);
+					panelBtnActVerBorrar.add(btnVer);
+					panelBtnActVerBorrar.add(btnBorrar);
 
 			panelMain.add(panelMainTitle,java.awt.BorderLayout.NORTH); //quede hasta arriba
 			panelMain.add(panelMainList); //cubra lo que sobra
-			panelMain.add(panelBtnVerBorrar,java.awt.BorderLayout.SOUTH);//quede hasta abajo
+			panelMain.add(panelBtnActVerBorrar,java.awt.BorderLayout.SOUTH);//quede hasta abajo
 
 		//panel Details
 			panelDetails = new JPanel();// panel de lado derecho
@@ -308,7 +311,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			btnCancelar.addActionListener(new DeshabilitaTextFields());
 			btnVer.addActionListener(new VerDetallesEmpleado());
 			btnEditar.addActionListener(new EditarEmpleado());
-			btnBorrar.addActionListener(new PruebaList());
+			btnActualizar.addActionListener(new ActualizaJList());
 			// Adición a BD
 			btnGuardar.addActionListener(new AgregaraBD());
 			btnReportesGrales.addActionListener(new EscritorExcel());
@@ -327,7 +330,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	/* ######agregar a los controles instanciados los eventos#####*/
 		boolean session = false;
-	public class PruebaList implements ActionListener
+	public class ActualizaJList implements ActionListener
 		{
 			public void actionPerformed(ActionEvent e)
 			{
@@ -381,7 +384,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				if(list.getSelectedIndex()!=-1)// o sea si selecciono alguien
+				if(!list.isSelectionEmpty())// o sea si selecciono alguien
 				{
 					btnReporteInd.setEnabled(true);
 					btnEditar.setEnabled(true);
@@ -464,10 +467,11 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				while((datosLeidos = brBD.readLine())!=null)
 				{
 					listaLeida = datosLeidos.split(",");
-					listModel.addElement(listaLeida[3]);
+					listModel.addElement(listaLeida[0]+" - "+listaLeida[3]);
 
 				}
 				lectorBD.close();
+				list.setModel(listModel);
 			}
 			catch(IOException e)
 			{
@@ -531,6 +535,8 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			btnBorrar.setEnabled(true);
 			list.setEnabled(true);
 			btnVer.setEnabled(true);
+			lblStatus.setText("CONECTADO");
+			btnActualizar.setEnabled(true);
 		}
 		public void deshabilitaMainPanel()
 		{
@@ -540,6 +546,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			list.setEnabled(false);
 			list.clearSelection();
 			btnVer.setEnabled(false);
+			btnActualizar.setEnabled(false);
 		}
 		public boolean validacion() {
 
@@ -618,30 +625,20 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					indice = i;
 					// Asignar todos los valores colocados a esa nómina
 					bd[i][0] = txtNombre.getText();
-					//txtNombre.setText("");
 					bd[i][1] = txtApp.getText();
-					//txtApp.setText("");
 					bd[i][2] = txtApm.getText();
-					//txtApm.setText("");
 					bd[i][3] = txtNominaNum.getText();
-					//txtNominaNum.setText("");
 					bd[i][4] = txtCargo.getText();
-					//txtCargo.setText("");
 					bd[i][5] = txtSueldo.getText();
-					//txtSueldo.setText("");
 					bd[i][6] = txtDiasTrabajdos.getText();
-					//txtDiasTrabajdos.setText("");
 					bd[i][7] = txtAsignaciones.getText();
-					//txtAsignaciones.setText("");
 					bd[i][8] = txtDeducciones.getText();
-					//txtDeducciones.setText("");
 					bd[i][9] = txtFechaIngreso.getText();
-					//txtFechaIngreso.setText("");
 					deshabilitaPanelDetails();
 					habiltaMainPanel();
-					actualizaList();
 					limpiaTextFields();
 					JOptionPane.showMessageDialog(null,bd[i][0] + " " + bd[i][1] + " " + bd[i][2] + "\nRegistrado con nómina: " + bd[i][3]);
+					actualizaList();
 						break;
 					}
 				}
