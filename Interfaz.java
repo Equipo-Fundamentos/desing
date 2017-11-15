@@ -565,11 +565,11 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 
 			// Texto
 			if (!nomb.matches("^\\w+(\\s?\\w+)?$")) {JOptionPane.showMessageDialog(null,"Error en dato: Nombre"); noError = false;}
-			if (!app.matches("^\\w+\\s?\\w+\\s?[áéíóí]?(\\s\\w+|\\w+)?$")) {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Paterno"); noError = false;}
-			if (!apm.matches("^\\w+\\s?\\w+\\s?[áéíóí]?(\\s\\w+|\\w+)?$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Materno"); noError = false;}
-			if (!cargo.matches("^\\w+\\s?\\w+\\s?[áéíóí]?(-|\\s\\w+|\\w+)?$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Cargo"); noError = false;}
+			if (!app.matches("^\\w+[áéíóú]?(\\s\\w+[áéíóí]?|\\w+[áéíóú]?)*$")) {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Paterno"); noError = false;}
+			if (!apm.matches("^\\w+[áéíóú]?(\\s\\w+[áéíóí]?|\\w+[áéíóú]?)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Materno"); noError = false;}
+			if (!cargo.matches("^\\w+[áéíóú]?(-|\\s\\w+|\\w+)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Cargo"); noError = false;}
 			// Número
-            if (!fecha.matches("^(\\d|[1-2][0-9]|30)\\/(\\d|[1][0-2])\\/\\(20[0-9]|201[0-7])$")) {
+            if (!fecha.matches("^(\\d|[1-2][0-9]|30)\\/(\\d|[1][0-2])\\/(20[0-9]|201[0-7])$")) {
                 JOptionPane.showMessageDialog(null,"Error en dato: Fecha"); noError = false;
             }
 			if (!sldo.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Sueldo"); noError = false;}
@@ -584,6 +584,28 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			if (!deducciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Deducciones"); noError = false;}
 
             return noError;// Regresa si las validaciones fueron correctas.
+        }
+        public String aMayus(String texto) {
+            int inicial, espacio, letra, l;
+
+            l = texto.length();
+            // Si la inicial es minúscula cambiala
+            inicial = texto.codePointAt(0);
+            if (inicial <= 122 && inicial >= 97) {
+                texto = String.valueOf(Character.toChars(inicial - 32)) + texto.substring(1, l);
+            }
+
+            for (int i = 0; i < l; i++) {
+                espacio = texto.codePointAt(i);
+                if (espacio == 32) {
+                        if (i == l - 1) texto = texto.substring(0, l - 1);
+                        else {
+                            letra = texto.codePointAt(i + 1);
+                            texto = texto.substring(0, i + 1) + String.valueOf(Character.toChars(letra - 32)) + texto.substring(i + 2, l);
+                        }
+                }
+            }
+            return texto;
         }
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~FIN MÉTODOS AUXILIARES~~~~~~~~~~~~~~~~~
@@ -604,11 +626,11 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					System.out.println("Si entro");
 					indice = i;
 					// Asignar todos los valores colocados a esa nómina
-					bd[i][0] = txtNombre.getText();
-					bd[i][1] = txtApp.getText();
-					bd[i][2] = txtApm.getText();
+					bd[i][0] = aMayus(txtNombre.getText());
+					bd[i][1] = aMayus(txtApp.getText());
+					bd[i][2] = aMayus(txtApm.getText());
 					bd[i][3] = txtNominaNum.getText();
-					bd[i][4] = txtCargo.getText();
+					bd[i][4] = aMayus(txtCargo.getText());
 					bd[i][5] = txtSueldo.getText();
 					bd[i][6] = txtDiasTrabajdos.getText();
 					bd[i][7] = txtAsignaciones.getText();
