@@ -128,7 +128,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					list = new JList<>();
 					list.setPreferredSize(new java.awt.Dimension(140,400));
 					list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-					JScrollPane scrollPane = new JScrollPane(list); 
+					JScrollPane scrollPane = new JScrollPane(list);
 					actualizaList();// llena con lo que hay en la bd
 					// fin generacion lista
 				panelMainList.add(new JLabel("Empleados(nóminas)"),java.awt.BorderLayout.NORTH);
@@ -652,60 +652,48 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		public void actionPerformed(ActionEvent event) {
 			int contador = 0;
 			BufferedReader br = null;
-			String c = "",
 			linea = "",
 			separador = ",",
 			command = event.getActionCommand(),
 			csv = System.getProperty("user.dir")+"/bd.csv"; // El archivo que se quiera utilizar como base de datos siempre se debe imprimir
 			File archivo = new File(csv);
-
-				if (command.equals("Ingresar")) {
-					if (txtUser.getText().equals("rob") && String.valueOf(txtPass.getPassword()).equals("123")) {
-						try {
-						if (!archivo.exists()) archivo.createNewFile();
-						br = new BufferedReader(new FileReader(archivo));
-						while ((linea = br.readLine()) != null) { // Mientras el archivo tenga valores
-							String[] perfil = linea.split(separador); // Crear un arreglo con los valores de la línea
-							System.out.println(Arrays.toString(perfil));// Debug
-							for (int i = 0;i < bd.length; i++) { // Corrobora que espacio de la base de datos esta vacío
-								if (bd[i][0] == null) { // Si el espacio esta vacío asigna los valores de la línea a la base de datos
-									bd[i][0] = perfil[0];
-									bd[i][1] = perfil[1];
-									bd[i][2] = perfil[2];
-									bd[i][3] = perfil[3];
-									bd[i][4] = perfil[4];
-									bd[i][5] = perfil[5];
-									bd[i][6] = perfil[6];
-									bd[i][7] = perfil[7];
-									bd[i][8] = perfil[8];
-									bd[i][9] = perfil[9];
-									contador++;
-									break;
-									}
-								}
-							}
-						}catch (FileNotFoundException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					} finally {
-						if (br != null) {
-							try {
-								br.close();
-							} catch (IOException e) {
-								e.printStackTrace();
+                try {
+					if (!archivo.exists()) archivo.createNewFile();
+					br = new BufferedReader(new FileReader(archivo));
+					while ((linea = br.readLine()) != null) { // Mientras el archivo tenga valores
+                        String[] perfil = linea.split(separador); // Crear un arreglo con los valores de la línea
+						for (int i = 0;i < bd.length; i++) { // Corrobora que espacio de la base de datos esta vacío
+							if (bd[i][0] == null) { // Si el espacio esta vacío asigna los valores de la línea a la base de datos
+								bd[i][0] = perfil[0];
+								bd[i][1] = perfil[1];
+								bd[i][2] = perfil[2];
+								bd[i][3] = perfil[3];
+								bd[i][4] = perfil[4];
+								bd[i][5] = perfil[5];
+	     						bd[i][6] = perfil[6];
+								bd[i][7] = perfil[7];
+								bd[i][8] = perfil[8];
+								bd[i][9] = perfil[9];
+								contador++;
+								break;
 							}
 						}
 					}
-
+				} catch (FileNotFoundException e) {
+						e.printStackTrace();
+				} catch (IOException e) {
+						e.printStackTrace();
+				} finally {
+					if (br != null) {
+						try {
+							br.close();
+						} catch (IOException e) {
+                            e.printStackTrace();
+                            }
+                    }
 				}
-			}
-			c = Integer.toString(contador);
-			if (txtUser.getText().equals("rob") && String.valueOf(txtPass.getPassword()).equals("123")) {
-				JOptionPane.showMessageDialog(null,c + " perfiles agregados a la base de datos del archivo csv");
-			}
-		}
-	}
+            }
+        }
 	public class EscritorExcel implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 

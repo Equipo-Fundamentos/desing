@@ -4,4 +4,4 @@ ToDo
 *Hacer mayuscula la primera (Falta que se guarde en la bd[] con mayúsculas)
 *Validar años (no fechas en futuro)
 *Eliminar debugs feos en la terminal
-*Quitar validaciones innecesarias en Lector CSV
+*Quitar validaciones innecesarias en Lector CSV (Listo)
