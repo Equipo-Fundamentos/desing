@@ -699,12 +699,13 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	public class EscritorExcel implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 
-			String command = event.getActionCommand(), d = "";
+			String command = event.getActionCommand(), d = "", os = "";
 			BufferedWriter be = null;
 			String perfiles = "";
 			double sueldo, dias, asignaciones, deducciones, nomina;
 
 			d = System.getProperty("user.dir") + "/reporte.csv";
+            os = System.getProperty("os.name");
 
 			try {
 				if (command.equals("Generar Reportes")) {
@@ -749,7 +750,9 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 						nomina = sueldo*dias+asignaciones-deducciones;
 						be.append(Double.toString(nomina)+"\n");// Nómina
 					}
-					Runtime.getRuntime().exec(new String[]{"open",d});
+                    if (os.equals("Mac OS X")) Runtime.getRuntime().exec(new String[]{"open",d};
+                    if (os.equals("Linux")) Runtime.getRuntime();exec(new String[] {"xdg-open",d});
+                    //if (os.equals("")) Runtime.getRuntime();exec(new String[] {"",d});
 				}
 			}  catch (IOException ioe) {
 				ioe.printStackTrace();
@@ -769,7 +772,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			try {
 				File archivoCSV = new File(System.getProperty("user.dir")  + "/bd.csv");
 				if (!archivoCSV.exists()) archivoCSV.createNewFile();
-				bw = new BufferedWriter(new FileWriter(archivoCSV,true));
+				bw = new BufferedWriter(new FileWriter(archivoCSV));
 					bw.append(bd[indice][0] + ",");
 					bw.append(bd[indice][1] + ",");
 					bw.append(bd[indice][2] + ",");
