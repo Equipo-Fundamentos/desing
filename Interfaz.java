@@ -564,12 +564,12 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             boolean noError = true;
 
 			// Texto
-			if (!nomb.matches("^\\w+(\\s?\\w+)?$")) {JOptionPane.showMessageDialog(null,"Error en dato: Nombre"); noError = false;}
-			if (!app.matches("^\\w+[áéíóú]?(\\s\\w+[áéíóí]?|\\w+[áéíóú]?)*$")) {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Paterno"); noError = false;}
-			if (!apm.matches("^\\w+[áéíóú]?(\\s\\w+[áéíóí]?|\\w+[áéíóú]?)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Materno"); noError = false;}
+			if (!nomb.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$")) {JOptionPane.showMessageDialog(null,"Error en dato: Nombre"); noError = false;}
+			if (!app.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$")) {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Paterno"); noError = false;}
+			if (!apm.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Materno"); noError = false;}
 			if (!cargo.matches("^\\w+[áéíóú]?(-|\\s\\w+|\\w+)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Cargo"); noError = false;}
 			// Número
-            if (!fecha.matches("^(\\d|[1-2][0-9]|30)\\/(\\d|[1][0-2])\\/(20[0-9]|201[0-7])$")) {
+            if (!fecha.matches("(\\d|[1-2][0-9]|30)\\/(\\d|[1][0-2])\\/(200[0-9]|201[0-7])")) {
                 JOptionPane.showMessageDialog(null,"Error en dato: Fecha"); noError = false;
             }
 			if (!sldo.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Sueldo"); noError = false;}
