@@ -709,7 +709,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			try {
 				if (command.equals("Generar Reportes")) {
 					File reporte = new File(d); // Especifica el nombre del archivo para el reporte
-					Runtime.getRuntime().exec(new String[]{"rm",d});// Borra el reporte pasado
+					if (reporte.exists()) reporte.delete();
 					reporte.createNewFile(); //Crea el archivo del reporte
 					be = new BufferedWriter(new FileWriter(reporte));
 					for (int i = -1; i < bd.length; i++) {
@@ -729,7 +729,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 						}
 
 						// Escribe al reporte
-						escritorCSV(i);
+
 						if (bd[i][0] == null) continue;
 						be.append(bd[i][0]+",");// Nombre
 						be.append(bd[i][1]+",");// APP
