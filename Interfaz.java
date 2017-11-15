@@ -569,7 +569,9 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			if (!apm.matches("^\\w+\\s?\\w+\\s?[áéíóí]?(\\s\\w+|\\w+)?$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Materno"); noError = false;}
 			if (!cargo.matches("^\\w+\\s?\\w+\\s?[áéíóí]?(-|\\s\\w+|\\w+)?$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Cargo"); noError = false;}
 			// Número
-			System.out.println(!fecha.matches("^([1-3]?[0-9])\\/(1?[0-9]|1[1-2])\\/\\d{4}$"));					if (!fecha.matches("^(\\d|[1-2][0-9]|30)\\/(\\d|[1][0-2])\\/\\d{4}$")) {JOptionPane.showMessageDialog(null,"Error en dato: Fecha"); noError = false;}
+            if (!fecha.matches("^(\\d|[1-2][0-9]|30)\\/(\\d|[1][0-2])\\/\\(20[0-9]|201[0-7])$")) {
+                JOptionPane.showMessageDialog(null,"Error en dato: Fecha"); noError = false;
+            }
 			if (!sldo.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Sueldo"); noError = false;}
 			if (!numNomina.matches("\\d{3}")) {JOptionPane.showMessageDialog(null,"Error en dato: No. de Nómina"); noError = false;}
                 else {// Verifica que la nómina no exista
@@ -580,30 +582,8 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			if (!dias.matches("^([0-9]?[0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-5])$")) {JOptionPane.showMessageDialog(null,"Error en dato: Días trabajados"); noError = false;}
 			if (!asignaciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Asignaciones"); noError = false;}
 			if (!deducciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Deducciones"); noError = false;}
-            // Cambia minúsculas a mayúsculas (incluye letras después de espacios)
-            if (noError) {
-                for (int i = 0; i < palabras.length; i++) {
-                    int inicial = palabras[i].codePointAt(0);
-                    // Si la letra al principio de la palabra es minúscula cambiala
-                    if (inicial >= 97 && inicial <= 122) {
 
-                        palabras[i] = String.valueOf(Character.toChars(inicial - 32)) + palabras[i].substring(1, palabras[i].length());
-                    }
-                    // Busca si hay espacios y si la letra después del espacio es minúscula cambiala
-                    for (int j = 0; j < palabras[i].length(); j++) {
-                        int espacio = palabras[i].codePointAt(j);
-                        if (espacio == 32 && j != palabras[i].length() - 1) {
-                            int letra = palabras[i].codePointAt(j + 1);
-                            if (letra >= 97 && letra <= 122) {
-                                palabras[i] = palabras[i].substring(0, j + 1) + String.valueOf(Character.toChars(letra - 32)) + palabras[i].substring(j + 2, palabras[i].length());
-                            }
-                        }
-                    }
-                    // Corrige de inmediato lo escrito
-
-                }
-            }
-                    return noError;
+            return noError;// Regresa si las validaciones fueron correctas.
         }
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~FIN MÉTODOS AUXILIARES~~~~~~~~~~~~~~~~~
@@ -652,7 +632,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		public void actionPerformed(ActionEvent event) {
 			int contador = 0;
 			BufferedReader br = null;
-			linea = "",
+			String linea = "",
 			separador = ",",
 			command = event.getActionCommand(),
 			csv = System.getProperty("user.dir")+"/bd.csv"; // El archivo que se quiera utilizar como base de datos siempre se debe imprimir
