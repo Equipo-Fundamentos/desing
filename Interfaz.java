@@ -696,6 +696,11 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				}
             }
         }
+    public class BorrardeBD implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
 	public class EscritorExcel implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 
@@ -707,7 +712,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			d = System.getProperty("user.dir") + "/reporte.csv";
 
 			try {
-				if (command.equals("Generar Reportes")) {
 					File reporte = new File(d); // Especifica el nombre del archivo para el reporte
 					if (reporte.exists()) reporte.delete();
 					reporte.createNewFile(); //Crea el archivo del reporte
@@ -750,7 +754,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 						be.append(Double.toString(nomina)+"\n");// Nómina
 					}
 					Runtime.getRuntime().exec(new String[]{"open",d});
-				}
 			}  catch (IOException ioe) {
 				ioe.printStackTrace();
 				}
