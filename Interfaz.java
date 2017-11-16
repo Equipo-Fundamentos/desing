@@ -390,14 +390,43 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					btnEditar.setEnabled(true);
 					btnCancelar.setEnabled(true);
 					lblStatus.setText("Desplegando detalles de empleado seleccionado");
+					String nombreArchivo = "bd.csv", datosLeidos;
+					int filas=100,lineaALeer=list.getSelectedIndex()+1,contaux=0;
+					String[] listaLeida = new String[filas];
+					try
+					{
+						FileReader lectorTXT = new FileReader(nombreArchivo);
+						BufferedReader brTXT = new BufferedReader(lectorTXT);
+						while(contaux<lineaALeer)
+						{
+							contaux++;
+							datosLeidos = brTXT.readLine();
+							listaLeida = datosLeidos.split(",");
+							txtNombre.setText(listaLeida[0]);
+							txtApp.setText(listaLeida[1]);
+							txtApm.setText(listaLeida[2]);
+							txtCargo.setText(listaLeida[4]);
+							txtSueldo.setText(listaLeida[5]);
+							txtFechaIngreso.setText(listaLeida[9]);
+							txtNominaNum.setText(listaLeida[3]);
+							txtDiasTrabajdos.setText(listaLeida[6]);
+							txtAsignaciones.setText(listaLeida[7]);
+							txtDeducciones.setText(listaLeida[8]);
+						}
+						lectorTXT.close();
+					}
+					catch(IOException ev)
+					{
+						System.out.println("no hay archivo");
+					}
 				}
 				else
 				{
 					JOptionPane.showMessageDialog(null,"Por favor seleccione a alguien", "miSueldo",
 					JOptionPane.WARNING_MESSAGE);
 				}
-				System.out.print("index selccionado: "+list.getSelectedIndex());
-				System.out.println(", valor en el index: "+list.getSelectedValue());
+				//System.out.print("index selccionado: "+list.getSelectedIndex());
+				//System.out.println(", valor en el index: "+list.getSelectedValue());
 			}
 		}
 	//clic en editar
@@ -408,6 +437,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				habiltaPanelDetails();
 				deshabilitaMainPanel();
 				btnReporteInd.setEnabled(false);
+				btnEditar.setEnabled(false);
 				lblStatus.setText("Modificando datos");
 			}
 		}
@@ -480,16 +510,16 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		}
 		public void habiltaPanelDetails()//cuando presiona editar
 		{
-			txtNombre.setEnabled(true);
-			txtApp.setEnabled(true);
-			txtApm.setEnabled(true);
-			txtCargo.setEnabled(true);
-			txtSueldo.setEnabled(true);
-			txtNominaNum.setEnabled(true);
-			txtFechaIngreso.setEnabled(true);
-			txtDiasTrabajdos.setEnabled(true);
-			txtAsignaciones.setEnabled(true);
-			txtDeducciones.setEnabled(true);
+			txtNombre.setEditable(true);
+			txtApp.setEditable(true);
+			txtApm.setEditable(true);
+			txtCargo.setEditable(true);
+			txtSueldo.setEditable(true);
+			txtNominaNum.setEditable(true);
+			txtFechaIngreso.setEditable(true);
+			txtDiasTrabajdos.setEditable(true);
+			txtAsignaciones.setEditable(true);
+			txtDeducciones.setEditable(true);
 			btnCancelar.setEnabled(true);
 			btnGuardar.setEnabled(true);
 			//btnReporteInd.setEnabled(true);
@@ -498,16 +528,16 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		public void deshabilitaPanelDetails()
 		{
 			limpiaTextFields();
-			txtNombre.setEnabled(false);
-			txtApp.setEnabled(false);
-			txtApm.setEnabled(false);
-			txtCargo.setEnabled(false);
-			txtSueldo.setEnabled(false);
-			txtNominaNum.setEnabled(false);
-			txtFechaIngreso.setEnabled(false);
-			txtDiasTrabajdos.setEnabled(false);
-			txtAsignaciones.setEnabled(false);
-			txtDeducciones.setEnabled(false);
+			txtNombre.setEditable(false);
+			txtApp.setEditable(false);
+			txtApm.setEditable(false);
+			txtCargo.setEditable(false);
+			txtSueldo.setEditable(false);
+			txtNominaNum.setEditable(false);
+			txtFechaIngreso.setEditable(false);
+			txtDiasTrabajdos.setEditable(false);
+			txtAsignaciones.setEditable(false);
+			txtDeducciones.setEditable(false);
 			btnCancelar.setEnabled(false);
 			btnGuardar.setEnabled(false);
 			btnReporteInd.setEnabled(false);
