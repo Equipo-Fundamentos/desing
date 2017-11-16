@@ -50,6 +50,8 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			JList<String> list;
 			DefaultListModel<String> listModel;
 			JScrollPane listScroller;
+            boolean editar = false;
+            int indice = 0;
 		/* ====== Base de datos (Arreglo bidimensional) ==== */
 		String[][] bd = new String [100][10];
 			/*
@@ -318,6 +320,8 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			// Adición a BD
 			btnGuardar.addActionListener(new AgregaraBD());
 			btnReportesGrales.addActionListener(new EscritorExcel());
+            // Borrar de BD
+            btnBorrar.addActionListener(new BorrardeBD());
 
 			//quitar en production
 			txtUser.setText("rob");
@@ -437,11 +441,15 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		{
 			public void actionPerformed(ActionEvent e)
 			{
+
+                indice = list.getSelectedIndex();
+                editar = true;
 				habiltaPanelDetails();
 				deshabilitaMainPanel();
 				btnReporteInd.setEnabled(false);
 				btnEditar.setEnabled(false);
 				lblStatus.setText("Modificando datos");
+
 			}
 		}
 	//clic en nuevo
@@ -609,10 +617,16 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             }
 			if (!sldo.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Sueldo \n *Solo usa números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
 			if (!numNomina.matches("\\d{3}")) {JOptionPane.showMessageDialog(null,"Error en dato: No. de Nómina \n *Usa formato XXX \n *Solo usa números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
+                else if (editar) {// Verifica que la nómina no exista
+                    for (int i = 0; i < bd[0].length; i++) {
+                        if (indice == i) continue;
+                        if (numNomina.equals(bd[i][3])) {JOptionPane.showMessageDialog(null,"No. de Nómina ocupado.","Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
+					}
+                }
                 else {// Verifica que la nómina no exista
                     for (int i = 0; i < bd[3].length; i++) {
-                        if (numNomina.equals(bd[3][i])) {JOptionPane.showMessageDialog(null,"No. de Nómina ocupado.","Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
-					}
+                        if (numNomina.equals(bd[i][3])) {JOptionPane.showMessageDialog(null,"No. de Nómina ocupado.","Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
+    				}
                 }
 			if (!dias.matches("^([0-9]?[0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-5])$")) {JOptionPane.showMessageDialog(null,"Error en dato: Días trabajados \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
 			if (!asignaciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Asignaciones \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
@@ -651,10 +665,10 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	public class AgregaraBD implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			boolean error = validacion();
+			boolean noError = validacion();
 
-		if (error) {
-			for (int i = 0; i < bd.length; i++) {
+            if (noError && !editar) {
+                for (int i = 0; i < bd.length; i++) {
 				if (bd[i][0] == null) { // Si el espacio no esta asignado
 					System.out.println("Si entro");
 					// Asignar todos los valores colocados a esa nómina
@@ -678,6 +692,24 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                 escritorCSV();
 				actualizaList();
 			}
+            else if (noError && editar) {
+                bd[indice][0] = aMayus(txtNombre.getText());
+                bd[indice][1] = aMayus(txtApp.getText());
+                bd[indice][2] = aMayus(txtApm.getText());
+                bd[indice][3] = txtNominaNum.getText();
+                bd[indice][4] = aMayus(txtCargo.getText());
+                bd[indice][5] = txtSueldo.getText();
+                bd[indice][6] = txtDiasTrabajdos.getText();
+                bd[indice][7] = txtAsignaciones.getText();
+                bd[indice][8] = txtDeducciones.getText();
+                bd[indice][9] = txtFechaIngreso.getText();
+                deshabilitaPanelDetails();
+                habiltaMainPanel();
+                limpiaTextFields();
+                escritorCSV();
+				actualizaList();
+                JOptionPane.showMessageDialog(null,bd[indice][0] + " " + bd[indice][1] + " " + bd[indice][2] + "\nNómina editada: " + bd[indice][3]);
+            }
 		}
 	}
 
@@ -733,12 +765,19 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
         }
     public class BorrardeBD implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            File bd = null;
-            BufferedWriter bw = null;
-            String d;
-
-            d = System.getProperty("user.dir") + "/bd.csv";
-            //bd = new File(d);
+            int index;
+            if (!list.isSelectionEmpty()) {
+                index = list.getSelectedIndex();
+                for (int i = 0; i < bd[0].length; i++) {
+                    bd[index][i] = null;
+                }
+                escritorCSV();
+                actualizaList();
+            }
+            else {
+                JOptionPane.showMessageDialog(null,"Por favor seleccione a alguien", "miSueldo",
+                JOptionPane.WARNING_MESSAGE);
+            }
         }
     }
 	public class EscritorExcel implements ActionListener {
@@ -843,7 +882,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                     }
                 }
             }
-        }	
+        }
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~FIN MÉTODOS BD~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
