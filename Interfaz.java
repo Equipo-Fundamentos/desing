@@ -53,7 +53,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             boolean editar = false;
             int indice = 0;
 		/* ====== Base de datos (Arreglo bidimensional) ==== */
-		String[][] bd = new String [100][10];
+		String[][] bd = new String [100][15];
 			/*
 			-Cada renglón es una nómina
 			-Cada columna es un valor:
@@ -64,9 +64,14 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				4) Cargo
 				5) Sueldo (80-...)
 				6) Días Trabajados (1-365)
-				7) Asignaciones
-				8) Deducciones
-				9) Fecha de Ingreso (dd/mm/aa)
+				7) Horas extra
+				8) Bonos
+                9) Otras asignaciones
+                10) IVA
+                11) ISR
+                12) Préstamos
+                13) Otras deducciones
+				14) Fecha de Ingreso (dd/mm/aa)
 			*/
 		/* =============================================== */
 	public Interfaz()
