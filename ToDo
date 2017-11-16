@@ -1,18 +1,10 @@
-////////
-Cosas modificadas por si hay problemas al hacer el merge
-1- se declararon mas txtfields
-2- al momento de crear el panel details hay mas elementos
-3- se modificarons los metodos de hablitar y deshabilitar y limpiatextfields
-///////
+
+
 ToDo
+*Hacer global variable "bd.csv"
 *Eliminar debugs feos en la terminal
 *Generar reporte individual
 *ArrayIndexOutOfBoundsException en linea método LectorCSV al iniciar sesión y la bd esta vacía[solucione con un cath pero checar de todos modos]
-<<<<<<< HEAD
 *Ver comando para abrir reportes en windows también
-=======
-*Editar usuario no sirve
-*Valida la nómina cuando quiere
-*Ver comando para abrir reportes en windows también
-*Desglosar asignaciones y deduccionoes
->>>>>>> ControlesCompletos
+*Cambiar origen de métodos de JList (que busque en bd[][])
+*Calcular total de nóminas
