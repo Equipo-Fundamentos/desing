@@ -667,11 +667,11 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					habiltaMainPanel();
 					limpiaTextFields();
 					JOptionPane.showMessageDialog(null,bd[i][0] + " " + bd[i][1] + " " + bd[i][2] + "\nRegistrado con nómina: " + bd[i][3]);
-					actualizaList();
-						break;
+					break;
 					}
 				}
                 escritorCSV();
+				actualizaList();
 			}
 		}
 	}
