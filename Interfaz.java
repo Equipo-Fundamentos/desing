@@ -662,7 +662,12 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				   sldo = txtSueldo.getText(),
 				   numNomina =txtNominaNum.getText(),
 				   dias = txtDiasTrabajdos.getText(),
+                   horasExtra = txtHorasExtra.getText(),
+                   bonos = txtBonos.getText(),
 				   asignaciones = txtAsignacionesOtros.getText(),
+                   iva = txtIVA.getText(),
+                   isr = txtISR.getText(),
+                   prestamos = txtPrestamos.getText(),
 				   deducciones = txtDeduccionesOtros.getText();
             String[] palabras = {nomb, app, apm, cargo,};
             boolean noError = true;
