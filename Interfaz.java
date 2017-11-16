@@ -49,6 +49,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			JLabel lblTitulo,lblStatus;
 			JList<String> list;
 			DefaultListModel<String> listModel;
+			JScrollPane listScroller;
 		/* ====== Base de datos (Arreglo bidimensional) ==== */
 		String[][] bd = new String [100][10];
 			/*
@@ -127,12 +128,12 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					listModel = new DefaultListModel<>();
 					list = new JList<>();
 					list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-					JScrollPane listScroller = new JScrollPane();
+					listScroller = new JScrollPane();
 					actualizaList();// llena con lo que hay en la bd
 					listScroller.setViewportView(list);
 					list.setLayoutOrientation(JList.VERTICAL);
 					// fin generacion lista
-				//panelMainList.add(new JLabel("Empleados(nóminas)"),java.awt.BorderLayout.NORTH);
+				panelMainList.add(new JLabel("Empleados(nóminas)"),java.awt.BorderLayout.NORTH);
 				panelMainList.add(listScroller);
 
 				panelBtnActVerBorrar = new JPanel();// panel que tendra el boton de borrar
@@ -598,24 +599,24 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             boolean noError = true;
 
 			// Texto
-			if (!nomb.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$")) {JOptionPane.showMessageDialog(null,"Error en dato: Nombre"); noError = false;}
-			if (!app.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$")) {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Paterno"); noError = false;}
-			if (!apm.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Materno"); noError = false;}
-			if (!cargo.matches("^\\w+[áéíóú]?(-|\\s\\w+|\\w+)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Cargo"); noError = false;}
+			if (!nomb.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$")) {JOptionPane.showMessageDialog(null,"Error en dato: Nombre \n *Solo puedes usar letras \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE);noError = false;}
+			if (!app.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$")) {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Paterno \n *Solo puedes usar letras \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
+			if (!apm.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Materno \n *Solo puedes usar letras \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
+			if (!cargo.matches("^\\w+[áéíóú]?(-|\\s\\w+|\\w+)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Cargo \n *Solo puedes usar letras \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
 			// Número
             if (!fecha.matches("(\\d|[1-2][0-9]|30)\\/(\\d|[1][0-2])\\/(200[0-9]|201[0-7])")) {
-                JOptionPane.showMessageDialog(null,"Error en dato: Fecha"); noError = false;
+                JOptionPane.showMessageDialog(null,"Error en dato: Fecha \n *Usa el formato d/m/yyyy \n *No puede estar vacío \n *No puede haber fechas futuras", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;
             }
-			if (!sldo.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Sueldo"); noError = false;}
-			if (!numNomina.matches("\\d{3}")) {JOptionPane.showMessageDialog(null,"Error en dato: No. de Nómina"); noError = false;}
+			if (!sldo.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Sueldo \n *Solo usa números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
+			if (!numNomina.matches("\\d{3}")) {JOptionPane.showMessageDialog(null,"Error en dato: No. de Nómina \n *Usa formato XXX \n *Solo usa números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
                 else {// Verifica que la nómina no exista
                     for (int i = 0; i < bd[3].length; i++) {
-                        if (numNomina.equals(bd[3][i])) {JOptionPane.showMessageDialog(null,"No. de Nómina ocupado."); noError = false;}
+                        if (numNomina.equals(bd[3][i])) {JOptionPane.showMessageDialog(null,"No. de Nómina ocupado.","Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
 					}
                 }
-			if (!dias.matches("^([0-9]?[0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-5])$")) {JOptionPane.showMessageDialog(null,"Error en dato: Días trabajados"); noError = false;}
-			if (!asignaciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Asignaciones"); noError = false;}
-			if (!deducciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Deducciones"); noError = false;}
+			if (!dias.matches("^([0-9]?[0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-5])$")) {JOptionPane.showMessageDialog(null,"Error en dato: Días trabajados \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
+			if (!asignaciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Asignaciones \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
+			if (!deducciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Deducciones \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
 
             return noError;// Regresa si las validaciones fueron correctas.
         }
