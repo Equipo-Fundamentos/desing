@@ -110,7 +110,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 						panelMainButtons = new JPanel();//panel para los botones dentro del maintitle
 						panelMainButtons.setBackground(new java.awt.Color(189, 195, 199));
 							btnAgregar = new JButton("Nuevo");
-							btnAgregar.setToolTipText("Crear nuevo empleado");
+							btnAgregar.setToolTipText("Crear nuevo perfil");
 							panelMainButtons.add(btnAgregar);
 							btnReportesGrales = new JButton("Generar Reportes");
 							btnReportesGrales.setToolTipText("Genera el reporte para todos los empleados");
@@ -498,7 +498,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				{
 					listaLeida = datosLeidos.split(",");
 					listModel.addElement(listaLeida[0]+" - "+listaLeida[3]);
-
 				}
 				lectorBD.close();
 				list.setModel(listModel);
@@ -506,6 +505,9 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			catch(IOException e)
 			{
 				System.out.println("no hay archivo");
+			}
+			catch(ArrayIndexOutOfBoundsException e){
+				System.out.println("bd vacía del Jlist");
 			}
 		}
 		public void habiltaPanelDetails()//cuando presiona editar
@@ -712,6 +714,9 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 						e.printStackTrace();
 				} catch (IOException e) {
 						e.printStackTrace();
+				}
+				catch(ArrayIndexOutOfBoundsException ex){
+					System.out.println("bd vacía LectorCSV");
 				} finally {
 					if (br != null) {
 						try {

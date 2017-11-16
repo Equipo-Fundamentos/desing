@@ -1,6 +1,7 @@
 ToDo
 *Eliminar debugs feos en la terminal
-*No valida nomina sea unica
 *Método para borrar
-*No sirve el Jlist
+*No sirve el scroll Jlist
 *Generar reporte individual
+*ArrayIndexOutOfBoundsException en linea método LectorCSV al iniciar sesión y la bd esta vacía[solucione con un cath pero checar de todos modos]
+*Editar usuario no sirve
