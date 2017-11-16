@@ -616,15 +616,12 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	public class AgregaraBD implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			String command = e.getActionCommand();
-			int indice = 0;
 			boolean error = validacion();
 
 		if (error) {
 			for (int i = 0; i < bd.length; i++) {
 				if (bd[i][0] == null) { // Si el espacio no esta asignado
 					System.out.println("Si entro");
-					indice = i;
 					// Asignar todos los valores colocados a esa nómina
 					bd[i][0] = aMayus(txtNombre.getText());
 					bd[i][1] = aMayus(txtApp.getText());
@@ -644,7 +641,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 						break;
 					}
 				}
-				escritorCSV(indice);
+                escritorCSV();
 			}
 		}
 	}
@@ -703,11 +700,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             String d;
 
             d = System.getProperty("user.dir") + "/bd.csv";
-            bd = new File(d);
-
-
-
-
+            //bd = new File(d);
         }
     }
 	public class EscritorExcel implements ActionListener {
@@ -777,38 +770,42 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				}
 			}
 		}
-		public void escritorCSV(int indice) {
+		public void escritorCSV() {
 			BufferedWriter bw = null;
+            String d = "";
 
-			try {
-				File archivoCSV = new File(System.getProperty("user.dir")  + "/bd.csv");
-				if (!archivoCSV.exists()) archivoCSV.createNewFile();
-				bw = new BufferedWriter(new FileWriter(archivoCSV));
-					bw.append(bd[indice][0] + ",");
-					bw.append(bd[indice][1] + ",");
-					bw.append(bd[indice][2] + ",");
-					bw.append(bd[indice][3] + ",");
-					bw.append(bd[indice][4] + ",");
-					bw.append(bd[indice][5] + ",");
-					bw.append(bd[indice][6] + ",");
-					bw.append(bd[indice][7] + ",");
-					bw.append(bd[indice][8] + ",");
-					bw.append(bd[indice][9] + "\n");
-			} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-			} catch (IOException e1) {
-					e1.printStackTrace();
-			} finally {
-				if (bw != null) {
-					try {
-						bw.close();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				}
-			}
+            try {
+                d = System.getProperty("user.dir") + "/bd.csv";
+                File archivoCSV = new File(d);
+                bw = new BufferedWriter(new FileWriter(archivoCSV));
+                for (int i = 0; i < bd.length; i++) {
+                    if (bd[i][0] == null) continue;
 
-		}
+        			bw.append(bd[i][0] + ",");
+        			bw.append(bd[i][1] + ",");
+        			bw.append(bd[i][2] + ",");
+        			bw.append(bd[i][3] + ",");
+        			bw.append(bd[i][4] + ",");
+    				bw.append(bd[i][5] + ",");
+        			bw.append(bd[i][6] + ",");
+        			bw.append(bd[i][7] + ",");
+        			bw.append(bd[i][8] + ",");
+        			bw.append(bd[i][9] + "\n");
+                }
+        	} catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            } finally {
+                if (bw != null) {
+                    try {
+                        bw.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        }	
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~FIN MÉTODOS BD~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
