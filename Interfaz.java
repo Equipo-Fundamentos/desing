@@ -44,10 +44,10 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			JTextField 	txtUser, // panel login
 						txtNombre,txtApp,txtApm,txtCargo,txtSueldo,txtNominaNum,txtFechaIngreso,
 						txtDiasTrabajdos,
-						txtAsignacionesBonos,txtAsignacionesFeriados,
-						txtAsignacionesHorasEx, txtAsignacionesOtros,
-						txtDeduccionesIVA, txtDeduccionesISR,
-						txtDeduccionesPrestamos, txtDeduccionesOtros; // panel details
+						txtBonos,txtFeriados,
+						txtHorasExtra, txtAsignacionesOtros,
+						txtIVA, txtISR,
+						txtPrestamos, txtDeduccionesOtros; // panel details
 
 			JPasswordField txtPass;
 			JLabel lblTitulo,lblStatus;
@@ -211,19 +211,19 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					panelDetailsControles.add(txtDiasTrabajdos);
 
 					panelDetailsControles.add(new JLabel("Bonos: "));
-					txtAsignacionesBonos = new JTextField(8);
-					txtAsignacionesBonos.setToolTipText("Bonos extra $$$");
-					panelDetailsControles.add(txtAsignacionesBonos);
+					txtBonos = new JTextField(8);
+					txtBonos.setToolTipText("Bonos extra $$$");
+					panelDetailsControles.add(txtBonos);
 
 					panelDetailsControles.add(new JLabel("Asignaciones días feriados: "));
-					txtAsignacionesFeriados = new JTextField(8);
-					txtAsignacionesFeriados.setToolTipText("Días feriados $$$");
-					panelDetailsControles.add(txtAsignacionesFeriados);
+					txtFeriados = new JTextField(8);
+					txtFeriados.setToolTipText("Días feriados $$$");
+					panelDetailsControles.add(txtFeriados);
 
 					panelDetailsControles.add(new JLabel("Horas Extra: "));
-					txtAsignacionesHorasEx = new JTextField(8);
-					txtAsignacionesHorasEx.setToolTipText("Cantidad de horas trabajas extra, ej. 3");
-					panelDetailsControles.add(txtAsignacionesHorasEx);
+					txtHorasExtra = new JTextField(8);
+					txtHorasExtra.setToolTipText("Cantidad de horas trabajas extra, ej. 3");
+					panelDetailsControles.add(txtHorasExtra);
 
 
 					panelDetailsControles.add(new JLabel("Otros Asignaciones:"));
@@ -233,19 +233,19 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 
 
 					panelDetailsControles.add(new JLabel("IVA:"));
-					txtDeduccionesIVA = new JTextField(8);
-					txtDeduccionesIVA.setToolTipText("Deducciones por IVA %");
-					panelDetailsControles.add(txtDeduccionesIVA);
+					txtIVA = new JTextField(8);
+					txtIVA.setToolTipText("Deducciones por IVA %");
+					panelDetailsControles.add(txtIVA);
 
 					panelDetailsControles.add(new JLabel("ISR:"));
-					txtDeduccionesISR = new JTextField(8);
-					txtDeduccionesISR.setToolTipText("Deducciones por ISR %");
-					panelDetailsControles.add(txtDeduccionesISR);
+					txtISR = new JTextField(8);
+					txtISR.setToolTipText("Deducciones por ISR %");
+					panelDetailsControles.add(txtISR);
 
 					panelDetailsControles.add(new JLabel("Prestamos:"));
-					txtDeduccionesPrestamos = new JTextField(8);
-					txtDeduccionesPrestamos.setToolTipText("Deducciones en prestamos $$$");
-					panelDetailsControles.add(txtDeduccionesPrestamos);
+					txtPrestamos = new JTextField(8);
+					txtPrestamos.setToolTipText("Deducciones en prestamos $$$");
+					panelDetailsControles.add(txtPrestamos);
 
 					panelDetailsControles.add(new JLabel("Otras deducciones:"));
 					txtDeduccionesOtros = new JTextField(8);
@@ -567,12 +567,12 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			btnGuardar.setEnabled(true);
 			//btnReporteInd.setEnabled(true);
 			btnEditar.setEnabled(true);
-			txtAsignacionesBonos.setEditable(true);
-			txtAsignacionesFeriados.setEditable(true);
-			txtAsignacionesHorasEx.setEditable(true);
-			txtDeduccionesIVA.setEditable(true);
-			txtDeduccionesISR.setEditable(true);
-			txtDeduccionesPrestamos.setEditable(true);
+			txtBonos.setEditable(true);
+			txtFeriados.setEditable(true);
+			txtHorasExtra.setEditable(true);
+			txtIVA.setEditable(true);
+			txtISR.setEditable(true);
+			txtPrestamos.setEditable(true);
 		}
 		public void deshabilitaPanelDetails()
 		{
@@ -591,12 +591,12 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			btnGuardar.setEnabled(false);
 			btnReporteInd.setEnabled(false);
 			btnEditar.setEnabled(false);
-			txtAsignacionesBonos.setEditable(false);
-			txtAsignacionesFeriados.setEditable(false);
-			txtAsignacionesHorasEx.setEditable(false);
-			txtDeduccionesIVA.setEditable(false);
-			txtDeduccionesISR.setEditable(false);
-			txtDeduccionesPrestamos.setEditable(false);
+			txtBonos.setEditable(false);
+			txtFeriados.setEditable(false);
+			txtHorasExtra.setEditable(false);
+			txtIVA.setEditable(false);
+			txtISR.setEditable(false);
+			txtPrestamos.setEditable(false);
 		}
 		public void limpiaTextFields()
 		{
@@ -612,12 +612,12 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			txtAsignacionesOtros.setText("");
 			txtDeduccionesOtros.setText("");
 			list.clearSelection();
-			txtAsignacionesBonos.setText("");
-			txtAsignacionesFeriados.setText("");
-			txtAsignacionesHorasEx.setText("");
-			txtDeduccionesIVA.setText("");
-			txtDeduccionesISR.setText("");
-			txtDeduccionesPrestamos.setText("");
+			txtBonos.setText("");
+			txtFeriados.setText("");
+			txtHorasExtra.setText("");
+			txtIVA.setText("");
+			txtISR.setText("");
+			txtPrestamos.setText("");
 		}
 		public void habiltaMainPanel()
 		{
@@ -899,7 +899,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                     }
                 }
             }
-        }	
+        }
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~FIN MÉTODOS BD~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
