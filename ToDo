@@ -1,3 +1,9 @@
+////////
+Cosas modificadas por si hay problemas al hacer el merge
+1- se declararon mas txtfields
+2- al momento de crear el panel details hay mas elementos
+3- se modificarons los metodos de hablitar y deshabilitar y limpiatextfields
+///////
 ToDo
 *Eliminar debugs feos en la terminal
 *Método para borrar
@@ -6,3 +12,4 @@ ToDo
 *Editar usuario no sirve
 *Valida la nómina cuando quiere
 *Ver comando para abrir reportes en windows también
+*Desglosar asignaciones y deduccionoes
