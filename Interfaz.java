@@ -126,13 +126,15 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					//generar  la lista!
 					listModel = new DefaultListModel<>();
 					list = new JList<>();
-					list.setPreferredSize(new java.awt.Dimension(140,400));
 					list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-					JScrollPane scrollPane = new JScrollPane(list);
+					JScrollPane listScroller = new JScrollPane();
 					actualizaList();// llena con lo que hay en la bd
+					listScroller.setViewportView(list);
+					list.setLayoutOrientation(JList.VERTICAL);
 					// fin generacion lista
-				panelMainList.add(new JLabel("Empleados(nóminas)"),java.awt.BorderLayout.NORTH);
-				panelMainList.add(list);
+				//panelMainList.add(new JLabel("Empleados(nóminas)"),java.awt.BorderLayout.NORTH);
+				panelMainList.add(listScroller);
+
 				panelBtnActVerBorrar = new JPanel();// panel que tendra el boton de borrar
 					btnBorrar = new JButton("Borrar");
 					btnBorrar.setToolTipText("Eliminar el empleado seleccionado");
