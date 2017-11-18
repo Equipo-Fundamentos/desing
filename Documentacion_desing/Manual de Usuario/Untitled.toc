@@ -7,3 +7,4 @@
 \contentsline {subsection}{\tocsubsection {}{3.1}{Dar de alta a usuarios}}{3}
 \contentsline {subsection}{\tocsubsection {}{3.2}{Dar de baja a usuarios}}{3}
 \contentsline {subsection}{\tocsubsection {}{3.3}{Modificar datos de un empleado}}{3}
+\contentsline {subsection}{\tocsubsection {}{3.4}{Nota}}{3}

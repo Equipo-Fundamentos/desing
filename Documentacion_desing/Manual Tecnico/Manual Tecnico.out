@@ -1,0 +1,15 @@
+\BOOKMARK [1][-]{section.1}{Introducci\363n}{}% 1
+\BOOKMARK [1][-]{section.2}{La clase JFrame}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Interfaz gr\341fica}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Hacer visible la ventana gr\341fica}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Construyendo la Ventana}{section.2}% 5
+\BOOKMARK [3][-]{subsubsection.2.3.1}{Ventana de ingreso}{subsection.2.3}% 6
+\BOOKMARK [3][-]{subsubsection.2.3.2}{Ventana Principal}{subsection.2.3}% 7
+\BOOKMARK [3][-]{subsubsection.2.3.3}{Detalles}{subsection.2.3}% 8
+\BOOKMARK [3][-]{subsubsection.2.3.4}{Footer}{subsection.2.3}% 9
+\BOOKMARK [1][-]{section.3}{Activar Botones y TextFields}{}% 10
+\BOOKMARK [2][-]{subsection.3.1}{En la ventana Login \(M\351todo\)}{section.3}% 11
+\BOOKMARK [1][-]{section.4}{La base de datos}{}% 12
+\BOOKMARK [1][-]{section.5}{M\351todos}{}% 13
+\BOOKMARK [2][-]{subsection.5.1}{Desplegar los detalles del empleado}{section.5}% 14
+\BOOKMARK [2][-]{subsection.5.2}{Habilitar/Deshabilitar las Ventanas}{section.5}% 15

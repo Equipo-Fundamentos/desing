@@ -1,7 +1,22 @@
 
-\documentclass[12pt]{amsart}
+\documentclass[12pt]{article}
 \usepackage{geometry}
-\usepackage{graphicx} 
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage[spanish]{babel}
+\usepackage{enumerate}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage[latin1]{inputenc}
+ 
+\usepackage{listings}
+\usepackage{color}
+ 
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
 \geometry{a4paper} 
 
 \title{Manual T\'ecnico}
@@ -12,7 +27,7 @@
 \begin{titlepage}
 	\begin{center}
 		\begin{figure}
-			\includegraphics[width=\linewidth]{Tec.jpg}
+			\includegraphics[width=150mm]{Tec.jpg}
 			\label{fig:Tec}
 		\end{figure}
 	\huge{\bfseries{Manual T\'ecnico}}\\
@@ -24,7 +39,73 @@
 \maketitle
 \tableofcontents
 
-\section{El programa}
-\subsection{}
+\section{Introducci\'on}
+{Este programa est\'a dise\~nado para una peque\~na empresa que desea calcular n\'ominas, al ingresar datos, se genera un archivo en formato \textit{.csv} que en realidad es la base de datos del programa.}
+
+\section{La clase JFrame}
+\subsection{Interfaz gr\'afica}
+{Nuestra interfaz est\'a dise\~nada con la extensi\'on de \textit{JFrame}. De aqu\'i se declaran las variables que vienen en:}
+\begin{itemize}
+\item \textit{JPanel}
+\item \textit{JButton}
+\item \textit{JTextField}
+\item \textit{JPasswordField}
+\item \textit{JList \textless{String}\textgreater}
+\item DefaultListModel \textless{String}\textgreater
+\item JScrollPane
+\end{itemize}
+
+{Al generar la ventana gr\'afica, se necesita definir c\'omo va organizada \'esta \'ultima:}\\
+
+\lstinputlisting[breaklines, language=Java, firstline=72, lastline=76]{Interfaz.java}
+
+\subsection{Hacer visible la ventana gr\'afica}
+{Aqu\'i vemos c\'omo corremos la ventana para hacerla visible:}
+
+
+\lstinputlisting[breaklines, language=Java, firstline=23, lastline=28]{Interfaz.java}
+
+\subsection{Construyendo la Ventana}
+\subsubsection{Ventana de ingreso}
+\lstinputlisting[breaklines, language=Java, firstline=81, lastline=102]{Interfaz.java}
+
+
+\subsubsection{Ventana Principal}
+\lstinputlisting[breaklines, language=Java, firstline=105, lastline=150]{Interfaz.java}
+
+\subsubsection{Detalles}
+\lstinputlisting[breaklines, language=Java, firstline=153, lastline=225]{Interfaz.java}
+
+\subsubsection{Footer}
+\lstinputlisting[breaklines, language=Java, firstline=227, lastline=236]{Interfaz.java}
+
+
+\section{Activar Botones y TextFields}
+
+\subsection{En la ventana Login (M\'etodo)}
+\lstinputlisting[breaklines, language=Java, firstline=343, lastline=380]{Interfaz.java}
+
+\section{La base de datos}
+{Nuestra base de datos es un arreglo bidimensional (matriz de 100x10) en donde un rengl\'on equivale a un perfil. Aqu\'i el orden para cada empleado:}
+\begin{itemize}
+\item Nombre
+\item Apellido Paterno
+\item Apellido materno
+\item N\'omina
+\item Cargo
+\item Sueldo (80-...)
+\item D\'ias trabajados
+\item Asignaciones
+\item Deducciones
+\item Fecha de ingreso (dd/m/aaaa)
+\end{itemize}
+{Al cerrar el programa, \textit{ie} al cerrar la sesi\'on o cerrar la ventana, el arreglo se escribe en un archivo \textit{bd.csv}. Al lanzar el programa una segunda vez, el archivo lee lo que ya estaba escrito en \textit{bd.csv}. En caso de no existir un archivo en su carpeta en la que trabaja, se crea un nuevo \textit{bd.csv}.}
+
+\section{M\'etodos}
+\subsection{Desplegar los detalles del empleado}
+\lstinputlisting[breaklines, language=Java, firstline=383, lastline=402]{Interfaz.java}
+
+\subsection{Habilitar/Deshabilitar las Ventanas}
+{En esta secci\'on se llama a los m\'etodos \textit{habiltaPanelDetails(), limpiaTextFields() y deshabilitaMainpanel()}, as\'i como los m\'etodos \textit{deshabilitaPanelDetails() y habiltaMainPanel()} }
 
 \end{document}

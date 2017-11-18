@@ -23,8 +23,8 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	public static void main(String[] args) throws IOException
 	{
 		Interfaz ventanaGrafica = new Interfaz();
-		ventanaGrafica.setVisible(true); // se abra la ventana en la ejecución
-		System.out.println("Ubicación actual en: " +  System.getProperty("user.dir"));
+		ventanaGrafica.setVisible(true); // se abra la ventana en la ejecucion
+		System.out.println("Ubicacion actual en: " +  System.getProperty("user.dir"));
 	}
 
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -49,9 +49,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			JLabel lblTitulo,lblStatus;
 			JList<String> list;
 			DefaultListModel<String> listModel;
-			JScrollPane listScroller;
-            boolean editar = false;
-            int indice = 0;
 		/* ====== Base de datos (Arreglo bidimensional) ==== */
 		String[][] bd = new String [100][10];
 			/*
@@ -72,11 +69,11 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	public Interfaz()
 	{
 		/* ===establecer propiedades de la ventana== */
-			setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // para que se termine la execución cuando se cierra
-			setResizable(false); // desabilita la opción de cambiar tamaño
-			setSize(new java.awt.Dimension(1000, 550));// Establecer tamaño
+			setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // para que se termine la execucion cuando se cierra
+			setResizable(false); // desabilita la opcion de cambiar tamanio
+			setSize(new java.awt.Dimension(1000, 550));// Establecer tamanio
 			setTitle("miSueldo");//titulo de la ventana
-			setLayout(new java.awt.GridBagLayout());//para ordenar los elementos con cordenadas
+			setLayout(new java.awt.GridBagLayout());//para ordenar los elementos con coordenadas
 		/* ========================================== */
 
 		/* ===Armando la interfaz=== */
@@ -92,9 +89,9 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					txtUser = new JTextField(10);
 					txtUser.setToolTipText("Ingrese su Usuario");
 					panelLogInContent.add(txtUser);
-					panelLogInContent.add(new JLabel("Contraseña"));
+					panelLogInContent.add(new JLabel("Contrasenia"));
 					txtPass = new JPasswordField(10);
-					txtPass.setToolTipText("Ingrese Contraseña");
+					txtPass.setToolTipText("Ingrese Contrasenia");
 					panelLogInContent.add(txtPass);
 				panelLogInAux2 = new JPanel();// tendra el boton de ingresar
 					btnIngresar = new JButton("Ingresar");
@@ -113,7 +110,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 						panelMainButtons = new JPanel();//panel para los botones dentro del maintitle
 						panelMainButtons.setBackground(new java.awt.Color(189, 195, 199));
 							btnAgregar = new JButton("Nuevo");
-							btnAgregar.setToolTipText("Crear nuevo perfil");
+							btnAgregar.setToolTipText("Crear nuevo empleado");
 							panelMainButtons.add(btnAgregar);
 							btnReportesGrales = new JButton("Generar Reportes");
 							btnReportesGrales.setToolTipText("Genera el reporte para todos los empleados");
@@ -129,20 +126,18 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					//generar  la lista!
 					listModel = new DefaultListModel<>();
 					list = new JList<>();
+					list.setPreferredSize(new java.awt.Dimension(140,400));
 					list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-					listScroller = new JScrollPane();
+					JScrollPane scrollPane = new JScrollPane(list);
 					actualizaList();// llena con lo que hay en la bd
-					listScroller.setViewportView(list);
-					list.setLayoutOrientation(JList.VERTICAL);
 					// fin generacion lista
-				panelMainList.add(new JLabel("Empleados(nóminas)"),java.awt.BorderLayout.NORTH);
-				panelMainList.add(listScroller);
-
+				panelMainList.add(new JLabel("Empleados(nominas)"),java.awt.BorderLayout.NORTH);
+				panelMainList.add(list);
 				panelBtnActVerBorrar = new JPanel();// panel que tendra el boton de borrar
 					btnBorrar = new JButton("Borrar");
 					btnBorrar.setToolTipText("Eliminar el empleado seleccionado");
 					btnVer = new JButton("Ver");
-					btnVer.setToolTipText("Mostrará los detalles de esta nómina->");
+					btnVer.setToolTipText("Mostrara los detalles de esta nomina->");
 					btnActualizar = new JButton("Actualizar");
 					btnActualizar.setToolTipText("Vuelve a leer la BD");
 					panelBtnActVerBorrar.setBackground(new java.awt.Color(189, 195, 199));
@@ -185,7 +180,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 
 					panelDetailsControles.add(new JLabel("Cargo:"));
 					txtCargo = new JTextField(8);
-					txtCargo.setToolTipText("puesto o ocupación en la empresa");
+					txtCargo.setToolTipText("puesto o ocupacion en la empresa");
 					panelDetailsControles.add(txtCargo);
 
 					panelDetailsControles.add(new JLabel("Sueldo Base ($):"));
@@ -198,7 +193,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					txtFechaIngreso.setToolTipText("dd/m/yyyy");
 					panelDetailsControles.add(txtFechaIngreso);
 
-					panelDetailsControles.add(new JLabel("Número de cuenta de nómina:"));
+					panelDetailsControles.add(new JLabel("Numero de cuenta de nomina:"));
 					txtNominaNum = new JTextField(8);
 					txtNominaNum.setToolTipText("ej. 000");
 					panelDetailsControles.add(txtNominaNum);
@@ -233,7 +228,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			panelFooter.setBackground(new java.awt.Color(238, 238, 238));
 			panelFooter.setLayout(new java.awt.BorderLayout());//para ordenar oeste centro este
 				panelFooterHora = new JPanel();
-				lblStatus = new JLabel("Esperando inciar sesión");
+				lblStatus = new JLabel("Esperando inciar sesion");
 				panelFooterHora.add(lblStatus);
 			btnCerrar = new JButton("Cerrar");
 			btnCerrar.setToolTipText("Salir de miSueldo");
@@ -320,8 +315,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			// Adición a BD
 			btnGuardar.addActionListener(new AgregaraBD());
 			btnReportesGrales.addActionListener(new EscritorExcel());
-            // Borrar de BD
-            btnBorrar.addActionListener(new BorrardeBD());
 
 			//quitar en production
 			txtUser.setText("rob");
@@ -382,7 +375,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					txtUser.setEnabled(true);
 					txtPass.setEnabled(true);
 					btnIngresar.setText("Ingresar");
-					lblStatus.setText("Esperando inciar sesión");
+					lblStatus.setText("Esperando inciar sesion");
 				}
 			}
 		}
@@ -397,43 +390,14 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					btnEditar.setEnabled(true);
 					btnCancelar.setEnabled(true);
 					lblStatus.setText("Desplegando detalles de empleado seleccionado");
-					String nombreArchivo = "bd.csv", datosLeidos;
-					int filas=100,lineaALeer=list.getSelectedIndex()+1,contaux=0;
-					String[] listaLeida = new String[filas];
-					try
-					{
-						FileReader lectorTXT = new FileReader(nombreArchivo);
-						BufferedReader brTXT = new BufferedReader(lectorTXT);
-						while(contaux<lineaALeer)
-						{
-							contaux++;
-							datosLeidos = brTXT.readLine();
-							listaLeida = datosLeidos.split(",");
-							txtNombre.setText(listaLeida[0]);
-							txtApp.setText(listaLeida[1]);
-							txtApm.setText(listaLeida[2]);
-							txtCargo.setText(listaLeida[4]);
-							txtSueldo.setText(listaLeida[5]);
-							txtFechaIngreso.setText(listaLeida[9]);
-							txtNominaNum.setText(listaLeida[3]);
-							txtDiasTrabajdos.setText(listaLeida[6]);
-							txtAsignaciones.setText(listaLeida[7]);
-							txtDeducciones.setText(listaLeida[8]);
-						}
-						lectorTXT.close();
-					}
-					catch(IOException ev)
-					{
-						System.out.println("no hay archivo");
-					}
 				}
 				else
 				{
 					JOptionPane.showMessageDialog(null,"Por favor seleccione a alguien", "miSueldo",
 					JOptionPane.WARNING_MESSAGE);
 				}
-				//System.out.print("index selccionado: "+list.getSelectedIndex());
-				//System.out.println(", valor en el index: "+list.getSelectedValue());
+				System.out.print("index selccionado: "+list.getSelectedIndex());
+				System.out.println(", valor en el index: "+list.getSelectedValue());
 			}
 		}
 	//clic en editar
@@ -441,15 +405,10 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-
-                indice = list.getSelectedIndex();
-                editar = true;
 				habiltaPanelDetails();
 				deshabilitaMainPanel();
 				btnReporteInd.setEnabled(false);
-				btnEditar.setEnabled(false);
 				lblStatus.setText("Modificando datos");
-
 			}
 		}
 	//clic en nuevo
@@ -509,6 +468,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				{
 					listaLeida = datosLeidos.split(",");
 					listModel.addElement(listaLeida[0]+" - "+listaLeida[3]);
+
 				}
 				lectorBD.close();
 				list.setModel(listModel);
@@ -517,22 +477,19 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			{
 				System.out.println("no hay archivo");
 			}
-			catch(ArrayIndexOutOfBoundsException e){
-				System.out.println("bd vacía del Jlist");
-			}
 		}
 		public void habiltaPanelDetails()//cuando presiona editar
 		{
-			txtNombre.setEditable(true);
-			txtApp.setEditable(true);
-			txtApm.setEditable(true);
-			txtCargo.setEditable(true);
-			txtSueldo.setEditable(true);
-			txtNominaNum.setEditable(true);
-			txtFechaIngreso.setEditable(true);
-			txtDiasTrabajdos.setEditable(true);
-			txtAsignaciones.setEditable(true);
-			txtDeducciones.setEditable(true);
+			txtNombre.setEnabled(true);
+			txtApp.setEnabled(true);
+			txtApm.setEnabled(true);
+			txtCargo.setEnabled(true);
+			txtSueldo.setEnabled(true);
+			txtNominaNum.setEnabled(true);
+			txtFechaIngreso.setEnabled(true);
+			txtDiasTrabajdos.setEnabled(true);
+			txtAsignaciones.setEnabled(true);
+			txtDeducciones.setEnabled(true);
 			btnCancelar.setEnabled(true);
 			btnGuardar.setEnabled(true);
 			//btnReporteInd.setEnabled(true);
@@ -541,16 +498,16 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		public void deshabilitaPanelDetails()
 		{
 			limpiaTextFields();
-			txtNombre.setEditable(false);
-			txtApp.setEditable(false);
-			txtApm.setEditable(false);
-			txtCargo.setEditable(false);
-			txtSueldo.setEditable(false);
-			txtNominaNum.setEditable(false);
-			txtFechaIngreso.setEditable(false);
-			txtDiasTrabajdos.setEditable(false);
-			txtAsignaciones.setEditable(false);
-			txtDeducciones.setEditable(false);
+			txtNombre.setEnabled(false);
+			txtApp.setEnabled(false);
+			txtApm.setEnabled(false);
+			txtCargo.setEnabled(false);
+			txtSueldo.setEnabled(false);
+			txtNominaNum.setEnabled(false);
+			txtFechaIngreso.setEnabled(false);
+			txtDiasTrabajdos.setEnabled(false);
+			txtAsignaciones.setEnabled(false);
+			txtDeducciones.setEnabled(false);
 			btnCancelar.setEnabled(false);
 			btnGuardar.setEnabled(false);
 			btnReporteInd.setEnabled(false);
@@ -607,30 +564,24 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             boolean noError = true;
 
 			// Texto
-			if (!nomb.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$")) {JOptionPane.showMessageDialog(null,"Error en dato: Nombre \n *Solo puedes usar letras \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE);noError = false;}
-			if (!app.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$")) {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Paterno \n *Solo puedes usar letras \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
-			if (!apm.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Materno \n *Solo puedes usar letras \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
-			if (!cargo.matches("^\\w+[áéíóú]?(-|\\s\\w+|\\w+)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Cargo \n *Solo puedes usar letras \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
+			if (!nomb.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$")) {JOptionPane.showMessageDialog(null,"Error en dato: Nombre"); noError = false;}
+			if (!app.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$")) {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Paterno"); noError = false;}
+			if (!apm.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Materno"); noError = false;}
+			if (!cargo.matches("^\\w+[áéíóú]?(-|\\s\\w+|\\w+)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Cargo"); noError = false;}
 			// Número
             if (!fecha.matches("(\\d|[1-2][0-9]|30)\\/(\\d|[1][0-2])\\/(200[0-9]|201[0-7])")) {
-                JOptionPane.showMessageDialog(null,"Error en dato: Fecha \n *Usa el formato d/m/yyyy \n *No puede estar vacío \n *No puede haber fechas futuras", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;
+                JOptionPane.showMessageDialog(null,"Error en dato: Fecha"); noError = false;
             }
-			if (!sldo.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Sueldo \n *Solo usa números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
-			if (!numNomina.matches("\\d{3}")) {JOptionPane.showMessageDialog(null,"Error en dato: No. de Nómina \n *Usa formato XXX \n *Solo usa números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
-                else if (editar) {// Verifica que la nómina no exista
-                    for (int i = 0; i < bd[0].length; i++) {
-                        if (indice == i) continue;
-                        if (numNomina.equals(bd[i][3])) {JOptionPane.showMessageDialog(null,"No. de Nómina ocupado.","Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
-					}
-                }
+			if (!sldo.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Sueldo"); noError = false;}
+			if (!numNomina.matches("\\d{3}")) {JOptionPane.showMessageDialog(null,"Error en dato: No. de Nómina"); noError = false;}
                 else {// Verifica que la nómina no exista
                     for (int i = 0; i < bd[3].length; i++) {
-                        if (numNomina.equals(bd[i][3])) {JOptionPane.showMessageDialog(null,"No. de Nómina ocupado.","Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
-    				}
+                        if (numNomina.equals(bd[3][i])) {JOptionPane.showMessageDialog(null,"No. de Nómina ocupado."); noError = false;}
+					}
                 }
-			if (!dias.matches("^([0-9]?[0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-5])$")) {JOptionPane.showMessageDialog(null,"Error en dato: Días trabajados \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
-			if (!asignaciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Asignaciones \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
-			if (!deducciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Deducciones \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
+			if (!dias.matches("^([0-9]?[0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-5])$")) {JOptionPane.showMessageDialog(null,"Error en dato: Días trabajados"); noError = false;}
+			if (!asignaciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Asignaciones"); noError = false;}
+			if (!deducciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Deducciones"); noError = false;}
 
             return noError;// Regresa si las validaciones fueron correctas.
         }
@@ -656,59 +607,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             }
             return texto;
         }
-        public double calcISR(double sueldo){
-		double tasa=0;
-		double cuotaFija=0;
-
-		if (sueldo>=0.01 && sueldo<=496.07) {
-
-			sueldo-=0.01;
-			tasa=1.95;
-		}else if (sueldo>=496.08 && sueldo<=4210.41) {
-			sueldo -= 496.08;
-			cuotaFija =9.52;
-			tasa = 6.40;
-		}else if (sueldo>=4210.42 && sueldo<=7399.42) {
-			sueldo -=4210.42;
-			cuotaFija = 247.24;
-			tasa = 10.88;
-		}else if (sueldo>=7399.43 && sueldo<=8601.50) {
-			sueldo -= 7399.43;
-			cuotaFija = 594.21;
-			tasa = 16.00;
-		}else if (sueldo>=8601.51 && sueldo<=10298.35) {
-			sueldo -= 8601.51;
-			cuotaFija = 786.54;
-			tasa = 17.92;
-		}else if (sueldo>=10298.36 && sueldo<=20770.29) {
-			sueldo -= 20298.36;
-			cuotaFija = 1090.61;
-			tasa = 21.36;
-		}else if (sueldo>=20770.30 && sueldo<=32736.83) {
-			sueldo -= 20770.30;
-			cuotaFija = 3327.42;
-			tasa = 23.52;
-		}else if (sueldo>=32736.84 && sueldo<=62500.00) {
-			sueldo -= 32736.84;
-			cuotaFija = 6141.95;
-			tasa = 30.00;
-		}else if (sueldo>=62500.01 && sueldo<=83333.33) {
-			sueldo -= 62500.01;
-			cuotaFija = 15070.90;
-			tasa = 32.00;
-		}else if (sueldo>=83333.34 && sueldo<=250000.00) {
-			sueldo -= 83333.34;
-			cuotaFija = 21737.57;
-			tasa = 34.00;
-		}else{
-			sueldo -= 250000.01;
-			cuotaFija = 78404.23;
-			tasa = 35.00;
-		}
-		sueldo*=(tasa*0.01);
-		sueldo+=cuotaFija;
-		return sueldo;
-	}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~FIN MÉTODOS AUXILIARES~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -718,12 +616,15 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	public class AgregaraBD implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			boolean noError = validacion();
+			String command = e.getActionCommand();
+			int indice = 0;
+			boolean error = validacion();
 
-            if (noError && !editar) {
-                for (int i = 0; i < bd.length; i++) {
+		if (error) {
+			for (int i = 0; i < bd.length; i++) {
 				if (bd[i][0] == null) { // Si el espacio no esta asignado
 					System.out.println("Si entro");
+					indice = i;
 					// Asignar todos los valores colocados a esa nómina
 					bd[i][0] = aMayus(txtNombre.getText());
 					bd[i][1] = aMayus(txtApp.getText());
@@ -739,30 +640,12 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					habiltaMainPanel();
 					limpiaTextFields();
 					JOptionPane.showMessageDialog(null,bd[i][0] + " " + bd[i][1] + " " + bd[i][2] + "\nRegistrado con nómina: " + bd[i][3]);
-					break;
+					actualizaList();
+						break;
 					}
 				}
-                escritorCSV();
-				actualizaList();
+				escritorCSV(indice);
 			}
-            else if (noError && editar) {
-                bd[indice][0] = aMayus(txtNombre.getText());
-                bd[indice][1] = aMayus(txtApp.getText());
-                bd[indice][2] = aMayus(txtApm.getText());
-                bd[indice][3] = txtNominaNum.getText();
-                bd[indice][4] = aMayus(txtCargo.getText());
-                bd[indice][5] = txtSueldo.getText();
-                bd[indice][6] = txtDiasTrabajdos.getText();
-                bd[indice][7] = txtAsignaciones.getText();
-                bd[indice][8] = txtDeducciones.getText();
-                bd[indice][9] = txtFechaIngreso.getText();
-                deshabilitaPanelDetails();
-                habiltaMainPanel();
-                limpiaTextFields();
-                escritorCSV();
-				actualizaList();
-                JOptionPane.showMessageDialog(null,bd[indice][0] + " " + bd[indice][1] + " " + bd[indice][2] + "\nNómina editada: " + bd[indice][3]);
-            }
 		}
 	}
 
@@ -802,9 +685,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 						e.printStackTrace();
 				} catch (IOException e) {
 						e.printStackTrace();
-				}
-				catch(ArrayIndexOutOfBoundsException ex){
-					System.out.println("bd vacía LectorCSV");
 				} finally {
 					if (br != null) {
 						try {
@@ -818,24 +698,17 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
         }
     public class BorrardeBD implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            int index;
-            if (!list.isSelectionEmpty()) {
-                index = list.getSelectedIndex();
-                for (int i = 0; i < bd[0].length; i++) {
-                    bd[index][i] = null;
-                }
-                escritorCSV();
-                actualizaList();
-            }
-            else {
-                JOptionPane.showMessageDialog(null,"Por favor seleccione a alguien", "miSueldo",
-                JOptionPane.WARNING_MESSAGE);
-            }
+
         }
     }
 	public class EscritorExcel implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-            String command = event.getActionCommand(), d = "", os = "";
+
+<<<<<<< HEAD
+			String command = event.getActionCommand(), d = "", os;
+=======
+			String command = event.getActionCommand(), d = "", os = "";
+>>>>>>> 7388399e5215ea01368acc1ef2a146fadd831d92
 			BufferedWriter be = null;
 			String perfiles = "";
 			double sueldo, dias, asignaciones, deducciones, nomina;
@@ -888,54 +761,54 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                     if (os.equals("Mac OS X")) Runtime.getRuntime().exec(new String[]{"open",d});
                     if (os.equals("Linux")) Runtime.getRuntime().exec(new String[] {"xdg-open",d});
                     //if (os.equals("")) Runtime.getRuntime();exec(new String[] {"",d});
-                }  catch (IOException ioe) {
-				                ioe.printStackTrace();
-                    }
+<<<<<<< HEAD
+=======
+				}
+>>>>>>> 7388399e5215ea01368acc1ef2a146fadd831d92
+			}  catch (IOException ioe) {
+				ioe.printStackTrace();
+				}
 				finally {
-                    try {
+					try {
 						if (be != null) be.close();
-                    } catch (Exception ex) {
+					} catch (Exception ex) {
 						System.out.println("Error in closing the BufferedWriter"+ex);
 					}
 				}
 			}
 		}
-		public void escritorCSV() {
+		public void escritorCSV(int indice) {
 			BufferedWriter bw = null;
-            String d = "";
 
-            try {
-                d = System.getProperty("user.dir") + "/bd.csv";
-                File archivoCSV = new File(d);
-                bw = new BufferedWriter(new FileWriter(archivoCSV));
-                for (int i = 0; i < bd.length; i++) {
-                    if (bd[i][0] == null) continue;
+			try {
+				File archivoCSV = new File(System.getProperty("user.dir")  + "/bd.csv");
+				if (!archivoCSV.exists()) archivoCSV.createNewFile();
+				bw = new BufferedWriter(new FileWriter(archivoCSV));
+					bw.append(bd[indice][0] + ",");
+					bw.append(bd[indice][1] + ",");
+					bw.append(bd[indice][2] + ",");
+					bw.append(bd[indice][3] + ",");
+					bw.append(bd[indice][4] + ",");
+					bw.append(bd[indice][5] + ",");
+					bw.append(bd[indice][6] + ",");
+					bw.append(bd[indice][7] + ",");
+					bw.append(bd[indice][8] + ",");
+					bw.append(bd[indice][9] + "\n");
+			} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+			} catch (IOException e1) {
+					e1.printStackTrace();
+			} finally {
+				if (bw != null) {
+					try {
+						bw.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
 
-        			bw.append(bd[i][0] + ",");
-        			bw.append(bd[i][1] + ",");
-        			bw.append(bd[i][2] + ",");
-        			bw.append(bd[i][3] + ",");
-        			bw.append(bd[i][4] + ",");
-    				bw.append(bd[i][5] + ",");
-        			bw.append(bd[i][6] + ",");
-        			bw.append(bd[i][7] + ",");
-        			bw.append(bd[i][8] + ",");
-        			bw.append(bd[i][9] + "\n");
-                }
-        	} catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            } finally {
-                if (bw != null) {
-                    try {
-                        bw.close();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
-        }
+		}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~FIN MÉTODOS BD~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
