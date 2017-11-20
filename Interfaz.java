@@ -76,7 +76,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                 11) ISR
                 12) Préstamos
                 13) Otras deducciones
-				14) Fecha de Ingreso (dd/mm/aa)
+				14) Fecha de Ingreso (dd/mm/aaaa)
 			*/
 		/* =============================================== */
 	public Interfaz()
