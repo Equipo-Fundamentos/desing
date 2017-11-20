@@ -43,7 +43,11 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 
 			JTextField 	txtUser, // panel login
 						txtNombre,txtApp,txtApm,txtCargo,txtSueldo,txtNominaNum,txtFechaIngreso,
-						txtDiasTrabajdos,txtAsignaciones, txtDeducciones; // panel details
+						txtDiasTrabajdos,
+						txtBonos,txtFeriados,
+						txtHorasExtra, txtAsignacionesOtros,
+						txtIVA, txtISR,
+						txtPrestamos, txtDeduccionesOtros; // panel details
 
 			JPasswordField txtPass;
 			JLabel lblTitulo,lblStatus;
@@ -52,8 +56,9 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			JScrollPane listScroller;
             boolean editar = false;
             int indice = 0;
+            double ivaGlobal = 16;
 		/* ====== Base de datos (Arreglo bidimensional) ==== */
-		String[][] bd = new String [100][10];
+		String[][] bd = new String [100][15];
 			/*
 			-Cada renglón es una nómina
 			-Cada columna es un valor:
@@ -64,9 +69,14 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				4) Cargo
 				5) Sueldo (80-...)
 				6) Días Trabajados (1-365)
-				7) Asignaciones
-				8) Deducciones
-				9) Fecha de Ingreso (dd/mm/aa)
+				7) Horas extra
+				8) Bonos
+                9) Otras asignaciones
+                10) IVA (16%)
+                11) ISR
+                12) Préstamos
+                13) Otras deducciones
+				14) Fecha de Ingreso (dd/mm/aaaa)
 			*/
 		/* =============================================== */
 	public Interfaz()
@@ -167,7 +177,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					panelDetailsButtons.add(btnReporteInd);
 
 				panelDetailsControles = new JPanel(); // panel con todos las datos
-				panelDetailsControles.setLayout(new java.awt.GridLayout(10,2,-50,20)); // para ordenar 10 filas x 2 columnas
+				panelDetailsControles.setLayout(new java.awt.GridLayout(16,4)); // para ordenar 10 filas x 2 columnas
 					panelDetailsControles.add(new JLabel("Nombre:"));
 					txtNombre = new JTextField(8);
 					txtNombre.setToolTipText("ej. Fernando");
@@ -208,13 +218,47 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					txtDiasTrabajdos.setToolTipText("ej. 14");
 					panelDetailsControles.add(txtDiasTrabajdos);
 
-					panelDetailsControles.add(new JLabel("Asignaciones:"));
-					txtAsignaciones = new JTextField(8);
-					panelDetailsControles.add(txtAsignaciones);
+					panelDetailsControles.add(new JLabel("Bonos: "));
+					txtBonos = new JTextField(8);
+					txtBonos.setToolTipText("Bonos extra $$$");
+					panelDetailsControles.add(txtBonos);
 
-					panelDetailsControles.add(new JLabel("Deducciones:"));
-					txtDeducciones = new JTextField(8);
-					panelDetailsControles.add(txtDeducciones);
+					panelDetailsControles.add(new JLabel("Asignaciones días feriados: "));
+					txtFeriados = new JTextField(8);
+					txtFeriados.setToolTipText("Días feriados $$$");
+					panelDetailsControles.add(txtFeriados);
+
+					panelDetailsControles.add(new JLabel("Horas Extra: "));
+					txtHorasExtra = new JTextField(8);
+					txtHorasExtra.setToolTipText("Cantidad de horas trabajas extra, ej. 3");
+					panelDetailsControles.add(txtHorasExtra);
+
+
+					panelDetailsControles.add(new JLabel("Otros Asignaciones:"));
+					txtAsignacionesOtros = new JTextField(8);
+					txtAsignacionesOtros.setToolTipText("Otras Asignaciones que se deban considerar $$$");
+					panelDetailsControles.add(txtAsignacionesOtros);
+
+
+					panelDetailsControles.add(new JLabel("IVA:"));
+					txtIVA = new JTextField(8);
+					txtIVA.setToolTipText("Deducciones por IVA %");
+					panelDetailsControles.add(txtIVA);
+
+					panelDetailsControles.add(new JLabel("ISR:"));
+					txtISR = new JTextField(8);
+					txtISR.setToolTipText("Deducciones por ISR %");
+					panelDetailsControles.add(txtISR);
+
+					panelDetailsControles.add(new JLabel("Prestamos:"));
+					txtPrestamos = new JTextField(8);
+					txtPrestamos.setToolTipText("Deducciones en prestamos $$$");
+					panelDetailsControles.add(txtPrestamos);
+
+					panelDetailsControles.add(new JLabel("Otras deducciones:"));
+					txtDeduccionesOtros = new JTextField(8);
+					txtDeduccionesOtros.setToolTipText("Otras deducciones que se deban considerar $$$");
+					panelDetailsControles.add(txtDeduccionesOtros);
 
 				panelDetailsSaveCancel = new JPanel(); // panel que tendra boton de guardar
 					btnGuardar = new JButton("Guardar");
@@ -397,6 +441,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					btnEditar.setEnabled(true);
 					btnCancelar.setEnabled(true);
 					lblStatus.setText("Desplegando detalles de empleado seleccionado");
+
 					String nombreArchivo = "bd.csv", datosLeidos;
 					int filas=100,lineaALeer=list.getSelectedIndex()+1,contaux=0;
 					String[] listaLeida = new String[filas];
@@ -417,8 +462,8 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 							txtFechaIngreso.setText(listaLeida[9]);
 							txtNominaNum.setText(listaLeida[3]);
 							txtDiasTrabajdos.setText(listaLeida[6]);
-							txtAsignaciones.setText(listaLeida[7]);
-							txtDeducciones.setText(listaLeida[8]);
+							txtAsignacionesOtros.setText(listaLeida[7]);
+							txtDeduccionesOtros.setText(listaLeida[8]);
 						}
 						lectorTXT.close();
 					}
@@ -531,12 +576,18 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			txtNominaNum.setEditable(true);
 			txtFechaIngreso.setEditable(true);
 			txtDiasTrabajdos.setEditable(true);
-			txtAsignaciones.setEditable(true);
-			txtDeducciones.setEditable(true);
+			txtAsignacionesOtros.setEditable(true);
+			txtDeduccionesOtros.setEditable(true);
 			btnCancelar.setEnabled(true);
 			btnGuardar.setEnabled(true);
 			//btnReporteInd.setEnabled(true);
 			btnEditar.setEnabled(true);
+			txtBonos.setEditable(true);
+			txtFeriados.setEditable(true);
+			txtHorasExtra.setEditable(true);
+			txtIVA.setEditable(true);
+			txtISR.setEditable(true);
+			txtPrestamos.setEditable(true);
 		}
 		public void deshabilitaPanelDetails()
 		{
@@ -549,12 +600,18 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			txtNominaNum.setEditable(false);
 			txtFechaIngreso.setEditable(false);
 			txtDiasTrabajdos.setEditable(false);
-			txtAsignaciones.setEditable(false);
-			txtDeducciones.setEditable(false);
+			txtAsignacionesOtros.setEditable(false);
+			txtDeduccionesOtros.setEditable(false);
 			btnCancelar.setEnabled(false);
 			btnGuardar.setEnabled(false);
 			btnReporteInd.setEnabled(false);
 			btnEditar.setEnabled(false);
+			txtBonos.setEditable(false);
+			txtFeriados.setEditable(false);
+			txtHorasExtra.setEditable(false);
+			txtIVA.setEditable(false);
+			txtISR.setEditable(false);
+			txtPrestamos.setEditable(false);
 		}
 		public void limpiaTextFields()
 		{
@@ -567,9 +624,15 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			txtNominaNum.setText("");
 			txtFechaIngreso.setText("");
 			txtDiasTrabajdos.setText("");
-			txtAsignaciones.setText("");
-			txtDeducciones.setText("");
+			txtAsignacionesOtros.setText("");
+			txtDeduccionesOtros.setText("");
 			list.clearSelection();
+			txtBonos.setText("");
+			txtFeriados.setText("");
+			txtHorasExtra.setText("");
+			txtIVA.setText("");
+			txtISR.setText("");
+			txtPrestamos.setText("");
 		}
 		public void habiltaMainPanel()
 		{
@@ -601,8 +664,12 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				   sldo = txtSueldo.getText(),
 				   numNomina =txtNominaNum.getText(),
 				   dias = txtDiasTrabajdos.getText(),
-				   asignaciones = txtAsignaciones.getText(),
-				   deducciones = txtDeducciones.getText();
+                   horasExtra = txtHorasExtra.getText(),
+                   bonos = txtBonos.getText(),
+				   asignaciones = txtAsignacionesOtros.getText(),
+                   isr = txtISR.getText(),
+                   prestamos = txtPrestamos.getText(),
+				   deducciones = txtDeduccionesOtros.getText();
             String[] palabras = {nomb, app, apm, cargo,};
             boolean noError = true;
 
@@ -629,8 +696,13 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
     				}
                 }
 			if (!dias.matches("^([0-9]?[0-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-5])$")) {JOptionPane.showMessageDialog(null,"Error en dato: Días trabajados \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
+            if (!horasExtra.matches("^(\\d|1?[0-9]?[0-9]?[0-9]|2[0-8][0-9][0-9]|29[0-2][0-9]|293[0-6])$")) {JOptionPane.showMessageDialog(null,"Error en dato: Horas extra \n *Solo números (0-2936) \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
+            if (!bonos.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Bonos \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
 			if (!asignaciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Asignaciones \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
-			if (!deducciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Deducciones \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
+            //if (!iva.matches("^([0-1]?[0-9]|20)$")) {JOptionPane.showMessageDialog(null,"Error en dato: IVA \n *Solo números (0-20) \n *Sin signo de porcentaje\n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
+            if (!isr.matches("^([0-2]?[0-9]|30)$")) {JOptionPane.showMessageDialog(null,"Error en dato: ISR \n *Solo números (0-30) \n *Sin signo de porcentaje\n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
+            if (!prestamos.matches("^\\d+(\\.\\d+)?$")) {JOptionPane.showMessageDialog(null,"Error en dato: Préstamos \n *Solo números o números decimales \n *Sin signo de porcentaje\n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
+			if (!deducciones.matches("^\\d+(\\.\\d+)?$")) {JOptionPane.showMessageDialog(null,"Error en dato: Deducciones \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
 
             return noError;// Regresa si las validaciones fueron correctas.
         }
@@ -731,10 +803,15 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					bd[i][3] = txtNominaNum.getText();
 					bd[i][4] = aMayus(txtCargo.getText());
 					bd[i][5] = txtSueldo.getText();
-					bd[i][6] = txtDiasTrabajdos.getText();
-					bd[i][7] = txtAsignaciones.getText();
-					bd[i][8] = txtDeducciones.getText();
-					bd[i][9] = txtFechaIngreso.getText();
+                    bd[i][6] = txtDiasTrabajdos.getText();
+                    bd[i][7] = txtHorasExtra.getText();
+                    bd[i][8] = txtBonos.getText();
+                    bd[i][9] = txtAsignacionesOtros.getText();
+                    bd[i][10] = Double.toString(ivaGlobal);
+                    bd[i][11] = txtISR.getText();
+                    bd[i][12] = txtPrestamos.getText();
+                    bd[i][13] = txtDeduccionesOtros.getText();
+					bd[i][14] = txtFechaIngreso.getText();
 					deshabilitaPanelDetails();
 					habiltaMainPanel();
 					limpiaTextFields();
@@ -753,9 +830,14 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                 bd[indice][4] = aMayus(txtCargo.getText());
                 bd[indice][5] = txtSueldo.getText();
                 bd[indice][6] = txtDiasTrabajdos.getText();
-                bd[indice][7] = txtAsignaciones.getText();
-                bd[indice][8] = txtDeducciones.getText();
-                bd[indice][9] = txtFechaIngreso.getText();
+                bd[indice][7] = txtHorasExtra.getText();
+                bd[indice][8] = txtBonos.getText();
+                bd[indice][9] = txtAsignacionesOtros.getText();
+                bd[indice][10] = Double.toString(ivaGlobal);
+                bd[indice][11] = txtISR.getText();
+                bd[indice][12] = txtPrestamos.getText();
+                bd[indice][13] = txtDeduccionesOtros.getText();
+                bd[indice][14] = txtFechaIngreso.getText();
                 deshabilitaPanelDetails();
                 habiltaMainPanel();
                 limpiaTextFields();
@@ -793,6 +875,11 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 								bd[i][7] = perfil[7];
 								bd[i][8] = perfil[8];
 								bd[i][9] = perfil[9];
+                                bd[i][10] = Double.toString(ivaGlobal);
+                                bd[i][11] = perfil[11];
+                                bd[i][12] = perfil[12];
+                                bd[i][13] = perfil[13];
+                                bd[i][14] = perfil[14];
 								contador++;
 								break;
 							}
@@ -838,7 +925,8 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             String command = event.getActionCommand(), d = "", os = "";
 			BufferedWriter be = null;
 			String perfiles = "";
-			double sueldo, dias, asignaciones, deducciones, nomina;
+            int dias, iva, isr;
+			double sueldo, hE, bono, asignaciones, prestamos ,deducciones, nomina;
 
 			d = System.getProperty("user.dir") + "/reporte.csv";
             os = System.getProperty("os.name");
@@ -853,14 +941,19 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 							be.append("Nombre,");
 							be.append("Apellido Paterno,");
 							be.append("Apellido Materno,");
-							be.append("No. Nómina,");
+							be.append("No. Nomina,");
 							be.append("Cargo,");
 							be.append("Sueldo,");
-							be.append("Días Trabajados,");
-							be.append("Asignaciones,");
-							be.append("Deducciones,");
+							be.append("Dias Trabajados,");
+							be.append("Horas Extra,");
+                            be.append("Bonos,");
+                            be.append("Otras Asignaciones,");
+							be.append("IVA (%),");
+                            be.append("ISR (%),");
+                            be.append("Prestamos,");
+                            be.append("Otras Deducciones,");
 							be.append("Fecha de Ingreso,");
-							be.append("Nómina Calculada\n");
+							be.append("Nomina Calculada\n");
 							continue;
 						}
 
@@ -874,20 +967,37 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 						be.append(bd[i][4]+",");// Cargo
 						be.append(bd[i][5]+",");// Sueldo
 						be.append(bd[i][6]+",");// Días Trabajados
-						be.append(bd[i][7]+",");// Asignaciones
-						be.append(bd[i][8]+",");// Deducciones
-						be.append(bd[i][9]+",");// Fecha de Ingreso
+						be.append(bd[i][7]+",");// Horas Extra
+						be.append(bd[i][8]+",");// Bonos
+						be.append(bd[i][9]+",");// Otras asignaciones
+                        be.append(bd[i][10]+",");// IVA
+                        be.append(bd[i][11]+",");// ISR
+                        be.append(bd[i][12]+",");// Préstamos
+                        be.append(bd[i][13]+",");// Otras deducciones
+                        be.append(bd[i][14]+",");// Fecha de Ingreso
 						//Cálculo de nómina
 						sueldo = Double.parseDouble(bd[i][5]);
-						dias = Double.parseDouble(bd[i][6]);
-						asignaciones = Double.parseDouble(bd[i][7]);
-						deducciones = Double.parseDouble(bd[i][8]);
-						nomina = sueldo*dias+asignaciones-deducciones;
-						be.append(Double.toString(nomina)+"\n");// Nómina
+						dias = Integer.parseInt(bd[i][6]);
+                        hE = Double.parseDouble(bd[i][7]);
+                        bono = Double.parseDouble(bd[i][8]);
+						asignaciones = Double.parseDouble(bd[i][9]);
+                        prestamos = Double.parseDouble(bd[i][12]);
+						deducciones = Double.parseDouble(bd[i][13]);
+                        nomina = sueldo*dias+sueldo*hE+bono+asignaciones-prestamos-deducciones;
+                        be.append(Double.toString(nomina) + "\n");
+                        be.append(",,,,,,,,,,,,,,IVA aplicado," + Double.toString((ivaGlobal/100)*nomina) + "\n");
+                        System.out.println(Double.toString((ivaGlobal/100)*nomina));
+                        //be.append(Double.toString(",,,,,,,,,,,,,ISR aplicado," + isr(sueldo, dias)));
+
+                        // nomina -= isr(sueldo, dias);
+                        nomina -= (ivaGlobal/100)*nomina;
+                        be.append(",,,,,,,,,,,,,,Nomina neta," + Double.toString(nomina) + "\n");
+
+
 					}
                     if (os.equals("Mac OS X")) Runtime.getRuntime().exec(new String[]{"open",d});
                     if (os.equals("Linux")) Runtime.getRuntime().exec(new String[] {"xdg-open",d});
-                    //if (os.equals("")) Runtime.getRuntime();exec(new String[] {"",d});
+                    if (os.equals("Windows")) Runtime.getRuntime().exec(new String[] {d});
                 }  catch (IOException ioe) {
 				                ioe.printStackTrace();
                     }
@@ -920,7 +1030,12 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
         			bw.append(bd[i][6] + ",");
         			bw.append(bd[i][7] + ",");
         			bw.append(bd[i][8] + ",");
-        			bw.append(bd[i][9] + "\n");
+                    bw.append(bd[i][9] + ",");
+                    bw.append(bd[i][10] + ",");
+                    bw.append(bd[i][11] + ",");
+                    bw.append(bd[i][12] + ",");
+                    bw.append(bd[i][13] + ",");
+        			bw.append(bd[i][14] + "\n");
                 }
         	} catch (FileNotFoundException e1) {
                 e1.printStackTrace();
