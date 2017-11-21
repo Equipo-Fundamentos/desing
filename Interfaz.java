@@ -73,7 +73,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				8) Bonos
                 9) Otras asignaciones
                 10) IVA (16%)
-                11) ISR
+                11) Feriados
                 12) Préstamos
                 13) Otras deducciones
 				14) Fecha de Ingreso (dd/mm/aaaa)
@@ -195,10 +195,10 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 
 					panelDetailsControles.add(new JLabel("Cargo:"));
 					txtCargo = new JTextField(8);
-					txtCargo.setToolTipText("puesto o ocupación en la empresa");
+					txtCargo.setToolTipText("Puesto u ocupación en la empresa");
 					panelDetailsControles.add(txtCargo);
 
-					panelDetailsControles.add(new JLabel("Sueldo Base ($):"));
+					panelDetailsControles.add(new JLabel("Salario Base ($):"));
 					txtSueldo = new JTextField(8);
 					txtSueldo.setToolTipText("$$$");
 					panelDetailsControles.add(txtSueldo);
@@ -225,7 +225,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 
 					panelDetailsControles.add(new JLabel("Asignaciones días feriados: "));
 					txtFeriados = new JTextField(8);
-					txtFeriados.setToolTipText("Días feriados $$$");
+					txtFeriados.setToolTipText("Días feriados, ej. 4");
 					panelDetailsControles.add(txtFeriados);
 
 					panelDetailsControles.add(new JLabel("Horas Extra: "));
@@ -363,7 +363,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			btnActualizar.addActionListener(new ActualizaJList());
 			// Adición a BD
 			btnGuardar.addActionListener(new AgregaraBD());
-			btnReportesGrales.addActionListener(new EscritorExcel());
+			btnReportesGrales.addActionListener(new GenerarReportes());
             // Borrar de BD
             btnBorrar.addActionListener(new BorrardeBD());
 
@@ -735,49 +735,49 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		if (sueldo>=0.01 && sueldo<=496.07) {
 
 			sueldo-=0.01;
-			tasa=1.95;
+			tasa=.0195;
 		}else if (sueldo>=496.08 && sueldo<=4210.41) {
 			sueldo -= 496.08;
 			cuotaFija =9.52;
-			tasa = 6.40;
+			tasa = .0640;
 		}else if (sueldo>=4210.42 && sueldo<=7399.42) {
 			sueldo -=4210.42;
 			cuotaFija = 247.24;
-			tasa = 10.88;
+			tasa = .1088;
 		}else if (sueldo>=7399.43 && sueldo<=8601.50) {
 			sueldo -= 7399.43;
 			cuotaFija = 594.21;
-			tasa = 16.00;
+			tasa = .16;
 		}else if (sueldo>=8601.51 && sueldo<=10298.35) {
 			sueldo -= 8601.51;
 			cuotaFija = 786.54;
-			tasa = 17.92;
+			tasa = .1792;
 		}else if (sueldo>=10298.36 && sueldo<=20770.29) {
 			sueldo -= 20298.36;
 			cuotaFija = 1090.61;
-			tasa = 21.36;
+			tasa = .2136;
 		}else if (sueldo>=20770.30 && sueldo<=32736.83) {
 			sueldo -= 20770.30;
 			cuotaFija = 3327.42;
-			tasa = 23.52;
+			tasa = .2352;
 		}else if (sueldo>=32736.84 && sueldo<=62500.00) {
 			sueldo -= 32736.84;
 			cuotaFija = 6141.95;
-			tasa = 30.00;
+			tasa = .30;
 		}else if (sueldo>=62500.01 && sueldo<=83333.33) {
 			sueldo -= 62500.01;
 			cuotaFija = 15070.90;
-			tasa = 32.00;
+			tasa = .32;
 		}else if (sueldo>=83333.34 && sueldo<=250000.00) {
 			sueldo -= 83333.34;
 			cuotaFija = 21737.57;
-			tasa = 34.00;
+			tasa = .34;
 		}else{
 			sueldo -= 250000.01;
 			cuotaFija = 78404.23;
-			tasa = 35.00;
+			tasa = .35;
 		}
-		sueldo*=(tasa*0.01);
+		sueldo-=(tasa*sueldo);
 		sueldo+=cuotaFija;
 		return sueldo;
 	}
@@ -808,7 +808,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                     bd[i][8] = txtBonos.getText();
                     bd[i][9] = txtAsignacionesOtros.getText();
                     bd[i][10] = Double.toString(ivaGlobal);
-                    bd[i][11] = txtISR.getText();
+                    bd[i][11] = txtFeriados.getText();
                     bd[i][12] = txtPrestamos.getText();
                     bd[i][13] = txtDeduccionesOtros.getText();
 					bd[i][14] = txtFechaIngreso.getText();
@@ -834,7 +834,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                 bd[indice][8] = txtBonos.getText();
                 bd[indice][9] = txtAsignacionesOtros.getText();
                 bd[indice][10] = Double.toString(ivaGlobal);
-                bd[indice][11] = txtISR.getText();
+                bd[indice][11] = txtFeriados.getText();
                 bd[indice][12] = txtPrestamos.getText();
                 bd[indice][13] = txtDeduccionesOtros.getText();
                 bd[indice][14] = txtFechaIngreso.getText();
@@ -920,15 +920,17 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             }
         }
     }
-	public class EscritorExcel implements ActionListener {
+	public class GenerarReportes implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-            String command = event.getActionCommand(), d = "", os = "";
+            String d = "", os = "";
 			BufferedWriter be = null;
 			String perfiles = "";
-            int dias, iva, isr;
-			double sueldo, hE, bono, asignaciones, prestamos ,deducciones, nomina;
+            int dias;
+			double base, salario, hExtra, diasF, bono, asignaciones, prestamos ,deducciones, nomina, iva , isr;
 
-			d = System.getProperty("user.dir") + "/reporte.csv";
+
+
+			d = "/reporte.csv";
             os = System.getProperty("os.name");
 
 			try {
@@ -943,23 +945,37 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 							be.append("Apellido Materno,");
 							be.append("No. Nomina,");
 							be.append("Cargo,");
-							be.append("Sueldo,");
+							be.append("Salario,");
 							be.append("Dias Trabajados,");
 							be.append("Horas Extra,");
                             be.append("Bonos,");
                             be.append("Otras Asignaciones,");
 							be.append("IVA (%),");
-                            be.append("ISR (%),");
+                            be.append("Días Feriados,");
                             be.append("Prestamos,");
                             be.append("Otras Deducciones,");
 							be.append("Fecha de Ingreso,");
-							be.append("Nomina Calculada\n");
+                            be.append("Salario,");
+                            be.append("Nomina bruta,");
+                            be.append("IVA aplicado,");
+                            be.append("ISR aplicado,");
+                            be.append("Nomina neta\n");
 							continue;
 						}
 
-						// Escribe al reporte
-
+						// Si la nómina no está asignada continúa
 						if (bd[i][0] == null) continue;
+                        // Asigna los valores a las variables
+                        base = Double.parseDouble(bd[i][5]);
+                        dias = Integer.parseInt(bd[i][6]);
+                        hExtra = Double.parseDouble(bd[i][7]);
+                        bono = Double.parseDouble(bd[i][8]);
+                        asignaciones = Double.parseDouble(bd[i][9]);
+                        diasF = Integer.parseInt(bd[i][11]);
+                        prestamos = Double.parseDouble(bd[i][12]);
+                        deducciones = Double.parseDouble(bd[i][13]);
+
+                        // Escribe al reporte
 						be.append(bd[i][0]+",");// Nombre
 						be.append(bd[i][1]+",");// APP
 						be.append(bd[i][2]+",");// APM
@@ -971,29 +987,21 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 						be.append(bd[i][8]+",");// Bonos
 						be.append(bd[i][9]+",");// Otras asignaciones
                         be.append(bd[i][10]+",");// IVA
-                        be.append(bd[i][11]+",");// ISR
+                        be.append(bd[i][11]+",");// Días feriados
                         be.append(bd[i][12]+",");// Préstamos
                         be.append(bd[i][13]+",");// Otras deducciones
                         be.append(bd[i][14]+",");// Fecha de Ingreso
 						//Cálculo de nómina
-						sueldo = Double.parseDouble(bd[i][5]);
-						dias = Integer.parseInt(bd[i][6]);
-                        hE = Double.parseDouble(bd[i][7]);
-                        bono = Double.parseDouble(bd[i][8]);
-						asignaciones = Double.parseDouble(bd[i][9]);
-                        prestamos = Double.parseDouble(bd[i][12]);
-						deducciones = Double.parseDouble(bd[i][13]);
-                        nomina = sueldo*dias+sueldo*hE+bono+asignaciones-prestamos-deducciones;
-                        be.append(Double.toString(nomina) + "\n");
-                        be.append(",,,,,,,,,,,,,,IVA aplicado," + Double.toString((ivaGlobal/100)*nomina) + "\n");
-                        System.out.println(Double.toString((ivaGlobal/100)*nomina));
-                        //be.append(Double.toString(",,,,,,,,,,,,,ISR aplicado," + isr(sueldo, dias)));
-
-                        // nomina -= isr(sueldo, dias);
-                        nomina -= (ivaGlobal/100)*nomina;
-                        be.append(",,,,,,,,,,,,,,Nomina neta," + Double.toString(nomina) + "\n");
-
-
+                        salario = base*dias;
+                        be.append(salario+",");
+                        nomina = salario+bono+(hExtra*base)+(diasF*3*base)+asignaciones-prestamos-deducciones;
+                        be.append(nomina+",");
+                        iva = (nomina*ivaGlobal/100);
+                        be.append(iva+",");
+                        isr = calcISR(nomina);
+                        be.append(isr+",");
+                        nomina -= isr+iva;
+                        be.append(nomina+"\n");
 					}
                     if (os.equals("Mac OS X")) Runtime.getRuntime().exec(new String[]{"open",d});
                     if (os.equals("Linux")) Runtime.getRuntime().exec(new String[] {"xdg-open",d});
