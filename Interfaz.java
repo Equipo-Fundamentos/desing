@@ -223,7 +223,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					txtBonos.setToolTipText("Bonos extra $$$");
 					panelDetailsControles.add(txtBonos);
 
-					panelDetailsControles.add(new JLabel("Asignaciones días feriados: "));
+					panelDetailsControles.add(new JLabel("Días feriados: "));
 					txtFeriados = new JTextField(8);
 					txtFeriados.setToolTipText("Días feriados, ej. 4");
 					panelDetailsControles.add(txtFeriados);
