@@ -930,7 +930,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 
 
 
-			d = "/reporte.csv";
+			d = System.getProperty("user.dir") + "/reporte.csv";
             os = System.getProperty("os.name");
 
 			try {
