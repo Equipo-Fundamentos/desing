@@ -544,28 +544,11 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		public void actualizaList()
 		{
 			listModel.removeAllElements();
-			String nombreArchivo = "bd.csv", datosLeidos;
-			int filas=100;
-			String[] listaLeida = new String[filas];
-			try
-			{
-				FileReader lectorBD = new FileReader(nombreArchivo);
-				BufferedReader brBD = new BufferedReader(lectorBD);
-				while((datosLeidos = brBD.readLine())!=null)
-				{
-					listaLeida = datosLeidos.split(",");
-					listModel.addElement(listaLeida[0]+" - "+listaLeida[3]);
-				}
-				lectorBD.close();
-				list.setModel(listModel);
-			}
-			catch(IOException e)
-			{
-				System.out.println("no hay archivo");
-			}
-			catch(ArrayIndexOutOfBoundsException e){
-				System.out.println("bd vacía del Jlist");
-			}
+		          for (int i = 0; i < bd.length; i++) {
+                      if (bd[i][0] == null) continue;
+                    listModel.addElement(bd[i][0]+" - "+bd[i][3]);
+                  }
+                  list.setModel(listModel);
 		}
 		public void habiltaPanelDetails()//cuando presiona editar
 		{
@@ -902,6 +885,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                             }
                     }
 				}
+                actualizaList();
             }
         }
     public class BorrardeBD implements ActionListener {
