@@ -432,56 +432,54 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			}
 		}
 	//clic en ver
-		public class VerDetallesEmpleado implements ActionListener
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				if(!list.isSelectionEmpty())// o sea si selecciono alguien
-				{
+		public class VerDetallesEmpleado implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+            double isr, base, salario, nomina, hExtra, bono, asignaciones, prestamos, deducciones;
+            int diasF, dias, index;
+
+                if (!list.isSelectionEmpty()) {// Si seleccionó a alguien
+                    //Cálculo de ISR
+                    index = list.getSelectedIndex();
+                    base = Double.parseDouble(bd[index][5]);
+                    hExtra = Double.parseDouble(bd[index][7]);
+                    bono = Double.parseDouble(bd[index][8]);
+                    asignaciones = Double.parseDouble(bd[index][9]);
+                    prestamos = Double.parseDouble(bd[index][12]);
+                    deducciones = Double.parseDouble(bd[index][13]);
+                    diasF = Integer.parseInt(bd[index][11]);
+                    dias = Integer.parseInt(bd[index][6]);
+                    salario = base*dias;
+                    nomina = salario+bono+(hExtra*base)+(diasF*3*base)+asignaciones-prestamos-deducciones;
+                    isr = calcISR(nomina,"t");
+
 					btnReporteInd.setEnabled(true);
 					btnEditar.setEnabled(true);
 					btnCancelar.setEnabled(true);
-					lblStatus.setText("Desplegando detalles de empleado seleccionado");
 
-					String nombreArchivo = "bd.csv", datosLeidos;
-					int filas=100,lineaALeer=list.getSelectedIndex()+1,contaux=0;
-					String[] listaLeida = new String[filas];
-					try
-					{
-						FileReader lectorTXT = new FileReader(nombreArchivo);
-						BufferedReader brTXT = new BufferedReader(lectorTXT);
-						while(contaux<lineaALeer)
-						{
-							contaux++;
-							datosLeidos = brTXT.readLine();
-							listaLeida = datosLeidos.split(",");
-							txtNombre.setText(listaLeida[0]);
-							txtApp.setText(listaLeida[1]);
-							txtApm.setText(listaLeida[2]);
-							txtCargo.setText(listaLeida[4]);
-							txtSueldo.setText(listaLeida[5]);
-							txtFechaIngreso.setText(listaLeida[9]);
-							txtNominaNum.setText(listaLeida[3]);
-							txtDiasTrabajdos.setText(listaLeida[6]);
-							txtAsignacionesOtros.setText(listaLeida[7]);
-							txtDeduccionesOtros.setText(listaLeida[8]);
-						}
-						lectorTXT.close();
-					}
-					catch(IOException ev)
-					{
-						System.out.println("no hay archivo");
-					}
-				}
-				else
-				{
+					lblStatus.setText("Desplegando detalles de empleado seleccionado");
+                        txtNombre.setText(bd[index][0]);// Nombre
+                        txtApp.setText(bd[index][1]);// APP
+                        txtApm.setText(bd[index][2]);// APM
+                        txtNominaNum.setText(bd[index][3]);// No. Nómina
+                        txtCargo.setText(bd[index][4]);// Cargo
+                        txtSueldo.setText(bd[index][5]);// Sueldo
+                        txtDiasTrabajdos.setText(bd[index][6]);// Días Trabajados
+                        txtHorasExtra.setText(bd[index][7]);// Horas Extra
+                        txtBonos.setText(bd[index][8]);// Bonos
+                        txtAsignacionesOtros.setText(bd[index][9]);// Otras asignaciones
+                        txtIVA.setText(Double.toString(ivaGlobal)+"%");
+                        txtISR.setText(Double.toString(isr)+"%");
+                        txtFeriados.setText(bd[index][11]);// Días feriados
+                        txtPrestamos.setText(bd[index][12]);// Préstamos
+                        txtDeduccionesOtros.setText(bd[index][13]);// Otras deducciones
+                        txtFechaIngreso.setText(bd[index][14]);// Fecha de Ingreso
+                }
+				else {
 					JOptionPane.showMessageDialog(null,"Por favor seleccione a alguien", "miSueldo",
 					JOptionPane.WARNING_MESSAGE);
 				}
-				//System.out.print("index selccionado: "+list.getSelectedIndex());
-				//System.out.println(", valor en el index: "+list.getSelectedValue());
-			}
-		}
+            }
+        }
 	//clic en editar
 		public class EditarEmpleado implements ActionListener
 		{
@@ -569,8 +567,10 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			txtBonos.setEditable(true);
 			txtFeriados.setEditable(true);
 			txtHorasExtra.setEditable(true);
-			txtIVA.setEditable(true);
-			txtISR.setEditable(true);
+			txtIVA.setEditable(false);
+            txtIVA.setEnabled(false);
+			txtISR.setEditable(false);
+            txtISR.setEnabled(false);
 			txtPrestamos.setEditable(true);
 		}
 		public void deshabilitaPanelDetails()
@@ -683,8 +683,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             if (!horasExtra.matches("^(\\d|1?[0-9]?[0-9]?[0-9]|2[0-8][0-9][0-9]|29[0-2][0-9]|293[0-6])$")) {JOptionPane.showMessageDialog(null,"Error en dato: Horas extra \n *Solo números (0-2936) \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
             if (!bonos.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Bonos \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
 			if (!asignaciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Asignaciones \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
-            //if (!iva.matches("^([0-1]?[0-9]|20)$")) {JOptionPane.showMessageDialog(null,"Error en dato: IVA \n *Solo números (0-20) \n *Sin signo de porcentaje\n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
-            if (!isr.matches("^([0-2]?[0-9]|30)$")) {JOptionPane.showMessageDialog(null,"Error en dato: ISR \n *Solo números (0-30) \n *Sin signo de porcentaje\n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
             if (!prestamos.matches("^\\d+(\\.\\d+)?$")) {JOptionPane.showMessageDialog(null,"Error en dato: Préstamos \n *Solo números o números decimales \n *Sin signo de porcentaje\n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
 			if (!deducciones.matches("^\\d+(\\.\\d+)?$")) {JOptionPane.showMessageDialog(null,"Error en dato: Deducciones \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
 
@@ -712,7 +710,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             }
             return texto;
         }
-        public double calcISR(double sueldo){
+        public double calcISR(double sueldo, String regresaValor){
 		double tasa=0;
 		double cuotaFija=0;
 
@@ -763,7 +761,9 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		}
 		sueldo-=(tasa*sueldo);
 		sueldo+=cuotaFija;
-		return sueldo;
+        if (regresaValor.equals("s")) return sueldo;
+        else if (regresaValor.equals("t")) return tasa*100;
+        else return sueldo;
 	}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~FIN MÉTODOS AUXILIARES~~~~~~~~~~~~~~~~~
@@ -983,7 +983,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                         be.append(nomina+",");
                         iva = (nomina*ivaGlobal/100);
                         be.append(iva+",");
-                        isr = calcISR(nomina);
+                        isr = calcISR(nomina,"s");
                         be.append(isr+",");
                         nomina -= isr+iva;
                         be.append(nomina+"\n");
@@ -1029,7 +1029,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                 salario = base*dias;
                 nomina = salario+bono+(hExtra*base)+(diasF*3*base)+asignaciones-prestamos-deducciones;
                 iva = (nomina*ivaGlobal/100);
-                isr = calcISR(nomina);
+                isr = calcISR(nomina,"s");
 
     			try {
     					File reporte = new File(d); // Especifica el nombre del archivo para el reporte
