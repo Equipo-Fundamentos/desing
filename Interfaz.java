@@ -24,7 +24,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	{
 		Interfaz ventanaGrafica = new Interfaz();
 		ventanaGrafica.setVisible(true); // se abra la ventana en la ejecución
-		System.out.println("Ubicación actual en: " +  System.getProperty("user.dir"));
 	}
 
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -271,7 +270,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			panelDetails.add(panelDetailsButtons,java.awt.BorderLayout.NORTH);//quede hasta arriba
 			panelDetails.add(panelDetailsControles);//cubra lo que sobre
 			panelDetails.add(panelDetailsSaveCancel,java.awt.BorderLayout.SOUTH);//que hasta abajo
-			//panelDetails.setEnabled(false);////***** false para que se habilite cuando se loguee
 		//panel Footer
 			panelFooter = new JPanel();
 			panelFooter.setBackground(new java.awt.Color(238, 238, 238));
@@ -382,6 +380,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	/* ######agregar a los controles instanciados los eventos#####*/
 		boolean session = false;
+    // Actualiza la lista para que se vean los usuarios que han sido agregados o que no se van los que se borraron
 	public class ActualizaJList implements ActionListener
 		{
 			public void actionPerformed(ActionEvent e)
@@ -438,7 +437,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             int diasF, dias, index;
 
                 if (!list.isSelectionEmpty()) {// Si seleccionó a alguien
-                    //Cálculo de ISR
                     index = list.getSelectedIndex();
                     base = Double.parseDouble(bd[index][5]);
                     hExtra = Double.parseDouble(bd[index][7]);
@@ -450,6 +448,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                     dias = Integer.parseInt(bd[index][6]);
                     salario = base*dias;
                     nomina = salario+bono+(hExtra*base)+(diasF*3*base)+asignaciones-prestamos-deducciones;
+                    //Cálculo de ISR para que se vea después de dar click en ver
                     isr = calcISR(nomina,"t");
 
 					btnReporteInd.setEnabled(true);
@@ -661,7 +660,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			if (!nomb.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$")) {JOptionPane.showMessageDialog(null,"Error en dato: Nombre \n *Solo puedes usar letras \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE);noError = false;}
 			if (!app.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$")) {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Paterno \n *Solo puedes usar letras \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
 			if (!apm.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Materno \n *Solo puedes usar letras \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
-			if (!cargo.matches("^\\w+[áéíóú]?(-|\\s\\w+|\\w+)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Cargo \n *Solo puedes usar letras \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
+			if (!cargo.matches("^\\w+[áéíóú]?(-?\\s?\\w+?)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Cargo \n *Solo puedes usar letras \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
 			// Número
             if (!fecha.matches("(\\d|[1-2][0-9]|30)\\/(\\d|[1][0-2])\\/(200[0-9]|201[0-7])")) {
                 JOptionPane.showMessageDialog(null,"Error en dato: Fecha \n *Usa el formato d/m/yyyy \n *No puede estar vacío \n *No puede haber fechas futuras", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;
@@ -706,10 +705,10 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                             letra = texto.codePointAt(i + 1);
                             texto = texto.substring(0, i + 1) + String.valueOf(Character.toChars(letra - 32)) + texto.substring(i + 2, l);
                         }
+                    }
                 }
-            }
             return texto;
-        }
+            }
         public double calcISR(double sueldo, String regresaValor){
 		double tasa=0;
 		double cuotaFija=0;
