@@ -24,7 +24,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	{
 		Interfaz ventanaGrafica = new Interfaz();
 		ventanaGrafica.setVisible(true); // se abra la ventana en la ejecución
-		System.out.println("Ubicación actual en: " +  System.getProperty("user.dir"));
+		//System.out.println("Ubicación actual en: " +  System.getProperty("user.dir"));
 	}
 
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,6 +57,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             boolean editar = false;
             int indice = 0;
             double ivaGlobal = 16;
+            String bdCSV = "bd.csv";
 		/* ====== Base de datos (Arreglo bidimensional) ==== */
 		String[][] bd = new String [100][15];
 			/*
@@ -443,12 +444,12 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					btnCancelar.setEnabled(true);
 					lblStatus.setText("Desplegando detalles de empleado seleccionado");
 
-					String nombreArchivo = "bd.csv", datosLeidos;
+					String datosLeidos;
 					int filas=100,lineaALeer=list.getSelectedIndex()+1,contaux=0;
 					String[] listaLeida = new String[filas];
 					try
 					{
-						FileReader lectorTXT = new FileReader(nombreArchivo);
+						FileReader lectorTXT = new FileReader(bdCSV);
 						BufferedReader brTXT = new BufferedReader(lectorTXT);
 						while(contaux<lineaALeer)
 						{
@@ -544,12 +545,12 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		public void actualizaList()
 		{
 			listModel.removeAllElements();
-			String nombreArchivo = "bd.csv", datosLeidos;
+			String datosLeidos;
 			int filas=100;
 			String[] listaLeida = new String[filas];
 			try
 			{
-				FileReader lectorBD = new FileReader(nombreArchivo);
+				FileReader lectorBD = new FileReader(bdCSV);
 				BufferedReader brBD = new BufferedReader(lectorBD);
 				while((datosLeidos = brBD.readLine())!=null)
 				{
@@ -796,7 +797,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             if (noError && !editar) {
                 for (int i = 0; i < bd.length; i++) {
 				if (bd[i][0] == null) { // Si el espacio no esta asignado
-					System.out.println("Si entro");
 					// Asignar todos los valores colocados a esa nómina
 					bd[i][0] = aMayus(txtNombre.getText());
 					bd[i][1] = aMayus(txtApp.getText());
@@ -855,10 +855,8 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			int contador = 0;
 			BufferedReader br = null;
 			String linea = "",
-			separador = ",",
-			command = event.getActionCommand(),
-			csv = System.getProperty("user.dir")+"/bd.csv"; // El archivo que se quiera utilizar como base de datos siempre se debe imprimir
-			File archivo = new File(csv);
+			separador = ",";
+			File archivo = new File(bdCSV);
                 try {
 					if (!archivo.exists()) archivo.createNewFile();
 					br = new BufferedReader(new FileReader(archivo));
@@ -931,7 +929,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 
 
 
-			d = System.getProperty("user.dir") + "/reporte.csv";
+			d = "reporte.csv";
             os = System.getProperty("os.name");
 
 			try {
@@ -1027,12 +1025,9 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                 int dias, index;
     			double base, salario, hExtra, diasF, bono, asignaciones, prestamos ,deducciones, nomina, iva , isr;
 
-
-
-
                 os = System.getProperty("os.name");
                 index = list.getSelectedIndex();
-                d = System.getProperty("user.dir") + "/reporte"+bd[index][1]+".csv";
+                d = "reporte"+bd[index][1]+".csv";
                 // Asigna los valores a las variables
                 base = Double.parseDouble(bd[index][5]);
                 dias = Integer.parseInt(bd[index][6]);
@@ -1093,11 +1088,9 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
     		}
 		public void escritorCSV() {
 			BufferedWriter bw = null;
-            String d = "";
-
             try {
-                d = System.getProperty("user.dir") + "/bd.csv";
-                File archivoCSV = new File(d);
+
+                File archivoCSV = new File(bdCSV);
                 bw = new BufferedWriter(new FileWriter(archivoCSV));
                 for (int i = 0; i < bd.length; i++) {
                     if (bd[i][0] == null) continue;

@@ -1,7 +1,6 @@
 
 
 ToDo
-*Hacer global variable "bd.csv"
-*Eliminar debugs feos en la terminal
 *Cambiar origen de métodos de JList (que busque en bd[][])
-*Borrar campo de texto de ISR y dejar permanente el de IVA en 16
+*Cambiar campo de ISR a calcISR() cuando se de click en ver
+*Dejar permanente el de IVA en 16
