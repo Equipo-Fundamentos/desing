@@ -364,6 +364,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			// Adición a BD
 			btnGuardar.addActionListener(new AgregaraBD());
 			btnReportesGrales.addActionListener(new GenerarReportes());
+            btnReporteInd.addActionListener(new GenerarReporte());
             // Borrar de BD
             btnBorrar.addActionListener(new BorrardeBD());
 
@@ -1018,6 +1019,78 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				}
 			}
 		}
+        public class GenerarReporte implements ActionListener {
+    		public void actionPerformed(ActionEvent event) {
+                String d = "", os = "";
+    			BufferedWriter be = null;
+    			String perfiles = "";
+                int dias, index;
+    			double base, salario, hExtra, diasF, bono, asignaciones, prestamos ,deducciones, nomina, iva , isr;
+
+
+
+
+                os = System.getProperty("os.name");
+                index = list.getSelectedIndex();
+                d = System.getProperty("user.dir") + "/reporte"+bd[index][1]+".csv";
+                // Asigna los valores a las variables
+                base = Double.parseDouble(bd[index][5]);
+                dias = Integer.parseInt(bd[index][6]);
+                hExtra = Double.parseDouble(bd[index][7]);
+                bono = Double.parseDouble(bd[index][8]);
+                asignaciones = Double.parseDouble(bd[index][9]);
+                diasF = Integer.parseInt(bd[index][11]);
+                prestamos = Double.parseDouble(bd[index][12]);
+                deducciones = Double.parseDouble(bd[index][13]);
+                salario = base*dias;
+                nomina = salario+bono+(hExtra*base)+(diasF*3*base)+asignaciones-prestamos-deducciones;
+                iva = (nomina*ivaGlobal/100);
+                isr = calcISR(nomina);
+
+    			try {
+    					File reporte = new File(d); // Especifica el nombre del archivo para el reporte
+    					if (reporte.exists()) reporte.delete();
+    					reporte.createNewFile(); //Crea el archivo del reporte
+    					be = new BufferedWriter(new FileWriter(reporte));
+
+    							be.append("Nombre,"+bd[index][0]+"\n");
+    							be.append("Apellido Paterno,"+bd[index][1]+"\n");
+    							be.append("Apellido Materno,"+bd[index][2]+"\n");
+    							be.append("No. Nomina,"+bd[index][3]+"\n");
+    							be.append("Cargo,"+bd[index][4]+"\n");
+    							be.append("Salario,"+bd[index][5]+"\n");
+    							be.append("Dias Trabajados,"+bd[index][6]+"\n");
+    							be.append("Horas Extra,"+bd[index][7]+"\n");
+                                be.append("Bonos,"+bd[index][8]+"\n");
+                                be.append("Otras Asignaciones,"+bd[index][9]+"\n");
+    							be.append("IVA (%),"+bd[index][10]+"\n");
+                                be.append("Días Feriados,"+bd[index][11]+"\n");
+                                be.append("Prestamos,"+bd[index][12]+"\n");
+                                be.append("Otras Deducciones,"+bd[index][13]+"\n");
+    							be.append("Fecha de Ingreso,"+bd[index][14]+"\n");
+                                be.append("Salario,"+salario+"\n");
+
+                                be.append("Nomina bruta,"+nomina+"\n");
+                                be.append("IVA aplicado,"+iva+"\n");
+                                be.append("ISR aplicado,"+isr+"\n");
+                                nomina -= isr+iva;
+                                be.append("Nomina neta,"+nomina+"\n");
+
+                        if (os.equals("Mac OS X")) Runtime.getRuntime().exec(new String[]{"open",d});
+                        if (os.equals("Linux")) Runtime.getRuntime().exec(new String[] {"xdg-open",d});
+                        if (os.equals("Windows")) Runtime.getRuntime().exec(new String[] {d});
+                    }  catch (IOException ioe) {
+    				                ioe.printStackTrace();
+                        }
+    				finally {
+                        try {
+    						if (be != null) be.close();
+                        } catch (Exception ex) {
+    						System.out.println("Error in closing the BufferedWriter"+ex);
+    					}
+    				}
+    			}
+    		}
 		public void escritorCSV() {
 			BufferedWriter bw = null;
             String d = "";
