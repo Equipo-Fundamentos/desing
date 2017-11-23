@@ -472,6 +472,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                         txtPrestamos.setText(bd[index][12]);// Préstamos
                         txtDeduccionesOtros.setText(bd[index][13]);// Otras deducciones
                         txtFechaIngreso.setText(bd[index][14]);// Fecha de Ingreso
+                        deshabilitaMainPanel();
                 }
 				else {
 					JOptionPane.showMessageDialog(null,"Por favor seleccione a alguien", "miSueldo",
@@ -778,7 +779,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             if (noError && !editar) {
                 for (int i = 0; i < bd.length; i++) {
 				if (bd[i][0] == null) { // Si el espacio no esta asignado
-					System.out.println("Si entro");
+					//System.out.println("Si entro");
 					// Asignar todos los valores colocados a esa nómina
 					bd[i][0] = aMayus(txtNombre.getText());
 					bd[i][1] = aMayus(txtApp.getText());
@@ -914,7 +915,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 
 
 
-			d = System.getProperty("user.dir") + "/reporte.csv";
+			d = "reporte.csv";
             os = System.getProperty("os.name");
 
 			try {
@@ -989,7 +990,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					}
                     if (os.equals("Mac OS X")) Runtime.getRuntime().exec(new String[]{"open",d});
                     if (os.equals("Linux")) Runtime.getRuntime().exec(new String[] {"xdg-open",d});
-                    if (os.equals("Windows")) Runtime.getRuntime().exec(new String[] {d});
+                    if (os.contains("Windows")) Runtime.getRuntime().exec(new String[]{"notepad",d});
                 }  catch (IOException ioe) {
 				                ioe.printStackTrace();
                     }
@@ -1015,7 +1016,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 
                 os = System.getProperty("os.name");
                 index = list.getSelectedIndex();
-                d = System.getProperty("user.dir") + "/reporte"+bd[index][1]+".csv";
+                d = "reporte"+bd[index][1]+".csv";
                 // Asigna los valores a las variables
                 base = Double.parseDouble(bd[index][5]);
                 dias = Integer.parseInt(bd[index][6]);
@@ -1061,7 +1062,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 
                         if (os.equals("Mac OS X")) Runtime.getRuntime().exec(new String[]{"open",d});
                         if (os.equals("Linux")) Runtime.getRuntime().exec(new String[] {"xdg-open",d});
-                        if (os.equals("Windows")) Runtime.getRuntime().exec(new String[] {d});
+                        if (os.contains("Windows")) Runtime.getRuntime().exec(new String[] {"notepad",d});
                     }  catch (IOException ioe) {
     				                ioe.printStackTrace();
                         }
@@ -1079,7 +1080,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             String d = "";
 
             try {
-                d = System.getProperty("user.dir") + "/bd.csv";
+                d = "bd.csv";
                 File archivoCSV = new File(d);
                 bw = new BufferedWriter(new FileWriter(archivoCSV));
                 for (int i = 0; i < bd.length; i++) {
