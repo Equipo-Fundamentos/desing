@@ -367,8 +367,8 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             btnBorrar.addActionListener(new BorrardeBD());
 
 			//quitar en production
-			txtUser.setText("rob");
-			txtPass.setText("123");
+			//txtUser.setText("rob");
+			//txtPass.setText("123");
 		/* ========================================== */
 	}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -501,6 +501,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		{
 			public void actionPerformed(ActionEvent e)
 			{
+				list.clearSelection();
 				habiltaPanelDetails();
 				limpiaTextFields();
 				deshabilitaMainPanel();
@@ -634,7 +635,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			btnReportesGrales.setEnabled(false);
 			btnBorrar.setEnabled(false);
 			list.setEnabled(false);
-			list.clearSelection();
+			//list.clearSelection();
 			btnVer.setEnabled(false);
 			btnActualizar.setEnabled(false);
 		}
@@ -988,9 +989,21 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                         nomina -= isr+iva;
                         be.append(nomina+"\n");
 					}
-                    if (os.equals("Mac OS X")) Runtime.getRuntime().exec(new String[]{"open",d});
-                    if (os.equals("Linux")) Runtime.getRuntime().exec(new String[] {"xdg-open",d});
-                    if (os.contains("Windows")) Runtime.getRuntime().exec(new String[]{"notepad",d});
+                    if (os.equals("Mac OS X"))
+                    {
+                    	Runtime.getRuntime().exec(new String[]{"open",d});
+                    }
+                    else if (os.equals("Linux"))
+                    {
+                    	Runtime.getRuntime().exec(new String[] {"xdg-open",d});
+                    }
+                    else if (os.contains("Windows"))
+                    {
+                    	JOptionPane.showMessageDialog(null,"Se abrirá en bloc de notas \n", "miSueldo",
+						JOptionPane.WARNING_MESSAGE);
+                    	Runtime.getRuntime().exec(new String[]{"notepad",d});
+                 	}
+                    	
                 }  catch (IOException ioe) {
 				                ioe.printStackTrace();
                     }
@@ -1060,9 +1073,21 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                                 nomina -= isr+iva;
                                 be.append("Nomina neta,"+nomina+"\n");
 
-                        if (os.equals("Mac OS X")) Runtime.getRuntime().exec(new String[]{"open",d});
-                        if (os.equals("Linux")) Runtime.getRuntime().exec(new String[] {"xdg-open",d});
-                        if (os.contains("Windows")) Runtime.getRuntime().exec(new String[] {"notepad",d});
+	                       if (os.equals("Mac OS X"))
+	                    {
+	                    	Runtime.getRuntime().exec(new String[]{"open",d});
+	                    }
+	                    else if (os.equals("Linux"))
+	                    {
+	                    	Runtime.getRuntime().exec(new String[] {"xdg-open",d});
+	                    }
+	                    else if (os.contains("Windows"))
+	                    {
+	                    	JOptionPane.showMessageDialog(null,"Se abrirá en bloc de notas \n", "miSueldo",
+							JOptionPane.WARNING_MESSAGE);
+	                    	Runtime.getRuntime().exec(new String[]{"notepad",d});
+	                 	}
+
                     }  catch (IOException ioe) {
     				                ioe.printStackTrace();
                         }
