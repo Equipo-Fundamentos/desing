@@ -368,8 +368,8 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             btnBorrar.addActionListener(new BorrardeBD());
 
 			//quitar en production
-			txtUser.setText("rob");
-			txtPass.setText("123");
+			//txtUser.setText("rob");
+			//txtPass.setText("123");
 		/* ========================================== */
 	}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -456,40 +456,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 					btnEditar.setEnabled(true);
 					btnCancelar.setEnabled(true);
 
-
-					String datosLeidos;
-					int filas=100,lineaALeer=list.getSelectedIndex()+1,contaux=0;
-					String[] listaLeida = new String[filas];
-					try
-					{
-						FileReader lectorTXT = new FileReader(bdCSV);
-						BufferedReader brTXT = new BufferedReader(lectorTXT);
-						while(contaux<lineaALeer)
-						{
-							contaux++;
-							datosLeidos = brTXT.readLine();
-							listaLeida = datosLeidos.split(",");
-							txtNombre.setText(listaLeida[0]);
-							txtApp.setText(listaLeida[1]);
-							txtApm.setText(listaLeida[2]);
-							txtCargo.setText(listaLeida[4]);
-							txtSueldo.setText(listaLeida[5]);
-							txtFechaIngreso.setText(listaLeida[9]);
-							txtNominaNum.setText(listaLeida[3]);
-							txtDiasTrabajdos.setText(listaLeida[6]);
-							txtAsignacionesOtros.setText(listaLeida[7]);
-							txtDeduccionesOtros.setText(listaLeida[8]);
-						}
-						lectorTXT.close();
-					}
-					catch(IOException ev)
-					{
-						System.out.println("no hay archivo");
-					}
-				}
-				else
-				{
-
 					lblStatus.setText("Desplegando detalles de empleado seleccionado");
                         txtNombre.setText(bd[index][0]);// Nombre
                         txtApp.setText(bd[index][1]);// APP
@@ -536,6 +502,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		{
 			public void actionPerformed(ActionEvent e)
 			{
+				list.clearSelection();
 				habiltaPanelDetails();
 				limpiaTextFields();
 				deshabilitaMainPanel();
@@ -669,7 +636,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			btnReportesGrales.setEnabled(false);
 			btnBorrar.setEnabled(false);
 			list.setEnabled(false);
-			list.clearSelection();
+			//list.clearSelection();
 			btnVer.setEnabled(false);
 			btnActualizar.setEnabled(false);
 		}
@@ -1021,9 +988,21 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                         nomina -= isr+iva;
                         be.append(nomina+"\n");
 					}
-                    if (os.equals("Mac OS X")) Runtime.getRuntime().exec(new String[]{"open",d});
-                    if (os.equals("Linux")) Runtime.getRuntime().exec(new String[] {"xdg-open",d});
-                    if (os.contains("Windows")) Runtime.getRuntime().exec(new String[]{"notepad",d});
+                    if (os.equals("Mac OS X"))
+                    {
+                    	Runtime.getRuntime().exec(new String[]{"open",d});
+                    }
+                    else if (os.equals("Linux"))
+                    {
+                    	Runtime.getRuntime().exec(new String[] {"xdg-open",d});
+                    }
+                    else if (os.contains("Windows"))
+                    {
+                    	JOptionPane.showMessageDialog(null,"Se abrirá en bloc de notas \n", "miSueldo",
+						JOptionPane.WARNING_MESSAGE);
+                    	Runtime.getRuntime().exec(new String[]{"notepad",d});
+                 	}
+
                 }  catch (IOException ioe) {
 				                ioe.printStackTrace();
                     }
@@ -1090,9 +1069,21 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                                 nomina -= isr+iva;
                                 be.append("Nomina neta,"+nomina+"\n");
 
-                        if (os.equals("Mac OS X")) Runtime.getRuntime().exec(new String[]{"open",d});
-                        if (os.equals("Linux")) Runtime.getRuntime().exec(new String[] {"xdg-open",d});
-                        if (os.contains("Windows")) Runtime.getRuntime().exec(new String[] {"notepad",d});
+	                       if (os.equals("Mac OS X"))
+	                    {
+	                    	Runtime.getRuntime().exec(new String[]{"open",d});
+	                    }
+	                    else if (os.equals("Linux"))
+	                    {
+	                    	Runtime.getRuntime().exec(new String[] {"xdg-open",d});
+	                    }
+	                    else if (os.contains("Windows"))
+	                    {
+	                    	JOptionPane.showMessageDialog(null,"Se abrirá en bloc de notas \n", "miSueldo",
+							JOptionPane.WARNING_MESSAGE);
+	                    	Runtime.getRuntime().exec(new String[]{"notepad",d});
+	                 	}
+
                     }  catch (IOException ioe) {
     				                ioe.printStackTrace();
                         }
