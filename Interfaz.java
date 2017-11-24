@@ -24,7 +24,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	{
 		Interfaz ventanaGrafica = new Interfaz();
 		ventanaGrafica.setVisible(true); // se abra la ventana en la ejecución
-		//System.out.println("Ubicación actual en: " +  System.getProperty("user.dir"));
 	}
 
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -272,7 +271,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			panelDetails.add(panelDetailsButtons,java.awt.BorderLayout.NORTH);//quede hasta arriba
 			panelDetails.add(panelDetailsControles);//cubra lo que sobre
 			panelDetails.add(panelDetailsSaveCancel,java.awt.BorderLayout.SOUTH);//que hasta abajo
-			//panelDetails.setEnabled(false);////***** false para que se habilite cuando se loguee
 		//panel Footer
 			panelFooter = new JPanel();
 			panelFooter.setBackground(new java.awt.Color(238, 238, 238));
@@ -383,6 +381,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	/* ######agregar a los controles instanciados los eventos#####*/
 		boolean session = false;
+    // Actualiza la lista para que se vean los usuarios que han sido agregados o que no se van los que se borraron
 	public class ActualizaJList implements ActionListener
 		{
 			public void actionPerformed(ActionEvent e)
@@ -433,16 +432,30 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			}
 		}
 	//clic en ver
-		public class VerDetallesEmpleado implements ActionListener
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				if(!list.isSelectionEmpty())// o sea si selecciono alguien
-				{
+		public class VerDetallesEmpleado implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+            double isr, base, salario, nomina, hExtra, bono, asignaciones, prestamos, deducciones;
+            int diasF, dias, index;
+
+                if (!list.isSelectionEmpty()) {// Si seleccionó a alguien
+                    index = list.getSelectedIndex();
+                    base = Double.parseDouble(bd[index][5]);
+                    hExtra = Double.parseDouble(bd[index][7]);
+                    bono = Double.parseDouble(bd[index][8]);
+                    asignaciones = Double.parseDouble(bd[index][9]);
+                    prestamos = Double.parseDouble(bd[index][12]);
+                    deducciones = Double.parseDouble(bd[index][13]);
+                    diasF = Integer.parseInt(bd[index][11]);
+                    dias = Integer.parseInt(bd[index][6]);
+                    salario = base*dias;
+                    nomina = salario+bono+(hExtra*base)+(diasF*3*base)+asignaciones-prestamos-deducciones;
+                    //Cálculo de ISR para que se vea después de dar click en ver
+                    isr = calcISR(nomina,"t");
+
 					btnReporteInd.setEnabled(true);
 					btnEditar.setEnabled(true);
 					btnCancelar.setEnabled(true);
-					lblStatus.setText("Desplegando detalles de empleado seleccionado");
+
 
 					String datosLeidos;
 					int filas=100,lineaALeer=list.getSelectedIndex()+1,contaux=0;
@@ -476,13 +489,32 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 				}
 				else
 				{
+
+					lblStatus.setText("Desplegando detalles de empleado seleccionado");
+                        txtNombre.setText(bd[index][0]);// Nombre
+                        txtApp.setText(bd[index][1]);// APP
+                        txtApm.setText(bd[index][2]);// APM
+                        txtNominaNum.setText(bd[index][3]);// No. Nómina
+                        txtCargo.setText(bd[index][4]);// Cargo
+                        txtSueldo.setText(bd[index][5]);// Sueldo
+                        txtDiasTrabajdos.setText(bd[index][6]);// Días Trabajados
+                        txtHorasExtra.setText(bd[index][7]);// Horas Extra
+                        txtBonos.setText(bd[index][8]);// Bonos
+                        txtAsignacionesOtros.setText(bd[index][9]);// Otras asignaciones
+                        txtIVA.setText(Double.toString(ivaGlobal)+"%");
+                        txtISR.setText(Double.toString(isr)+"%");
+                        txtFeriados.setText(bd[index][11]);// Días feriados
+                        txtPrestamos.setText(bd[index][12]);// Préstamos
+                        txtDeduccionesOtros.setText(bd[index][13]);// Otras deducciones
+                        txtFechaIngreso.setText(bd[index][14]);// Fecha de Ingreso
+                        deshabilitaMainPanel();
+                }
+				else {
 					JOptionPane.showMessageDialog(null,"Por favor seleccione a alguien", "miSueldo",
 					JOptionPane.WARNING_MESSAGE);
 				}
-				//System.out.print("index selccionado: "+list.getSelectedIndex());
-				//System.out.println(", valor en el index: "+list.getSelectedValue());
-			}
-		}
+            }
+        }
 	//clic en editar
 		public class EditarEmpleado implements ActionListener
 		{
@@ -545,28 +577,11 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		public void actualizaList()
 		{
 			listModel.removeAllElements();
-			String datosLeidos;
-			int filas=100;
-			String[] listaLeida = new String[filas];
-			try
-			{
-				FileReader lectorBD = new FileReader(bdCSV);
-				BufferedReader brBD = new BufferedReader(lectorBD);
-				while((datosLeidos = brBD.readLine())!=null)
-				{
-					listaLeida = datosLeidos.split(",");
-					listModel.addElement(listaLeida[0]+" - "+listaLeida[3]);
-				}
-				lectorBD.close();
-				list.setModel(listModel);
-			}
-			catch(IOException e)
-			{
-				System.out.println("no hay archivo");
-			}
-			catch(ArrayIndexOutOfBoundsException e){
-				System.out.println("bd vacía del Jlist");
-			}
+		          for (int i = 0; i < bd.length; i++) {
+                      if (bd[i][0] == null) continue;
+                    listModel.addElement(bd[i][0]+" - "+bd[i][3]);
+                  }
+                  list.setModel(listModel);
 		}
 		public void habiltaPanelDetails()//cuando presiona editar
 		{
@@ -587,8 +602,10 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			txtBonos.setEditable(true);
 			txtFeriados.setEditable(true);
 			txtHorasExtra.setEditable(true);
-			txtIVA.setEditable(true);
-			txtISR.setEditable(true);
+			txtIVA.setEditable(false);
+            txtIVA.setEnabled(false);
+			txtISR.setEditable(false);
+            txtISR.setEnabled(false);
 			txtPrestamos.setEditable(true);
 		}
 		public void deshabilitaPanelDetails()
@@ -679,7 +696,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 			if (!nomb.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$")) {JOptionPane.showMessageDialog(null,"Error en dato: Nombre \n *Solo puedes usar letras \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE);noError = false;}
 			if (!app.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$")) {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Paterno \n *Solo puedes usar letras \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
 			if (!apm.matches("^[a-zA-z]+[áéíóí]?(\\s[a-zA-Z][áéíóú]?|[a-zA-Z][áéíóú]?)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Apellido Materno \n *Solo puedes usar letras \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
-			if (!cargo.matches("^\\w+[áéíóú]?(-|\\s\\w+|\\w+)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Cargo \n *Solo puedes usar letras \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
+			if (!cargo.matches("^\\w+[áéíóú]?(-?\\s?\\w+?)*$"))  {JOptionPane.showMessageDialog(null,"Error en dato: Cargo \n *Solo puedes usar letras \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
 			// Número
             if (!fecha.matches("(\\d|[1-2][0-9]|30)\\/(\\d|[1][0-2])\\/(200[0-9]|201[0-7])")) {
                 JOptionPane.showMessageDialog(null,"Error en dato: Fecha \n *Usa el formato d/m/yyyy \n *No puede estar vacío \n *No puede haber fechas futuras", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;
@@ -701,8 +718,6 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             if (!horasExtra.matches("^(\\d|1?[0-9]?[0-9]?[0-9]|2[0-8][0-9][0-9]|29[0-2][0-9]|293[0-6])$")) {JOptionPane.showMessageDialog(null,"Error en dato: Horas extra \n *Solo números (0-2936) \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
             if (!bonos.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Bonos \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
 			if (!asignaciones.matches("\\d+(\\.\\d+)?")) {JOptionPane.showMessageDialog(null,"Error en dato: Asignaciones \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
-            //if (!iva.matches("^([0-1]?[0-9]|20)$")) {JOptionPane.showMessageDialog(null,"Error en dato: IVA \n *Solo números (0-20) \n *Sin signo de porcentaje\n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
-            if (!isr.matches("^([0-2]?[0-9]|30)$")) {JOptionPane.showMessageDialog(null,"Error en dato: ISR \n *Solo números (0-30) \n *Sin signo de porcentaje\n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
             if (!prestamos.matches("^\\d+(\\.\\d+)?$")) {JOptionPane.showMessageDialog(null,"Error en dato: Préstamos \n *Solo números o números decimales \n *Sin signo de porcentaje\n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
 			if (!deducciones.matches("^\\d+(\\.\\d+)?$")) {JOptionPane.showMessageDialog(null,"Error en dato: Deducciones \n *Solo números \n *No puede estar vacío", "Error al Guardar",JOptionPane.ERROR_MESSAGE); noError = false;}
 
@@ -726,11 +741,11 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                             letra = texto.codePointAt(i + 1);
                             texto = texto.substring(0, i + 1) + String.valueOf(Character.toChars(letra - 32)) + texto.substring(i + 2, l);
                         }
+                    }
                 }
-            }
             return texto;
-        }
-        public double calcISR(double sueldo){
+            }
+        public double calcISR(double sueldo, String regresaValor){
 		double tasa=0;
 		double cuotaFija=0;
 
@@ -781,7 +796,9 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		}
 		sueldo-=(tasa*sueldo);
 		sueldo+=cuotaFija;
-		return sueldo;
+        if (regresaValor.equals("s")) return sueldo;
+        else if (regresaValor.equals("t")) return tasa*100;
+        else return sueldo;
 	}
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~FIN MÉTODOS AUXILIARES~~~~~~~~~~~~~~~~~
@@ -797,6 +814,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
             if (noError && !editar) {
                 for (int i = 0; i < bd.length; i++) {
 				if (bd[i][0] == null) { // Si el espacio no esta asignado
+					//System.out.println("Si entro");
 					// Asignar todos los valores colocados a esa nómina
 					bd[i][0] = aMayus(txtNombre.getText());
 					bd[i][1] = aMayus(txtApp.getText());
@@ -900,6 +918,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                             }
                     }
 				}
+                actualizaList();
             }
         }
     public class BorrardeBD implements ActionListener {
@@ -997,14 +1016,14 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                         be.append(nomina+",");
                         iva = (nomina*ivaGlobal/100);
                         be.append(iva+",");
-                        isr = calcISR(nomina);
+                        isr = calcISR(nomina,"s");
                         be.append(isr+",");
                         nomina -= isr+iva;
                         be.append(nomina+"\n");
 					}
                     if (os.equals("Mac OS X")) Runtime.getRuntime().exec(new String[]{"open",d});
                     if (os.equals("Linux")) Runtime.getRuntime().exec(new String[] {"xdg-open",d});
-                    if (os.equals("Windows")) Runtime.getRuntime().exec(new String[] {d});
+                    if (os.contains("Windows")) Runtime.getRuntime().exec(new String[]{"notepad",d});
                 }  catch (IOException ioe) {
 				                ioe.printStackTrace();
                     }
@@ -1040,7 +1059,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
                 salario = base*dias;
                 nomina = salario+bono+(hExtra*base)+(diasF*3*base)+asignaciones-prestamos-deducciones;
                 iva = (nomina*ivaGlobal/100);
-                isr = calcISR(nomina);
+                isr = calcISR(nomina,"s");
 
     			try {
     					File reporte = new File(d); // Especifica el nombre del archivo para el reporte
@@ -1073,7 +1092,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 
                         if (os.equals("Mac OS X")) Runtime.getRuntime().exec(new String[]{"open",d});
                         if (os.equals("Linux")) Runtime.getRuntime().exec(new String[] {"xdg-open",d});
-                        if (os.equals("Windows")) Runtime.getRuntime().exec(new String[] {d});
+                        if (os.contains("Windows")) Runtime.getRuntime().exec(new String[] {"notepad",d});
                     }  catch (IOException ioe) {
     				                ioe.printStackTrace();
                         }
@@ -1089,8 +1108,8 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		public void escritorCSV() {
 			BufferedWriter bw = null;
             try {
-
-                File archivoCSV = new File(bdCSV);
+                d = "bd.csv";
+                File archivoCSV = new File(d);
                 bw = new BufferedWriter(new FileWriter(archivoCSV));
                 for (int i = 0; i < bd.length; i++) {
                     if (bd[i][0] == null) continue;
