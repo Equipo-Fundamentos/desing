@@ -1,3 +1,42 @@
+/* *****************************************************************************
+ *  Autor: Roberto Gervacio, Emilio Cantón y Yann Le Lorier
+ *  Fecha: 16/11/2017
+ *
+ * El programa administra la nómina de hasta 100 personas utilizando una
+ * interfaz gráfica. La intención es poder manejar fácilmente los reportes
+ * mensuales y anuales, así como la entrada o salida de empleados y el cálculo
+ * de su nómina neta.
+    *El programa esta pensado para ser manejado por el administrador de nómina,
+    el cual debe ser el único con acceso al usuario y contraseña.
+
+  Esto se realiza mediante el uso de una base de datos en forma de
+  un documento csv. El programa permite:
+    -Agregar:
+    -Ver
+    -Editar
+    -Borrar
+    -Generar Reportes
+        El reporte se abre en Mac y Linux en el programa predeterminado
+        para el sistema. Si Excel esta disponible se abre en éste con el
+        cálculo de la nómina neta y los detalles de los perfiles. Lo reportes
+        son de tipo:
+            -Individuales
+            -Generales
+* La nómina se calcula mediante el uso de una salario multiplicado por los días
+* trabajados. A éste se le suma:
+    -Bonos
+    -Horas Extras
+    -Días Feriados
+    -Otras Asignaciones
+* Así mismo se la restan prestamos y se hace cálculo de lo siguiente:
+    -ISR:
+        Se utiliza el método de persona física utilizando las tablas de
+        porcentajes para calcular éste.
+    -IVA:
+        Actualmente se utiliza el 16% como variable global para poder ser
+        editada si es necesario.
+    *TODOS ESTOS CÁLCULOS SE RESTAN A LA NÓMINA CALCULADA
+ ***************************************************************************** */
 /*
 *https://www.tutorialspoint.com/swing/swing_tutorial.pdf
 *http://dalila.sip.ucm.es/~manuel/JSW1/Slides/Swing.pdf
