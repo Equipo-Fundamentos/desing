@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  14 NOV 2017 14:15
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  24 NOV 2017 21:07
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -367,97 +367,107 @@ pg>] (./Untitled.toc)
 \openout3 = `Untitled.toc'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 48--50
+Underfull \hbox (badness 10000) in paragraph at lines 49--51
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 48--50
+Underfull \hbox (badness 10000) in paragraph at lines 49--51
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 48--50
+Underfull \hbox (badness 10000) in paragraph at lines 49--51
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 48--50
+Underfull \hbox (badness 10000) in paragraph at lines 49--51
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 48--50
+Underfull \hbox (badness 10000) in paragraph at lines 49--51
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 48--50
+Underfull \hbox (badness 10000) in paragraph at lines 49--51
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 48--50
+Underfull \hbox (badness 10000) in paragraph at lines 49--51
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 48--50
+Underfull \hbox (badness 10000) in paragraph at lines 49--51
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 48--50
+Underfull \hbox (badness 10000) in paragraph at lines 49--51
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 48--50
+Underfull \hbox (badness 10000) in paragraph at lines 49--51
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 48--50
+Underfull \hbox (badness 10000) in paragraph at lines 49--51
 
  []
 
 [1] <Login.jpg, id=16, 165.61874pt x 437.635pt>
 File: Login.jpg Graphic file (type jpg)
  <use Login.jpg>
-Package pdftex.def Info: Login.jpg used on input line 53.
+Package pdftex.def Info: Login.jpg used on input line 54.
 (pdftex.def)             Requested size: 56.9055pt x 150.3632pt.
 
-<sueldo.png, id=18, 255.95625pt x 537.00626pt>
+<sueldo.png, id=18, 289.08pt x 505.89pt>
 File: sueldo.png Graphic file (type png)
  <use sueldo.png>
-Package pdftex.def Info: sueldo.png used on input line 58.
-(pdftex.def)             Requested size: 56.9055pt x 119.38724pt.
+Package pdftex.def Info: sueldo.png used on input line 59.
+(pdftex.def)             Requested size: 56.9055pt x 99.57831pt.
 
-<info.jpg, id=19, 589.20125pt x 553.06625pt>
+<info.jpg, id=19, 557.08125pt x 531.9875pt>
 File: info.jpg Graphic file (type jpg)
  <use info.jpg>
-Package pdftex.def Info: info.jpg used on input line 63.
-(pdftex.def)             Requested size: 142.26378pt x 133.54031pt.
- [2 <./Login.jpg> <./sueldo.png> <./info.jpg>] [3] (./Untitled.aux) ) 
+Package pdftex.def Info: info.jpg used on input line 64.
+(pdftex.def)             Requested size: 142.26378pt x 135.8539pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 100--101
+
+ []
+
+[3 <./Login.jpg> <./sueldo.png> <./info.jpg>] [4] (./Untitled.aux) ) 
 Here is how much of TeX's memory you used:
- 5014 strings out of 493014
- 73955 string characters out of 6133351
- 146808 words of memory out of 5000000
- 8308 multiletter control sequences out of 15000+600000
+ 5015 strings out of 493014
+ 73963 string characters out of 6133351
+ 148808 words of memory out of 5000000
+ 8309 multiletter control sequences out of 15000+600000
  12746 words of font info for 49 fonts, out of 8000000 for 9000
  1302 hyphenation exceptions out of 8191
- 59i,7n,94p,411b,571s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/loca
-l/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local
-/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local
-/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/t
-exlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/tex
-live/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texliv
-e/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on Untitled.pdf (4 pages, 123201 bytes).
+ 59i,7n,94p,394b,571s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local
+/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/
+texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/
+texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/te
+xlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texl
+ive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive
+/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/
+2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on Untitled.pdf (5 pages, 135896 bytes).
 PDF statistics:
- 50 PDF objects out of 1000 (max. 8388607)
- 29 compressed objects within 1 object stream
+ 57 PDF objects out of 1000 (max. 8388607)
+ 34 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  21 words of extra memory for PDF output out of 10000 (max. 10000000)
 

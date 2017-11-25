@@ -2,9 +2,10 @@
 \contentsline {section}{\tocsection {}{2}{La ventana gr\'afica}}{1}
 \contentsline {subsection}{\tocsubsection {}{2.1}{Iniciar Sesi\'on}}{1}
 \contentsline {subsection}{\tocsubsection {}{2.2}{Ventana de matr\'iculas y de nombres completos}}{1}
-\contentsline {subsection}{\tocsubsection {}{2.3}{Informaci\'on detallada}}{1}
-\contentsline {section}{\tocsection {}{3}{Administraci\'on de Usuarios}}{3}
-\contentsline {subsection}{\tocsubsection {}{3.1}{Dar de alta a usuarios}}{3}
-\contentsline {subsection}{\tocsubsection {}{3.2}{Dar de baja a usuarios}}{3}
-\contentsline {subsection}{\tocsubsection {}{3.3}{Modificar datos de un empleado}}{3}
-\contentsline {subsection}{\tocsubsection {}{3.4}{Nota}}{3}
+\contentsline {subsection}{\tocsubsection {}{2.3}{Informaci\'on detallada}}{2}
+\contentsline {section}{\tocsection {}{3}{Recomendaciones}}{2}
+\contentsline {section}{\tocsection {}{4}{Administraci\'on de Usuarios}}{2}
+\contentsline {subsection}{\tocsubsection {}{4.1}{Dar de alta a usuarios}}{2}
+\contentsline {subsection}{\tocsubsection {}{4.2}{Dar de baja a usuarios}}{3}
+\contentsline {subsection}{\tocsubsection {}{4.3}{Modificar datos de un empleado}}{4}
+\contentsline {subsection}{\tocsubsection {}{4.4}{Nota}}{4}

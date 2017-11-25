@@ -10,12 +10,7 @@
 \usepackage[latin1]{inputenc}
  
 \usepackage{listings}
-\usepackage{color}
- 
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
 
 \geometry{a4paper} 
 
@@ -27,7 +22,7 @@
 \begin{titlepage}
 	\begin{center}
 		\begin{figure}
-			\includegraphics[width=150mm]{Tec.jpg}
+			\includegraphics[width=145mm]{Tec.jpg}
 			\label{fig:Tec}
 		\end{figure}
 	\huge{\bfseries{Manual T\'ecnico}}\\
@@ -57,7 +52,7 @@
 
 {Al generar la ventana gr\'afica, se necesita definir c\'omo va organizada \'esta \'ultima:}\\
 
-\lstinputlisting[breaklines, language=Java, firstline=72, lastline=76]{Interfaz.java}
+\lstinputlisting[breaklines, language=Java, firstline=21, lastline=27]{Interfaz.java}
 
 \subsection{Hacer visible la ventana gr\'afica}
 {Aqu\'i vemos c\'omo corremos la ventana para hacerla visible:}
@@ -66,24 +61,30 @@
 \lstinputlisting[breaklines, language=Java, firstline=23, lastline=28]{Interfaz.java}
 
 \subsection{Construyendo la Ventana}
+{Aqu\'i vemos como se construye la ventana, por tres partes, la ventana del Login, el main panel, el panel de detalles, y el footer.}
 \subsubsection{Ventana de ingreso}
-\lstinputlisting[breaklines, language=Java, firstline=81, lastline=102]{Interfaz.java}
+\lstinputlisting[breaklines, language=Java, firstline=84, lastline=115]{Interfaz.java}
 
 
 \subsubsection{Ventana Principal}
-\lstinputlisting[breaklines, language=Java, firstline=105, lastline=150]{Interfaz.java}
+\lstinputlisting[breaklines, language=Java, firstline=118, lastline=138]{Interfaz.java}
 
 \subsubsection{Detalles}
-\lstinputlisting[breaklines, language=Java, firstline=153, lastline=225]{Interfaz.java}
+\lstinputlisting[breaklines, language=Java, firstline=168, lastline=273]{Interfaz.java}
 
 \subsubsection{Footer}
-\lstinputlisting[breaklines, language=Java, firstline=227, lastline=236]{Interfaz.java}
+\lstinputlisting[breaklines, language=Java, firstline=275, lastline=284]{Interfaz.java}
 
 
 \section{Activar Botones y TextFields}
 
-\subsection{En la ventana Login (M\'etodo)}
-\lstinputlisting[breaklines, language=Java, firstline=343, lastline=380]{Interfaz.java}
+\subsection{Vaalidaci\'on del Login}
+{Este m\'etodo verifica que los datos ingresados sean los correctos para poder realizar cambios.}
+\lstinputlisting[breaklines, language=Java, firstline=393, lastline=433]{Interfaz.java}
+
+\subsection{En la ventana Principal}
+{A partir de la l\'inea 485 podemos ver el m\'etodo \textit{EditarEmpleado}, que es el m\'etodo que permite cambiar datos que se despliegan en la ventana derecha (Detalles).}\\
+{Este m\'etodo llama a los m\'etodos encargados de habilitar la edici\'on de informaci\'on.}
 
 \section{La base de datos}
 {Nuestra base de datos es un arreglo bidimensional (matriz de 100x10) en donde un rengl\'on equivale a un perfil. Aqu\'i el orden para cada empleado:}
@@ -103,9 +104,39 @@
 
 \section{M\'etodos}
 \subsection{Desplegar los detalles del empleado}
+{Aqu\'i vemos c\'omo se despliega la informaci\'on del empleado seleccionado en el panel principal.}
 \lstinputlisting[breaklines, language=Java, firstline=383, lastline=402]{Interfaz.java}
 
 \subsection{Habilitar/Deshabilitar las Ventanas}
-{En esta secci\'on se llama a los m\'etodos \textit{habiltaPanelDetails(), limpiaTextFields() y deshabilitaMainpanel()}, as\'i como los m\'etodos \textit{deshabilitaPanelDetails() y habiltaMainPanel()} }
+{En esta secci\'on se llama a los m\'etodos \textit{habiltaPanelDetails(), limpiaTextFields() y deshabilitaMainpanel()}, as\'i como los m\'etodos \textit{deshabilitaPanelDetails() y habiltaMainPanel()}, se pueden apreciar desde la l\'inea 553 a la l\'inea 642.}
+
+\subsection{Validar Datos}
+{La validaci\'on de datos obtiene las propiedades de cada dato ingresado y mete cada uno de estos a un conjunto de condiciones que verifican si es v\'alido.}
+\lstinputlisting[breaklines, language=Java, firstline=643, lastline=660]{Interfaz.java}
+
+\subsection{C\'alculo del ISR}
+{De la l\'inea 715 a la 769, se encuentra el m\'etodo que calcula el ISR dependiendo del salario del empleado, este c\'alculo est\'a de acuerdo al a\~no 2017. Cualquier cambio puede ser efectuado simplemente, se trata de un m\'etodo simple.}
+
+\subsection{Agregar a la Base de Datos}
+{El \'ultimo paso de nuestro programa, que se encuentra a partir de la l\'inea 777, es simplemente meter los datos de cada empleado a nuestra matriz llamada \textit{bd}:}\\
+
+\lstinputlisting[breaklines, language=Java, firstline=786, lastline=803]{Interfaz.java}
+
+{Una vez que termina de meter a la matriz, se hace llamar al m\'etodo de escritura al archivo .csv}
+
+\subsection{LectorCSV}
+
+\subsection{BorrardeBD}
+{Se encuentra en la l\'inea 891, hasta la 907 podemos ver que las entradas de la matriz se est\'an simplemente actualizando al valor de \textit{null}, despu\'es manda llamar al m\'etodo escritorCSV y el m\'etodo que actualiza la lista de la ventana de n\'ominas (ActualizaList)}
+
+\subsection{Generar Reporte}
+{La verdader escritura del archivo cuando agregarmos un perfil sucede en la l\'inea 963:}
+\lstinputlisting[breaklines, language=Java, firstline=963, lastline=968]{Interfaz.java}
+
+\subsection{escritorCSV}
+{Uno de los m\'etodos m\'as usados en este proyecto, va escribiendo con un \textit{loop} los diferentes datos de un perfil en particular, y salta una l\'inea al final del loop}
+
+\lstinputlisting[breaklines, language=Java, firstline=1099, lastline=1137]{Interfaz.java}
+
 
 \end{document}

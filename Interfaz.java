@@ -1138,7 +1138,7 @@ public class Interfaz extends JFrame // extends por que es una clase que hereda 
 		public void escritorCSV() {
 			BufferedWriter bw = null;
             try {
-                d = "bd.csv";
+                String d = "bd.csv";
                 File archivoCSV = new File(d);
                 bw = new BufferedWriter(new FileWriter(archivoCSV));
                 for (int i = 0; i < bd.length; i++) {
