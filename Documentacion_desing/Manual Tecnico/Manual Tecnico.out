@@ -9,7 +9,15 @@
 \BOOKMARK [3][-]{subsubsection.2.3.4}{Footer}{subsection.2.3}% 9
 \BOOKMARK [1][-]{section.3}{Activar Botones y TextFields}{}% 10
 \BOOKMARK [2][-]{subsection.3.1}{En la ventana Login \(M\351todo\)}{section.3}% 11
-\BOOKMARK [1][-]{section.4}{La base de datos}{}% 12
-\BOOKMARK [1][-]{section.5}{M\351todos}{}% 13
-\BOOKMARK [2][-]{subsection.5.1}{Desplegar los detalles del empleado}{section.5}% 14
-\BOOKMARK [2][-]{subsection.5.2}{Habilitar/Deshabilitar las Ventanas}{section.5}% 15
+\BOOKMARK [2][-]{subsection.3.2}{En la ventana Principal}{section.3}% 12
+\BOOKMARK [1][-]{section.4}{La base de datos}{}% 13
+\BOOKMARK [1][-]{section.5}{M\351todos}{}% 14
+\BOOKMARK [2][-]{subsection.5.1}{Desplegar los detalles del empleado}{section.5}% 15
+\BOOKMARK [2][-]{subsection.5.2}{Habilitar/Deshabilitar las Ventanas}{section.5}% 16
+\BOOKMARK [2][-]{subsection.5.3}{Validar Datos}{section.5}% 17
+\BOOKMARK [2][-]{subsection.5.4}{C\341lculo del ISR}{section.5}% 18
+\BOOKMARK [2][-]{subsection.5.5}{Agregar a la Base de Datos}{section.5}% 19
+\BOOKMARK [2][-]{subsection.5.6}{LectorCSV}{section.5}% 20
+\BOOKMARK [2][-]{subsection.5.7}{BorrardeBD}{section.5}% 21
+\BOOKMARK [2][-]{subsection.5.8}{Generar Reporte}{section.5}% 22
+\BOOKMARK [2][-]{subsection.5.9}{escritorCSV}{section.5}% 23
