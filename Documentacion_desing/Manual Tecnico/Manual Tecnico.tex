@@ -61,6 +61,7 @@
 \lstinputlisting[breaklines, language=Java, firstline=23, lastline=28]{Interfaz.java}
 
 \subsection{Construyendo la Ventana}
+{Aqu\'i vemos como se construye la ventana, por tres partes, la ventana del Login, el main panel, el panel de detalles, y el footer.}
 \subsubsection{Ventana de ingreso}
 \lstinputlisting[breaklines, language=Java, firstline=84, lastline=115]{Interfaz.java}
 
@@ -77,12 +78,13 @@
 
 \section{Activar Botones y TextFields}
 
-\subsection{En la ventana Login (M\'etodo)}
+\subsection{Vaalidaci\'on del Login}
+{Este m\'etodo verifica que los datos ingresados sean los correctos para poder realizar cambios.}
 \lstinputlisting[breaklines, language=Java, firstline=393, lastline=433]{Interfaz.java}
 
 \subsection{En la ventana Principal}
 {A partir de la l\'inea 485 podemos ver el m\'etodo \textit{EditarEmpleado}, que es el m\'etodo que permite cambiar datos que se despliegan en la ventana derecha (Detalles).}\\
-{Este m\'etodo llama a los m\'etodos encargados de habilitar la ecdici\'on de informaci\'on.}
+{Este m\'etodo llama a los m\'etodos encargados de habilitar la edici\'on de informaci\'on.}
 
 \section{La base de datos}
 {Nuestra base de datos es un arreglo bidimensional (matriz de 100x10) en donde un rengl\'on equivale a un perfil. Aqu\'i el orden para cada empleado:}
@@ -102,12 +104,14 @@
 
 \section{M\'etodos}
 \subsection{Desplegar los detalles del empleado}
+{Aqu\'i vemos c\'omo se despliega la informaci\'on del empleado seleccionado en el panel principal.}
 \lstinputlisting[breaklines, language=Java, firstline=383, lastline=402]{Interfaz.java}
 
 \subsection{Habilitar/Deshabilitar las Ventanas}
 {En esta secci\'on se llama a los m\'etodos \textit{habiltaPanelDetails(), limpiaTextFields() y deshabilitaMainpanel()}, as\'i como los m\'etodos \textit{deshabilitaPanelDetails() y habiltaMainPanel()}, se pueden apreciar desde la l\'inea 553 a la l\'inea 642.}
 
 \subsection{Validar Datos}
+{La validaci\'on de datos obtiene las propiedades de cada dato ingresado y mete cada uno de estos a un conjunto de condiciones que verifican si es v\'alido.}
 \lstinputlisting[breaklines, language=Java, firstline=643, lastline=660]{Interfaz.java}
 
 \subsection{C\'alculo del ISR}
